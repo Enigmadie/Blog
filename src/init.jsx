@@ -13,7 +13,6 @@ export default () => {
   const devtoolMiddleware = ext && ext();
   /* eslint-enable */
 
-  console.log('test')
   const store = createStore(
     reducers,
     compose(

@@ -1,16 +1,10 @@
 import React from 'react';
-import { connect } from 'react-redux';
+import Banner from './Banner.jsx';
+import Posts from './Posts.jsx';
 
-const mapStateToProps = state => {
-  return {}
+export default () => {
+  return (<div>
+    <Banner />
+    <Posts />
+  </div>)
 };
-
-class App extends React.Component {
-  render() {
-    return (
-      <div className="test">TEST</div>
-    );
-  }
-}
-
-export default connect(mapStateToProps)(App);

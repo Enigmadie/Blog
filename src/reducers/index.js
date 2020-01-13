@@ -3,7 +3,7 @@ import { handleActions } from 'redux-actions';
 import * as actions from '../actions';
 
 const channels = handleActions({
-  [actions.addChannel](state, { payload: { channel } }) {
+  [actions.addPost](state, { payload: { channel } }) {
     return [state.channels, channel];
   },
 }, []);
