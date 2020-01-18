@@ -6,8 +6,9 @@ import { createStore, compose, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
 import reducers from './reducers';
 import App from './components/App.jsx';
+import * as actions from './actions';
 
-export default () => {
+export default (gon) => {
   /* eslint-disable no-underscore-dangle */
   const ext = window.__REDUX_DEVTOOLS_EXTENSION__;
   const devtoolMiddleware = ext && ext();
@@ -20,6 +21,8 @@ export default () => {
       devtoolMiddleware,
     )
   );
+
+  store.dispatch(actions.getDataFromGon(gon));
 
   render(
     <Provider store={store}>

@@ -2,16 +2,25 @@ import { combineReducers } from 'redux';
 import { handleActions } from 'redux-actions';
 import * as actions from '../actions';
 
-const channels = handleActions({
-  [actions.addPost](state, { payload: { channel } }) {
-    return [state.channels, channel];
+const isAdmin = handleActions({
+  [actions.getDataFromGon](state, { payload: { isAdmin } }) {
+    return isAdmin;
+  }
+}, false);
+
+const posts = handleActions({
+  [actions.getDataFromGon](state, { payload: { posts } }) {
+    return posts;
+  },
+  [actions.addPostSuccess](state, { payload: { title, content, file } }) {
+    return [...state.posts, { title, content, file }]
   },
 }, []);
 
-const messages = handleActions({
-  [actions.addMessageSuccess](state, { payload: { message } }) {
-    return [...state, message];
-  },
-}, []);
+const mode = handleActions({
+  [actions.getDataFromGon](state, { payload: { mode } }) {
+    return mode;
+  }
+}, '');
 
-export default combineReducers({ channels, messages });
+export default combineReducers({ posts, isAdmin, mode });

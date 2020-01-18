@@ -9,6 +9,9 @@ module.exports = {
   entry: [
     `${__dirname}/src/index.js`,
   ],
+  externals: {
+    gon: 'gon',
+  },
   resolve: {
     extensions: ['.js', '.jsx'],
   },

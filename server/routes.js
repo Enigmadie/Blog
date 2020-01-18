@@ -1,18 +1,21 @@
-const buildState = (defaultState, dbCollection) => {
-  const state = {
-    isAdmin: false,
-    mode: 'base',
-  }
-  return state;
-}
-export default (app, dbCollection, defaultState = {}) => {
-  const state = buildState(defaultState, dbCollection);
+const state = {
+  isAdmin: false,
+  mode: 'base',
+};
+
+export default (app, dbCollection) => {
   app
-    .get('/', (_req, res) => {
-      res.render('index');
+    .get('/', async (_req, res) => {
+      state.posts = await dbCollection.find({}).toArray();
+      await res.render('index', { gon: state });
     })
-    app.post('/', (_req, res) => {
-      console.log(_req.body);
-      dbCollection.insert(_req.body.data);
+  app.post('/', (_req, res) => {
+      console.log(_req.body)
+      console.log(_req.files)
+      console.log(_req.file);
+      console.log(_req)
+      // console.log(_req)
+      // dbCollection.insertOne(_req.body.data);
+      res.redirect('/');
     })
 }
