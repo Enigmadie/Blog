@@ -5,9 +5,6 @@ export default (props) => {
 
   const handleChange = (e) => {
     const file  =  e.currentTarget.files[0];
-    console.log(e.currentTarget.files)
-    console.log(file)
-    // console.log(e.currentTarget.files)
     const reader = new FileReader();
     const imgTag = document.getElementById("myimage");
     imgTag.title = file.name;
@@ -15,8 +12,7 @@ export default (props) => {
       imgTag.src = event.target.result;
     };
     reader.readAsDataURL(file);
-    // reader.append(file);
-    form.setFieldValue(field.name, reader);
+    form.setFieldValue(field.name, file);
   };
 
   return (
