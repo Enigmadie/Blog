@@ -3,11 +3,9 @@ import { connect } from 'react-redux';
 import * as actions from '../actions';
 
 const mapStateToProps = state => {
-  const props = {
-    posts: state.posts,
-    isAdmin: state.isAdmin,
-  };
-  return props;
+  const { isAdmin, posts: { byId, allIds } } = state;
+  const posts = allIds.map((id) => byId[id]);
+  return { posts, isAdmin };
 };
 
 const actionCreators = {
@@ -16,18 +14,21 @@ const actionCreators = {
 
 class Posts extends React.Component {
   handleRemovePost = id => () => {
-    console.log(id)
     const { removePost } = this.props;
     removePost(id);
   }
   render() {
     const { posts } = this.props;
     return (
+      <>
+        <a class='create-post' href='/posts/new'>Create new post</a>
       <div className='posts'>
         {posts.reverse().map((post) => {
           const imgSrc = `http://localhost:8080${post.image}`
+          const postPath = `/posts/${post._id}`
+
             return <div className='post' key={post._id}>
-              <h2>{post.title}</h2>
+              <a href={postPath}><h2>{post.title}</h2></a>
               <img src={imgSrc} />
               <p>{post.content}</p>
               <div className='admin-post-panel'>
@@ -38,6 +39,7 @@ class Posts extends React.Component {
         }
         )}
         </div>
+      </>
     )
   }
 };

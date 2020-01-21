@@ -1,7 +1,6 @@
 import path from 'path';
 import Express from 'express';
 import { MongoClient } from 'mongodb';
-import multer from 'multer';
 import cors from 'cors';
 import fileUpload from 'express-fileupload';
 import addRoutes from './routes';

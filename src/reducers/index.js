@@ -11,17 +11,27 @@ const isAdmin = handleActions({
 
 const posts = handleActions({
   [actions.getDataFromGon](state, { payload: { posts } }) {
-    return posts;
+    return {
+      byId: _.keyBy(posts, '_id'),
+      allIds: posts.map((el) => el._id),
+    };
   },
   [actions.addPostSuccess](state, { payload: { post } }) {
-    const { title, content, image } = post;
-    return [...state, { title, content, image }];
+    const { byId, allIds } = state;
+    const { _id, title, content, image } = post;
+    return {
+      byId: { ...byId, [_id]: { _id, title, content, image } },
+      allIds: [_id, ...allIds],
+    }
   },
   [actions.removePostSuccess](state, { payload: { id } }) {
-    const filtered = state.filter(el => el._id !== id);
-    return filtered;
+    const { byId, allIds } = state;
+    return {
+      byId: _.omit(byId, id),
+      allIds: _.without(allIds, id),
+    }
   },
-}, []);
+}, { byId: {}, allIds: [] });
 
 const mode = handleActions({
   [actions.getDataFromGon](state, { payload: { mode } }) {
