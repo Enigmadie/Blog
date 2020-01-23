@@ -2,6 +2,11 @@
 @import mixins
 @import palette
 
+%post-image
+  max-width: 100%
+  max-height: 700px
+  overflow: hidden
+
 .blog-content
   margin: 30px 25%
   display: flex
@@ -47,9 +52,7 @@ nav
     max-height: 1000px
     overflow: hidden
   img
-    max-width: 100%
-    max-height: 700px
-    overflow: hidden
+    @extend %post-image
   h2
     font-size: 60px
   p

@@ -9,10 +9,14 @@ export const removePostFailure = createAction('REMOVE_POST_FAILURE');
 
 export const getDataFromGon = createAction('GET_DATA_FROM_GON')
 
-export const addPost = ({ formData }) => async (dispatch) => {
-  const response = await axios.post('/', formData)
-  dispatch(addPostSuccess({ post: response.data }));
+export const addPost = ({ formData }) => async () => {
+  await axios.post('/posts/new', formData)
+  window.location.assign('/')
 };
+
+export const editPost = (id) => async () => {
+  await axios.patch(`/posts/edit/${id}`);
+}
 
 export const removePost = (id) => async (dispatch) => {
   dispatch(removePostRequest());

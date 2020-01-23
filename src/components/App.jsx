@@ -3,10 +3,12 @@ import { connect } from 'react-redux';
 import Banner from './Banner.jsx';
 import Posts from './Posts.jsx';
 import PostCreator from './PostCreator';
+import Post from './Post.jsx';
 
 const modeSelection = {
-  post: <PostCreator />,
-  base: <Posts />
+  filling: <PostCreator />,
+  base: <Posts />,
+  post: <Post />,
 }
 const mapStateToProps = state => {
   const { mode } = state;

@@ -33,6 +33,19 @@ const posts = handleActions({
   },
 }, { byId: {}, allIds: [] });
 
+const activePost = handleActions({
+  [actions.getDataFromGon](state, { payload: { activePost } }) {
+    return activePost;
+  }
+}, null);
+
+const editedPost = handleActions({
+  [actions.getDataFromGon](state, { payload: { editedPost } }) {
+    return editedPost;
+  }
+}, null);
+
+
 const mode = handleActions({
   [actions.getDataFromGon](state, { payload: { mode } }) {
     return mode;
@@ -51,4 +64,4 @@ const postRemovingState = handleActions({
   },
 }, 'none');
 
-export default combineReducers({ posts, isAdmin, mode, postRemovingState });
+export default combineReducers({ posts, activePost, editedPost, isAdmin, mode, postRemovingState });

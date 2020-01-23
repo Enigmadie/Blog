@@ -5,19 +5,25 @@ import * as Yup from 'yup';
 import * as actions from '../../actions';
 import FileUpload from './FileUpload.jsx'
 
+const mapStateToProps = state => {
+  const { editedPost } = state;
+  return { editedPost };
+}
 const actionCreators = {
   addPost: actions.addPost,
 };
 
 class PostCreator extends React.Component {
   render() {
+    const { editedPost } = this.props;
+    const isEdited = editedPost !== null;
     return (
       <div className='admin-form'>
         <Formik
           initialValues={{
-            title: '',
-            content: '',
-            file: null
+            title: isEdited ? editedPost.title : '',
+            content: isEdited ? editedPost.content : '',
+            file: editedPost.image ? editedPost.image : null,
           }}
           validationSchema={Yup.object().shape({
             title: Yup.string().required('Can\'t be blank'),
@@ -63,4 +69,4 @@ class PostCreator extends React.Component {
   }
 }
 
-export default connect(null, actionCreators)(PostCreator);
+export default connect(mapStateToProps, actionCreators)(PostCreator);
