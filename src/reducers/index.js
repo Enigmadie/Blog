@@ -46,12 +46,6 @@ const editedPost = handleActions({
 }, null);
 
 
-const mode = handleActions({
-  [actions.getDataFromGon](state, { payload: { mode } }) {
-    return mode;
-  }
-}, '');
-
 const postRemovingState = handleActions({
   [actions.removePostRequest]() {
     return 'requested';
@@ -64,4 +58,4 @@ const postRemovingState = handleActions({
   },
 }, 'none');
 
-export default combineReducers({ posts, activePost, editedPost, isAdmin, mode, postRemovingState });
+export default combineReducers({ posts, activePost, editedPost, isAdmin, postRemovingState });

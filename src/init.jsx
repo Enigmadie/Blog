@@ -1,11 +1,14 @@
 import '@babel/polyfill';
 import React from 'react';
+import { Switch, BrowserRouter, Route } from 'react-router-dom';
 import { render } from 'react-dom';
 import { Provider } from 'react-redux';
 import { createStore, compose, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
 import reducers from './reducers';
-import App from './components/App.jsx';
+import Posts from './components/Posts.jsx';
+import Post from './components/Post.jsx';
+import PostCreator from './components/PostCreator';
 import * as actions from './actions';
 
 export default (gon) => {
@@ -26,7 +29,13 @@ export default (gon) => {
 
   render(
     <Provider store={store}>
-      <App />
+      <BrowserRouter>
+        <div className='blog-content'>
+          <Route exact path='/' component={Posts} />
+          <Route exact path='/new' component={PostCreator} />
+          <Route path='/posts/:id' component={Post} />
+        </div>
+      </BrowserRouter>
     </Provider>,
     document.getElementById('blog')
   );

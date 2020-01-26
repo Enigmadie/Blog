@@ -11,16 +11,18 @@ const mapStateToProps = state => {
 }
 const actionCreators = {
   addPost: actions.addPost,
+  editPost: actions.editPost,
 };
 
 class PostCreator extends React.Component {
   render() {
     const { editedPost } = this.props;
-    const isEdited = editedPost !== null;
+    const isEdited = editedPost !== '';
     return (
       <div className='admin-form'>
         <Formik
           initialValues={{
+            id: isEdited ? editedPost._id : null,
             title: isEdited ? editedPost.title : '',
             content: isEdited ? editedPost.content : '',
             file: editedPost.image ? editedPost.image : null,
@@ -29,15 +31,13 @@ class PostCreator extends React.Component {
             title: Yup.string().required('Can\'t be blank'),
             content: Yup.string().required('Can\t be blank'),
           })}
-          onSubmit={({ title, content, file }, { setSubmitting, resetForm }) => {
-            const { addPost } = this.props;
+          onSubmit={({ id, title, content, file }, { setSubmitting, resetForm }) => {
+            const { addPost, editPost } = this.props;
             const formData = new FormData();
             formData.append('image', file);
             formData.append('title', title);
             formData.append('content', content);
-            addPost({
-              formData
-            });
+            isEdited ? editPost(id, { formData }) : addPost({ formData });
             resetForm();
             setSubmitting(false);
           }}

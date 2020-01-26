@@ -1,22 +1,20 @@
 import { ObjectId } from 'mongodb';
 
-const state = {
-  isAdmin: true,
-  mode: 'base',
-  posts: [],
-  activePost: '',
-  editedPost: '',
-};
 
-export default (app, dbCollection) => {
-  app.get('/', async (_req, res) => {
-    state.mode = 'base';
-    state.posts = await dbCollection.find({}).toArray();
-    await res.render('index', { gon: state });
+export default async (app, dbCollection) => {
+  console.log('test')
+    const state = {
+      activePost: '',
+      editedPost: '',
+      isAdmin: '',
+      posts: await dbCollection.find({}).toArray(),
+    }
+  app.get('/', (_req, res) => {
+    res.render('index', { gon: state });
   });
 
-  app.get('/posts/new', (_req, res) => {
-    state.mode = 'filling';
+  app.get('/new', (_req, res) => {
+    state.editedPost = '';
     res.render('index', { gon: state });
   });
 
@@ -24,7 +22,6 @@ export default (app, dbCollection) => {
     const { id } = _req.params;
     const currentPost = await dbCollection.find({ _id: ObjectId(id) }).toArray();
     state.activePost =  currentPost[0];
-    state.mode = 'post';
     await res.render('index', { gon: state });
   });
 
@@ -32,9 +29,7 @@ export default (app, dbCollection) => {
     const { id } = _req.params;
     const currentPost = await dbCollection.find({ _id: ObjectId(id) }).toArray();
     state.editedPost = currentPost[0];
-    state.mode = 'filling';
     await res.render('index', { gon: state });
-
   });
 
   app.post('/posts/new', (_req, res) => {
@@ -49,9 +44,18 @@ export default (app, dbCollection) => {
       postData.image = imgPath.slice(1);
     }
     dbCollection.insertOne(postData);
-    res.redirect('/')
+    res.send(postData);
+    // res.redirect('/')
   });
 
+  app.patch('/posts/edit/:id', async (_req, res) => {
+    const { id } = _req.params;
+    const { title, content } = _req.body;
+    await dbCollection.updateOne({ _id: ObjectId(id) }, {
+      $set: { title, content }
+    });
+    res.redirect('/')
+  });
 
   app.delete('/:id', (_req, res) => {
     const { id } = _req.params;

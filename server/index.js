@@ -12,7 +12,6 @@ const dbClient = new MongoClient(mongoUrl, { useNewUrlParser: true, useUnifiedTo
 const app = new Express();
 app.set('view engine', 'pug');
 app.use('/assets', Express.static(rootPath));
-// const upload = multer({ storage: multer.memoryStorage() })
 app.use(Express.json());
 app.use(cors());
 app.use(fileUpload());

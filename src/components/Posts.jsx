@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import * as actions from '../actions';
 
 const mapStateToProps = state => {
@@ -26,15 +27,15 @@ class Posts extends React.Component {
     const { posts } = this.props;
     return (
       <>
-        <a className='create-post' href='/posts/new'>Create new post</a>
-      <div className='posts'>
+        <Link className='create-post' to='/new'>Create new post</Link>
+        <div className='posts'>
         {posts.reverse().map((post) => {
           const imgSrc = `http://localhost:8080${post.image}`
           const postPath = `/posts/${post._id}`
           const editPostPath = `/posts/edit/${post._id}`
 
             return <div className='post' key={post._id}>
-              <a href={postPath}><h2>{post.title}</h2></a>
+              <Link to={postPath}><h2>{post.title}</h2></Link>
               <img src={imgSrc} />
               <p>{post.content}</p>
               <div className='admin-post-panel'>
