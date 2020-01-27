@@ -1,34 +1,30 @@
 import { ObjectId } from 'mongodb';
 
-
+const getState = async (dbCollection) => ({
+    posts: await dbCollection.find({}).toArray(),
+  })
 export default async (app, dbCollection) => {
-  console.log('test')
-    const state = {
-      activePost: '',
-      editedPost: '',
-      isAdmin: '',
-      posts: await dbCollection.find({}).toArray(),
-    }
+
   app.get('/', (_req, res) => {
-    res.render('index', { gon: state });
+    res.render('index');
   });
 
-  app.get('/new', (_req, res) => {
-    state.editedPost = '';
-    res.render('index', { gon: state });
+  app.get('/posts', async (_req, res) => {
+    const state = await getState(dbCollection);
+    await res.send(state);
   });
 
-  app.get('/posts/:id', async (_req, res) => {
-    const { id } = _req.params;
-    const currentPost = await dbCollection.find({ _id: ObjectId(id) }).toArray();
-    state.activePost =  currentPost[0];
+  app.get('/new', async (_req, res) => {
+    const state = await getState(dbCollection);
     await res.render('index', { gon: state });
   });
 
-  app.get('/posts/edit/:id', async (_req, res) => {
-    const { id } = _req.params;
-    const currentPost = await dbCollection.find({ _id: ObjectId(id) }).toArray();
-    state.editedPost = currentPost[0];
+  app.get('/posts/:id', (_req, res) => {
+    res.render('index');
+  });
+
+  app.get('/edit/:id', async (_req, res) => {
+    const state = await getState(dbCollection);
     await res.render('index', { gon: state });
   });
 
@@ -48,7 +44,7 @@ export default async (app, dbCollection) => {
     // res.redirect('/')
   });
 
-  app.patch('/posts/edit/:id', async (_req, res) => {
+  app.patch('/edit/:id', async (_req, res) => {
     const { id } = _req.params;
     const { title, content } = _req.body;
     await dbCollection.updateOne({ _id: ObjectId(id) }, {

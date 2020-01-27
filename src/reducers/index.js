@@ -3,14 +3,8 @@ import { handleActions } from 'redux-actions';
 import _ from 'lodash';
 import * as actions from '../actions';
 
-const isAdmin = handleActions({
-  [actions.getDataFromGon](state, { payload: { isAdmin } }) {
-    return isAdmin;
-  }
-}, false);
-
 const posts = handleActions({
-  [actions.getDataFromGon](state, { payload: { posts } }) {
+  [actions.fetchDataFromServerSuccess](state, { payload: { posts } }) {
     return {
       byId: _.keyBy(posts, '_id'),
       allIds: posts.map((el) => el._id),
@@ -20,8 +14,8 @@ const posts = handleActions({
     const { byId, allIds } = state;
     const { _id, title, content, image } = post;
     return {
-      byId: { ...byId, [_id]: { _id, title, content, image } },
-      allIds: [_id, ...allIds],
+      byId: {...byId, [_id]: { _id, title, content, image } },
+      allIds: [...allIds, _id],
     }
   },
   [actions.removePostSuccess](state, { payload: { id } }) {
@@ -33,18 +27,17 @@ const posts = handleActions({
   },
 }, { byId: {}, allIds: [] });
 
-const activePost = handleActions({
-  [actions.getDataFromGon](state, { payload: { activePost } }) {
-    return activePost;
-  }
-}, null);
-
-const editedPost = handleActions({
-  [actions.getDataFromGon](state, { payload: { editedPost } }) {
-    return editedPost;
-  }
-}, null);
-
+const dataFetchingFromServerState = handleActions({
+  [actions.fetchDataFromServerRequest]() {
+    return 'requested';
+  },
+  [actions.fetchDataFromServerFailure]() {
+    return 'failed';
+  },
+  [actions.fetchDataFromServerSuccess]() {
+    return 'finished';
+  },
+}, 'none');
 
 const postRemovingState = handleActions({
   [actions.removePostRequest]() {
@@ -58,4 +51,4 @@ const postRemovingState = handleActions({
   },
 }, 'none');
 
-export default combineReducers({ posts, activePost, editedPost, isAdmin, postRemovingState });
+export default combineReducers({ posts, postRemovingState, dataFetchingFromServerState });

@@ -1,6 +1,6 @@
 import '@babel/polyfill';
 import React from 'react';
-import { Switch, BrowserRouter, Route } from 'react-router-dom';
+import { BrowserRouter, Route, Link } from 'react-router-dom';
 import { render } from 'react-dom';
 import { Provider } from 'react-redux';
 import { createStore, compose, applyMiddleware } from 'redux';
@@ -25,15 +25,19 @@ export default (gon) => {
     )
   );
 
-  store.dispatch(actions.getDataFromGon(gon));
+  store.dispatch(actions.fetchDataFromServer());
 
   render(
     <Provider store={store}>
       <BrowserRouter>
+        <nav>
+          <Link to='/'>Blog</Link>
+        </nav>
         <div className='blog-content'>
-          <Route exact path='/' component={Posts} />
-          <Route exact path='/new' component={PostCreator} />
           <Route path='/posts/:id' component={Post} />
+          <Route exact path='/new' component={PostCreator} />
+          <Route exact path='/' component={Posts} />
+          <Route exact path='/edit/:id' component={PostCreator} />
         </div>
       </BrowserRouter>
     </Provider>,

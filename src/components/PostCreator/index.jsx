@@ -5,10 +5,15 @@ import * as Yup from 'yup';
 import * as actions from '../../actions';
 import FileUpload from './FileUpload.jsx'
 
-const mapStateToProps = state => {
-  const { editedPost } = state;
-  return { editedPost };
+const mapStateToProps = (state, { match }) => {
+  const { path, params } = match;
+  const { posts: { byId }, dataFetchingFromServerState } = state;
+
+  const isEdited = /edit/gm.test(path);
+  const post = isEdited ? byId[params.id] : null;
+  return { isEdited, post, dataFetchingFromServerState };
 }
+
 const actionCreators = {
   addPost: actions.addPost,
   editPost: actions.editPost,
@@ -16,21 +21,25 @@ const actionCreators = {
 
 class PostCreator extends React.Component {
   render() {
-    const { editedPost } = this.props;
-    const isEdited = editedPost !== '';
+    const { isEdited, post, dataFetchingFromServerState  } = this.props;
+    if (dataFetchingFromServerState === 'requested') {
+      return <div>Load</div>
+    }
     return (
       <div className='admin-form'>
         <Formik
           initialValues={{
-            id: isEdited ? editedPost._id : null,
-            title: isEdited ? editedPost.title : '',
-            content: isEdited ? editedPost.content : '',
-            file: editedPost.image ? editedPost.image : null,
+            id: isEdited ? post._id : null,
+            title: isEdited ? post.title : '',
+            content: isEdited ? post.content : '',
+            file: isEdited ? post.image : null,
           }}
+
           validationSchema={Yup.object().shape({
             title: Yup.string().required('Can\'t be blank'),
             content: Yup.string().required('Can\t be blank'),
           })}
+
           onSubmit={({ id, title, content, file }, { setSubmitting, resetForm }) => {
             const { addPost, editPost } = this.props;
             const formData = new FormData();
