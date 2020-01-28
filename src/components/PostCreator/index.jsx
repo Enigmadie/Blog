@@ -23,7 +23,7 @@ class PostCreator extends React.Component {
   render() {
     const { isEdited, post, dataFetchingFromServerState  } = this.props;
     if (dataFetchingFromServerState === 'requested') {
-      return <div>Load</div>
+      return <div className='loader' />
     }
     return (
       <div className='admin-form'>

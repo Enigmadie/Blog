@@ -5,27 +5,13 @@ const getState = async (dbCollection) => ({
   })
 export default async (app, dbCollection) => {
 
-  app.get('/', (_req, res) => {
-    res.render('index');
-  });
-
   app.get('/posts', async (_req, res) => {
     const state = await getState(dbCollection);
     await res.send(state);
   });
 
-  app.get('/new', async (_req, res) => {
-    const state = await getState(dbCollection);
-    await res.render('index', { gon: state });
-  });
-
-  app.get('/posts/:id', (_req, res) => {
+  app.get('*', (_req, res) => {
     res.render('index');
-  });
-
-  app.get('/edit/:id', async (_req, res) => {
-    const state = await getState(dbCollection);
-    await res.render('index', { gon: state });
   });
 
   app.post('/posts/new', (_req, res) => {
@@ -42,6 +28,16 @@ export default async (app, dbCollection) => {
     dbCollection.insertOne(postData);
     res.send(postData);
     // res.redirect('/')
+  });
+
+  app.post('/admin', (_req, res) => {
+    const { login, password } = _req.body.data;
+    console.log(password)
+    if (login === 'admin' && password === 'testtest') {
+      res.send(true);
+    } else {
+      res.send(false);
+    }
   });
 
   app.patch('/edit/:id', async (_req, res) => {

@@ -27,6 +27,24 @@ const posts = handleActions({
   },
 }, { byId: {}, allIds: [] });
 
+const isAdmin = handleActions({
+  [actions.authenticationAdminSuccess](state, { payload: { isAdmin } }) {
+    return isAdmin;
+  },
+}, false);
+
+const adminAuthentificationState = handleActions({
+  [actions.authenticationAdminRequest]() {
+    return 'requested';
+  },
+  [actions.authenticationAdminFailure]() {
+    return 'failed';
+  },
+  [actions.authenticationAdminSuccess]() {
+    return 'finished';
+  },
+}, 'none');
+
 const dataFetchingFromServerState = handleActions({
   [actions.fetchDataFromServerRequest]() {
     return 'requested';
@@ -51,4 +69,4 @@ const postRemovingState = handleActions({
   },
 }, 'none');
 
-export default combineReducers({ posts, postRemovingState, dataFetchingFromServerState });
+export default combineReducers({ isAdmin, posts, adminAuthentificationState, postRemovingState, dataFetchingFromServerState });

@@ -9,6 +9,7 @@ import reducers from './reducers';
 import Posts from './components/Posts.jsx';
 import Post from './components/Post.jsx';
 import PostCreator from './components/PostCreator';
+import LoginForm from './components/LoginForm.jsx';
 import * as actions from './actions';
 
 export default (gon) => {
@@ -34,10 +35,11 @@ export default (gon) => {
           <Link to='/'>Blog</Link>
         </nav>
         <div className='blog-content'>
-          <Route path='/posts/:id' component={Post} />
-          <Route exact path='/new' component={PostCreator} />
           <Route exact path='/' component={Posts} />
-          <Route exact path='/edit/:id' component={PostCreator} />
+          <Route path='/admin' component={LoginForm} />
+          <Route exact path='/new' component={PostCreator} />
+          <Route path='/posts/:id' component={Post} />
+          <Route path='/edit/:id' component={PostCreator} />
         </div>
       </BrowserRouter>
     </Provider>,

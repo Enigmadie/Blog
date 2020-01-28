@@ -14,7 +14,7 @@ class Post extends React.Component {
     const { activePost, dataFetchingFromServerState } = this.props;
     const imgHref = `http://localhost:8080${activePost.image}`
     if (dataFetchingFromServerState === 'requested' ) {
-      return <div>Load</div>
+      return <div className='loader'/>
     }
     return (
     <div>

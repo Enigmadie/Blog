@@ -4,10 +4,9 @@ import { Link } from 'react-router-dom';
 import * as actions from '../actions';
 
 const mapStateToProps = state => {
-  const {  posts: { byId, allIds } } = state;
+  const { isAdmin, dataFetchingFromServerState, posts: { byId, allIds } } = state;
   const posts = allIds.map((id) => byId[id]).reverse();
-
-  return { posts };
+  return { isAdmin, dataFetchingFromServerState, posts };
 };
 
 const actionCreators = {
@@ -25,10 +24,13 @@ class Posts extends React.Component {
     editPost(id)
   }
   render() {
-    const { posts } = this.props;
+    const { isAdmin, dataFetchingFromServerState, posts } = this.props;
+    if (dataFetchingFromServerState === 'requested' ) {
+      return <div className='loader'/>
+    }
     return (
       <>
-        <Link className='create-post' to='/new'>Create new post</Link>
+      {isAdmin && <Link className='create-post' to='/new'>Create new post</Link>}
         <div className='posts'>
         {posts.map((post) => {
           const imgSrc = `http://localhost:8080${post.image}`
@@ -40,8 +42,8 @@ class Posts extends React.Component {
               <img src={imgSrc} />
               <p>{post.content}</p>
               <div className='admin-post-panel'>
-                <Link to={editPostPath}>Edit</Link>
-                <button onClick={this.handleRemovePost(post._id)}>X</button>
+            {isAdmin && <Link to={editPostPath}>Edit</Link>}
+          {isAdmin && <button onClick={this.handleRemovePost(post._id)}>X</button>}
               </div>
             </div>
         }

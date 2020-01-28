@@ -7,6 +7,10 @@ export const removePostSuccess = createAction('REMOVE_POST_SUCCESS');
 export const removePostRequest = createAction('REMOVE_POST_REQUEST');
 export const removePostFailure = createAction('REMOVE_POST_FAILURE');
 
+export const authenticationAdminSuccess = createAction('AUTHENTICATION_ADMIN_SUCCESS');
+export const authenticationAdminRequest = createAction('AUTHENTICATION_ADMIN_REQUEST');
+export const authenticationAdminFailure = createAction('AUTHENTICATION_ADMIN_FAILURE');
+
 export const fetchDataFromServerSuccess = createAction('FETCH_DATA_FROM_SERVER_SUCCESS');
 export const fetchDataFromServerRequest = createAction('FETCH_DATA_FROM_SERVER_REQUEST');
 export const fetchDataFromServerFailure = createAction('FETCH_DATA_FROM_SERVER_FAILURE');
@@ -22,16 +26,26 @@ export const fetchDataFromServer = () => async (dispatch) => {
   }
 };
 
+export const authenticationAdmin = ({ login, password }) => async (dispatch) => {
+  dispatch(authenticationAdminRequest());
+  try {
+    const response = await axios.post('/admin', { data: { login, password } });
+    dispatch(authenticationAdminSuccess({ isAdmin: response.data }));
+  } catch (e) {
+    dispatch(authenticationAdminFailure());
+    throw e;
+  }
+};
+
 export const addPost = ({ formData }) => async (dispatch) => {
   const response = await axios.post('/posts/new', formData)
-  console.log(response)
   dispatch(addPostSuccess({ post: response.data }));
   // window.location.assign('/')
 };
 
 export const editPost = (id, { formData }) => async (dispatch) => {
   await axios.patch(`/posts/edit/${id}`, formData);
-}
+};
 
 export const removePost = (id) => async (dispatch) => {
   dispatch(removePostRequest());
@@ -42,6 +56,5 @@ export const removePost = (id) => async (dispatch) => {
     dispatch(removePostFailure());
     throw e;
   }
-}
-
+};
 
