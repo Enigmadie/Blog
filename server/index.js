@@ -16,6 +16,7 @@ const isDevelopment = !isProduction;
 const app = new Express();
 const domain = isDevelopment ? 'http://localhost:8080' : '';
 
+console.log(process.env.NODE_ENV)
 app.set('view engine', 'pug');
 app.use('/assets', Express.static(rootPath));
 app.use(Express.json());
