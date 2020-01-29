@@ -9,9 +9,6 @@ module.exports = {
   entry: [
     `${__dirname}/src/index.js`,
   ],
-  externals: {
-    gon: 'gon',
-  },
   resolve: {
     extensions: ['.js', '.jsx'],
   },
@@ -36,6 +33,8 @@ module.exports = {
             loader: MiniCssExtractPlugin.loader,
             options: {
               reloadAll: true,
+              sourceMap: isDevelopment,
+              hmr: isDevelopment,
             },
           },
           { loader: 'css-loader', },
@@ -50,8 +49,8 @@ module.exports = {
               reloadAll: true,
             },
           },
-          { loader: 'css-loader', },
-          { loader: 'sass-loader', },
+          { loader: 'css-loader', options: { importLoaders: 1, sourceMap: isDevelopment } },
+          { loader: 'sass-loader', options: { sourceMap: isDevelopment } },
         ],
       },
       {

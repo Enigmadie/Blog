@@ -37,7 +37,7 @@ class PostCreator extends React.Component {
 
           validationSchema={Yup.object().shape({
             title: Yup.string().required('Can\'t be blank'),
-            content: Yup.string().required('Can\t be blank'),
+            content: Yup.string().required('Can\'t be blank'),
           })}
 
           onSubmit={({ id, title, content, file }, { setSubmitting, resetForm }) => {

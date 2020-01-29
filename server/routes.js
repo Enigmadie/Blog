@@ -3,7 +3,7 @@ import { ObjectId } from 'mongodb';
 const getState = async (dbCollection) => ({
     posts: await dbCollection.find({}).toArray(),
   })
-export default async (app, dbCollection) => {
+export default async (app, dbCollection, appData) => {
 
   app.get('/posts', async (_req, res) => {
     const state = await getState(dbCollection);
@@ -11,7 +11,7 @@ export default async (app, dbCollection) => {
   });
 
   app.get('*', (_req, res) => {
-    res.render('index');
+    res.render('index', { domain: appData.domain });
   });
 
   app.post('/posts/new', (_req, res) => {
@@ -32,7 +32,6 @@ export default async (app, dbCollection) => {
 
   app.post('/admin', (_req, res) => {
     const { login, password } = _req.body.data;
-    console.log(password)
     if (login === 'admin' && password === 'testtest') {
       res.send(true);
     } else {
