@@ -16,12 +16,11 @@ const isDevelopment = !isProduction;
 const app = new Express();
 const domain = isDevelopment ? 'http://localhost:8080' : '';
 
-console.log(process.env.NODE_ENV)
 app.set('view engine', 'pug');
 app.use('/assets', Express.static(rootPath));
 app.use(Express.json());
-app.use(cors());
 app.use(fileUpload());
+app.use(cors())
 app.use(session({
   resave: false,
   saveUninitialized: false,

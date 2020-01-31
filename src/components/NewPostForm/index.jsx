@@ -31,20 +31,23 @@ class PostCreator extends React.Component {
           initialValues={{
             id: isEdited ? post._id : null,
             title: isEdited ? post.title : '',
+            preview: isEdited ? post.preview : '',
             content: isEdited ? post.content : '',
             file: isEdited ? post.image : null,
           }}
 
           validationSchema={Yup.object().shape({
             title: Yup.string().required('Can\'t be blank'),
+            preview: Yup.string().required('Can\'t be blank'),
             content: Yup.string().required('Can\'t be blank'),
           })}
 
-          onSubmit={({ id, title, content, file }, { setSubmitting, resetForm }) => {
+          onSubmit={({ id, title, content, preview, file }, { setSubmitting, resetForm }) => {
             const { addPost, editPost } = this.props;
             const formData = new FormData();
             formData.append('image', file);
             formData.append('title', title);
+            formData.append('preview', preview);
             formData.append('content', content);
             isEdited ? editPost(id, { formData }) : addPost({ formData });
             resetForm();
@@ -62,6 +65,13 @@ class PostCreator extends React.Component {
                   : 'content-input'
               }/>
               { errors.title && touched.title && (<div className='error-message'>{errors.title}</div>)}
+              <label htmlFor='preview'>Preview:</label>
+              <Field type='text' name='preview' className={
+                errors.preview && touched.preview
+                  ? 'content-input error'
+                  : 'content-input'
+              }/>
+              { errors.preview && touched.preview && (<div className='error-message'>{errors.preview}</div>)}
               <label htmlFor='content'>Content:</label>
               <Field type='text' name='content' className={
                 errors.content && touched.content

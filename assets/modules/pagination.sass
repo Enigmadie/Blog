@@ -1,0 +1,16 @@
+.paginate
+  +flexbox()
+  +flex-direction(row)
+  a
+    border: 1px solid #ddd
+    color: black
+    padding: 5px 10px
+    margin: 0 4px
+    text-decoration: none
+    &.active
+      background-color: red
+      color: white
+      border: 1px solid #4CAF50
+    &:hover:not(.active)
+      background-color: #ddd
+

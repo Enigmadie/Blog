@@ -3,6 +3,15 @@ import { handleActions } from 'redux-actions';
 import _ from 'lodash';
 import * as actions from '../actions';
 
+const currentPage = handleActions({
+  [actions.fetchDataFromServerSuccess](state, { payload: { currentPage } }) {
+    return currentPage;
+  },
+  [actions.selectPage](state, { payload: { page } }) {
+    return page;
+  },
+}, 1);
+
 const posts = handleActions({
   [actions.fetchDataFromServerSuccess](state, { payload: { posts } }) {
     return {
@@ -12,9 +21,9 @@ const posts = handleActions({
   },
   [actions.addPostSuccess](state, { payload: { post } }) {
     const { byId, allIds } = state;
-    const { _id, title, content, image } = post;
+    const { _id, title, content, preview, image, date } = post;
     return {
-      byId: {...byId, [_id]: { _id, title, content, image } },
+      byId: {...byId, [_id]: { _id, title, content, preview, image, date } },
       allIds: [...allIds, _id],
     }
   },
@@ -28,6 +37,9 @@ const posts = handleActions({
 }, { byId: {}, allIds: [] });
 
 const isAdmin = handleActions({
+  [actions.fetchDataFromServerSuccess](state, { payload: { isAdmin } }) {
+    return isAdmin;
+  },
   [actions.authenticationAdminSuccess](state, { payload: { isAdmin } }) {
     return isAdmin;
   },
@@ -69,4 +81,11 @@ const postRemovingState = handleActions({
   },
 }, 'none');
 
-export default combineReducers({ isAdmin, posts, adminAuthentificationState, postRemovingState, dataFetchingFromServerState });
+export default combineReducers({
+  isAdmin,
+  currentPage,
+  posts,
+  adminAuthentificationState,
+  postRemovingState,
+  dataFetchingFromServerState,
+});

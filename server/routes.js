@@ -1,13 +1,13 @@
 import { ObjectId } from 'mongodb';
+import Admin from './entities/Admin';
+import Post from './entities/Post';
 
-const getState = async (dbCollection) => ({
-    posts: await dbCollection.find({}).toArray(),
-  })
 export default async (app, dbCollection, appData) => {
-
   app.get('/posts', async (_req, res) => {
-    const state = await getState(dbCollection);
-    await res.send(state);
+    const posts = await dbCollection.find({}).toArray();
+    const isAdmin = _req.session.admin;
+    const currentPage = _req.query.page;
+    await res.send({ posts, isAdmin, currentPage });
   });
 
   app.get('*', (_req, res) => {
@@ -15,28 +15,24 @@ export default async (app, dbCollection, appData) => {
   });
 
   app.post('/posts/new', (_req, res) => {
-    const postData = {
-      title: _req.body.title,
-      content: _req.body.content,
-    }
-
+    const { title, content, preview } = _req.body;
     if (_req.files) {
       const imgPath = `./uploads/${_req.files.image.name}`
       _req.files.image.mv(imgPath);
-      postData.image = imgPath.slice(1);
     }
-    dbCollection.insertOne(postData);
-    res.send(postData);
-    // res.redirect('/')
+    const image = _req.files ? `/uploads/${_req.files.image.name}` : null;
+    const post = new Post(title, content, preview, image, new Date())
+
+    dbCollection.insertOne(post);
+    res.send(post);
   });
 
   app.post('/admin', (_req, res) => {
     const { login, password } = _req.body.data;
-    if (login === 'admin' && password === 'testtest') {
-      res.send(true);
-    } else {
-      res.send(false);
-    }
+    const admin = new Admin(login, password);
+    const hasAccess = admin.checkAccess();
+    _req.session.admin = hasAccess;
+    res.send(hasAccess);
   });
 
   app.patch('/edit/:id', async (_req, res) => {
