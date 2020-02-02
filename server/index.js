@@ -6,6 +6,7 @@ import fileUpload from 'express-fileupload';
 import session from 'express-session';
 import addRoutes from './routes';
 
+
 const rootPath = path.join(__dirname, '../dist/public');
 const mongoUrl = "mongodb+srv://blogUser:945870@cluster0-3pmqe.mongodb.net/test?retryWrites=true&w=majority";
 const dbClient = new MongoClient(mongoUrl, { useNewUrlParser: true, useUnifiedTopology: true });
@@ -26,6 +27,7 @@ app.use(session({
   saveUninitialized: false,
   secret: 'secret key',
 }));
+
 dbClient.connect((err) => {
   const dbCollection = dbClient.db('blog').collection('posts_data');
   addRoutes(app, dbCollection, { domain });

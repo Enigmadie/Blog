@@ -28,7 +28,8 @@ export default () => {
   );
 
   const { query } = url.parse(window.location.href, true);
-  store.dispatch(actions.fetchDataFromServer({ currentPage: query.page }));
+  const currentPage = query.page ? { currentPage: query.page } : null;
+  store.dispatch(actions.fetchDataFromServer(currentPage));
 
   render(
     <Provider store={store}>

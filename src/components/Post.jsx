@@ -2,7 +2,6 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 const mapStateToProps = (state, { match }) => {
-  console.log(state)
   const { posts: { byId }, dataFetchingFromServerState  } = state;
   const activePostId = match.params.id;
   const activePost = dataFetchingFromServerState === 'finished' ? byId[activePostId] : {};

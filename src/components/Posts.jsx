@@ -10,7 +10,7 @@ const mapStateToProps = state => {
 
   const posts = allIds.map((id) => byId[id]).reverse();
 
-  const postsPerPage = 5;
+  const postsPerPage = 10;
   const indexOfLastPage = currentPage * postsPerPage;
   const indexOfFirstPage = indexOfLastPage - postsPerPage;
   const currentPosts = posts.slice(indexOfFirstPage, indexOfLastPage);

@@ -17,10 +17,11 @@ export const fetchDataFromServerSuccess = createAction('FETCH_DATA_FROM_SERVER_S
 export const fetchDataFromServerRequest = createAction('FETCH_DATA_FROM_SERVER_REQUEST');
 export const fetchDataFromServerFailure = createAction('FETCH_DATA_FROM_SERVER_FAILURE');
 
-export const fetchDataFromServer = ({ currentPage }) => async (dispatch) => {
+export const fetchDataFromServer = (pageData) => async (dispatch) => {
   dispatch(fetchDataFromServerRequest());
   try {
-    const { data } = await axios.get(`/posts/?page=${currentPage}`)
+    const fetchUrl = pageData !== null ? `/posts/?page=${pageData.currentPage}` : '/posts';
+    const { data } = await axios.get(fetchUrl);
     dispatch(fetchDataFromServerSuccess({ isAdmin: data.isAdmin, posts: data.posts, currentPage: data.currentPage  }));
   } catch (e) {
     dispatch(fetchDataFromServerFailure());
