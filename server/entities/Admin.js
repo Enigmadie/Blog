@@ -1,13 +1,11 @@
-export default class Admin {
-  static login = 'admin';
-  static password = 'testtest';
+var adminLogin = 'admin';
+var adminPassword = 'testtest';
 
-  constructor(login, password) {
-    this.login = login;
-    this.password = password;
-  }
 
-  checkAccess() {
-    return this.password === Admin.password && this.login === Admin.login;
+exports.default = function Admin(login, password) {
+  this.login = login;
+  this.password = password;
+  this.checkAccess = function() {
+    return this.password === adminPassword && this.login === adminLogin;
   }
 }

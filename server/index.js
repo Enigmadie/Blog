@@ -1,23 +1,33 @@
-import path from 'path';
-import Express from 'express';
-import { MongoClient } from 'mongodb';
-import cors from 'cors';
-import fileUpload from 'express-fileupload';
-import session from 'express-session';
-import addRoutes from './routes';
+#!/usr/bin/env node
 
+var path = require('path'),
+    Express = require('express'),
+    MongoClient = require('mongodb').MongoClient,
+    cors = require('cors'),
+    fileUpload = require('express-fileupload'),
+    session = require('express-session'),
+    addRoutes = require('./routes').default;
 
-const rootPath = path.join(__dirname, '../dist/public');
-const mongoUrl = "mongodb+srv://blogUser:945870@cluster0-3pmqe.mongodb.net/test?retryWrites=true&w=majority";
-const dbClient = new MongoClient(mongoUrl, { useNewUrlParser: true, useUnifiedTopology: true });
+var port = process.env.PORT || 5000;
 
-const isProduction = process.env.NODE_ENV === 'production';
-const isDevelopment = !isProduction;
+var rootPath = path.join(__dirname, '../client/dist/public');
 
-const app = new Express();
-const domain = isDevelopment ? 'http://localhost:8080' : '';
+var mongoUrl = "mongodb+srv://blogUser:945870@cluster0-3pmqe.mongodb.net/test?retryWrites=true&w=majority";
+
+var dbClient = new MongoClient(mongoUrl, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+});
+
+var isProduction = process.env.NODE_ENV === 'production';
+var isDevelopment = !isProduction;
+
+var app = new Express();
+var domain = isDevelopment ? 'http://localhost:8080' : '';
 
 app.set('view engine', 'pug');
+app.set('views', path.join(__dirname, '/../client'));
+console.log(__dirname + '/../client/views')
 app.use('/assets', Express.static(rootPath));
 app.use(Express.json());
 app.use(fileUpload());
@@ -28,9 +38,11 @@ app.use(session({
   secret: 'secret key',
 }));
 
-dbClient.connect((err) => {
-  const dbCollection = dbClient.db('blog').collection('posts_data');
+dbClient.connect(function (err) {
+  var dbCollection = dbClient.db('blog').collection('posts_data');
   addRoutes(app, dbCollection, { domain });
 });
 
-export default app;
+app.listen(port, function() {
+  console.log(`Server was started on ${port}`);
+});
