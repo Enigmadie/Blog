@@ -2,21 +2,21 @@
 
 var path = require('path'),
     Express = require('express'),
-    MongoClient = require('mongodb').MongoClient,
     cors = require('cors'),
     fileUpload = require('express-fileupload'),
     session = require('express-session'),
+    mongoose = require('mongoose'),
     addRoutes = require('./routes').default;
 
 var port = process.env.PORT || 5000;
 
 var rootPath = path.join(__dirname, '../client/dist/public');
 
-var mongoUrl = "mongodb+srv://blogUser:945870@cluster0-3pmqe.mongodb.net/test?retryWrites=true&w=majority";
+var mongoUrl = "mongodb+srv://blogUser:945870@cluster0-3pmqe.mongodb.net/blog?retryWrites=true&w=majority";
 
-var dbClient = new MongoClient(mongoUrl, {
+mongoose.connect(mongoUrl, {
   useNewUrlParser: true,
-  useUnifiedTopology: true
+  useUnifiedTopology: true,
 });
 
 var isProduction = process.env.NODE_ENV === 'production';
@@ -27,7 +27,6 @@ var domain = isDevelopment ? 'http://localhost:8080' : '';
 
 app.set('view engine', 'pug');
 app.set('views', path.join(__dirname, '/../client'));
-console.log(__dirname + '/../client/views')
 app.use('/assets', Express.static(rootPath));
 app.use(Express.json());
 app.use(fileUpload());
@@ -38,10 +37,11 @@ app.use(session({
   secret: 'secret key',
 }));
 
-dbClient.connect(function (err) {
-  var dbCollection = dbClient.db('blog').collection('posts_data');
-  addRoutes(app, dbCollection, { domain });
-});
+var db = mongoose.connection;
+db.on('error', console.error.bind(console, 'connection error:'));
+db.once('open', function() {
+  addRoutes(app, { domain });
+})
 
 app.listen(port, function() {
   console.log(`Server was started on ${port}`);

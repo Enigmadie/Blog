@@ -1,13 +1,18 @@
-var ObjectId = require('mongodb').ObjectId,
-    Admin = require('./entities/Admin').default,
-    Post = require('./entities/Post').default;
+var _ = require('lodash'),
+    Admin = require('./models/Admin').default,
+    Post = require('./models/Post').default;
 
-exports.default = async function(app, dbCollection, appData) {
-  app.get('/posts', async function(_req, res) {
-    var posts = await dbCollection.find({}).toArray();
-    var isAdmin = _req.session.admin;
-    var currentPage = _req.query.page;
-    await res.send({ posts, isAdmin, currentPage });
+exports.default = async function(app, appData) {
+  app.get('/posts', function(_req, res) {
+    Post.find({}).then(function(posts) {
+      if (!posts) {
+        res.status(422);
+        return;
+      }
+      var isAdmin = _req.session.admin;
+      var currentPage = _req.query.page;
+      res.send({ posts, isAdmin, currentPage });
+    });
   });
 
   app.get('*', function(_req, res) {
@@ -21,33 +26,52 @@ exports.default = async function(app, dbCollection, appData) {
       _req.files.image.mv(imgPath);
     }
     var image = _req.files ? `/uploads/${_req.files.image.name}` : null;
-    var post = new Post(title, content, preview, image, new Date())
+    var post = new Post({
+      title,
+      content,
+      preview,
+      image,
+      date: new Date()
+    });
 
-    dbCollection.insertOne(post);
+    post.save();
     res.send(post);
   });
 
   app.post('/admin', function(_req, res) {
     var { login, password } = _req.body.data;
-    var admin = new Admin(login, password);
+    var admin = new Admin({ login, password });
     var hasAccess = admin.checkAccess();
     _req.session.admin = hasAccess;
     res.send(hasAccess);
   });
 
-  app.patch('/:id', async function(_req, res) {
+  app.patch('/:id', function(_req, res) {
     var { id } = _req.params;
-    var { title, content } = _req.body;
-    await dbCollection.updateOne({ _id: ObjectId(id) }, {
-      $set: { title, content }
+    var { title, preview, content, image } = _req.body;
+    var updateParams = {
+      title,
+      preview,
+      content,
+      image,
+      date: new Date(),
+    };
+    Post.updateOne({ _id: id }, updateParams, {}, function(err) {
+      if (err) {
+        throw(err);
+      }
+      res.send(_.assign(updateParams, {_id: id }));
     });
-    res.redirect('/')
   });
 
   app.delete('/:id', function(_req, res) {
     var { id } = _req.params;
-    dbCollection.deleteOne({ _id: ObjectId(id) })
-    res.send(id)
-  })
+    Post.deleteOne({ _id: id }, function(err) {
+      if (err) {
+        throw(err);
+      }
+      res.send(id)
+    });
+  });
 };
 
