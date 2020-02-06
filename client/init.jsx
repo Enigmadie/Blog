@@ -39,9 +39,9 @@ export default () => {
         </nav>
         <div className='blog-content'>
           <Route path='/admin' component={LoginForm} />
-          <Route exact path='/new' component={NewPostForm} />
-          <Route path='/posts/:id' component={Post} />
-          <Route path='/edit/:id' component={NewPostForm} />
+          <Route path='/posts/new' component={NewPostForm} />
+          <Route exact path='/post/:id' component={Post} />
+          <Route path='/post/:id/edit' component={NewPostForm} />
           <Route exact path='/' component={Posts} />
         </div>
       </BrowserRouter>

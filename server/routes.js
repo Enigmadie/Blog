@@ -20,22 +20,27 @@ exports.default = async function(app, appData) {
   });
 
   app.post('/posts/new', function(_req, res) {
+    var { admin } = _req.session; 
     var { title, content, preview } = _req.body;
-    if (_req.files) {
-      var imgPath = `./uploads/${_req.files.image.name}`
-      _req.files.image.mv(imgPath);
-    }
-    var image = _req.files ? `/uploads/${_req.files.image.name}` : null;
-    var post = new Post({
-      title,
-      content,
-      preview,
-      image,
-      date: new Date()
-    });
+    if (admin) {
+      if (_req.files) {
+        var imgPath = `./uploads/${_req.files.image.name}`
+        _req.files.image.mv(imgPath);
+      }
+      var image = _req.files ? `/uploads/${_req.files.image.name}` : null;
+      var post = new Post({
+        title,
+        content,
+        preview,
+        image,
+        date: new Date()
+      });
 
-    post.save();
-    res.send(post);
+      post.save();
+      res.send(post);
+      return;
+    }
+    res.status(422);
   });
 
   app.post('/admin', function(_req, res) {

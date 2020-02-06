@@ -23,7 +23,7 @@ class Pagination extends React.Component {
 
   render() {
     const { page, posts } = this.props;
-    const postsPerPage = 10;
+    const postsPerPage = 9;
     const pages = Math.ceil(posts.length / postsPerPage);
 
     const prevPagesMax = page > 5 ? page - 4 : 1;

@@ -2,27 +2,35 @@
   font-size: 50px
 
 .posts
- img
-    max-height: 700px
- h2
+  max-width: 1550px
+  min-width: 500px
+  display: flex
+  justify-content: center
+  +flex-wrap(wrap)
+  img
+    height: 300px
+    width: 450px
+  h2
     font-size: 60px
- p
+  p
     font-size: 20px
 
 .post
-  margin: 5px
+  margin: 7px
   padding: 20px 25px
-  border: 1px solid black
   max-height: 1000px
+  width: 450px
+
+.post-date
+  // color: #888787
+  color: $color5
+  font-size: 18px
 
 .upper-post-container
   display: flex
-  flex-direction: row
+  +flex-direction(row)
   align-items: center
   justify-content: space-between
-  p
-    color: #888787
-    font-size: 18px
 
 .admin-post-panel
   display: flex
@@ -30,5 +38,4 @@
   justify-content: flex-end
   a
     margin: 0px 5px
-
 

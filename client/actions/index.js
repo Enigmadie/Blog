@@ -17,6 +17,10 @@ export const fetchDataFromServerSuccess = createAction('FETCH_DATA_FROM_SERVER_S
 export const fetchDataFromServerRequest = createAction('FETCH_DATA_FROM_SERVER_REQUEST');
 export const fetchDataFromServerFailure = createAction('FETCH_DATA_FROM_SERVER_FAILURE');
 
+export const editPostSuccess = createAction('EDIT_POST_SUCCESS');
+export const editPostRequest = createAction('EDIT_POST_REQUEST');
+export const editPostFailure = createAction('EDIT_POST_FAILURE');
+
 export const fetchDataFromServer = (pageData) => async (dispatch) => {
   dispatch(fetchDataFromServerRequest());
   try {
@@ -47,13 +51,20 @@ export const addPost = ({ formData }) => async (dispatch) => {
 };
 
 export const editPost = (id, { formData }) => async (dispatch) => {
-  await axios.patch(`/${id}`, formData);
+  dispatch(editPostRequest());
+  try {
+    const response = await axios.patch(`/post/${id}`, formData);
+    dispatch(editPostSuccess({ post: response.data }));
+  } catch(e) {
+    dispatch(editPostFailure());
+    throw e;
+  }
 };
 
 export const removePost = (id) => async (dispatch) => {
   dispatch(removePostRequest());
   try {
-    await axios.delete('/' + id);
+    await axios.delete(`/post/${id}`);
     dispatch(removePostSuccess({ id }))
   } catch(e) {
     dispatch(removePostFailure());

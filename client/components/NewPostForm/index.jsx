@@ -7,6 +7,7 @@ import FileUpload from './FileUpload.jsx'
 
 const mapStateToProps = (state, { match }) => {
   const { path, params } = match;
+  console.log(path)
   const { posts: { byId }, dataFetchingFromServerState } = state;
 
   const isEdited = /edit/gm.test(path);

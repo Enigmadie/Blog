@@ -21,18 +21,27 @@ const posts = handleActions({
   },
   [actions.addPostSuccess](state, { payload: { post } }) {
     const { byId, allIds } = state;
-    const { _id, title, content, preview, image, date } = post;
+    const { _id } = post;
     return {
-      byId: {...byId, [_id]: { _id, title, content, preview, image, date } },
+      byId: {...byId, [_id]: post },
       allIds: [...allIds, _id],
-    }
+    };
+  },
+  [actions.editPostSuccess](state, { payload: { post } }) {
+    const { _id } = post;
+    const { byId, allIds } = state;
+    byId[_id] = post;
+    return {
+      byId,
+      allIds,
+    };
   },
   [actions.removePostSuccess](state, { payload: { id } }) {
     const { byId, allIds } = state;
     return {
       byId: _.omit(byId, id),
       allIds: _.without(allIds, id),
-    }
+    };
   },
 }, { byId: {}, allIds: [] });
 
@@ -69,6 +78,18 @@ const dataFetchingFromServerState = handleActions({
   },
 }, 'none');
 
+const postEditingState = handleActions({
+  [actions.editPostRequest]() {
+    return 'requested';
+  },
+  [actions.editPostFailure]() {
+    return 'failed';
+  },
+  [actions.editPostSuccess]() {
+    return 'finished';
+  },
+}, 'none');
+
 const postRemovingState = handleActions({
   [actions.removePostRequest]() {
     return 'requested';
@@ -87,5 +108,6 @@ export default combineReducers({
   posts,
   adminAuthentificationState,
   postRemovingState,
+  postEditingState,
   dataFetchingFromServerState,
 });

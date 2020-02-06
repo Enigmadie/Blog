@@ -24,9 +24,11 @@ var isDevelopment = !isProduction;
 
 var app = new Express();
 var domain = isDevelopment ? 'http://localhost:8080' : '';
+module.exports = domain;
 
 app.set('view engine', 'pug');
 app.set('views', path.join(__dirname, '/../client'));
+app.set('test', 'test444')
 app.use('/assets', Express.static(rootPath));
 app.use(Express.json());
 app.use(fileUpload());
@@ -37,10 +39,12 @@ app.use(session({
   secret: 'secret key',
 }));
 
+app.use(require('./routes/index'));
+
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function() {
-  addRoutes(app, { domain });
+  // addRoutes(app, { domain });
 })
 
 app.listen(port, function() {
