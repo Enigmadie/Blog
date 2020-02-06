@@ -1,5 +1,5 @@
 var router = require('express').Router(),
-    domain = require('../../index');
+    domain = require('../../');
 
 router.use('/posts', require('./posts'));
 router.use('/admin', require('./admin'));

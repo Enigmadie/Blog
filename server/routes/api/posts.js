@@ -1,5 +1,5 @@
 var router = require('express').Router(),
-    domain = require('../../index'),
+    domain = require('../../'),
     Post = require('../../models/Post').default;
 
 router.get('/', function(_req, res) {
@@ -20,7 +20,7 @@ router.get('/new', function(_req, res) {
 });
 
 router.post('/new', function(_req, res) {
-var { admin } = _req.session; 
+var { admin } = _req.session;
 var { title, content, preview } = _req.body;
 if (admin) {
   if (_req.files) {

@@ -1,6 +1,6 @@
 var router = require('express').Router(),
     _ = require('lodash'),
-    domain = require('../../index'),
+    domain = require('../../'),
     Post = require('../../models/Post').default;
 
 router.get('/:id', function(_req, res) {
@@ -14,6 +14,7 @@ router.get('/:id/edit', function(_req, res) {
 router.patch('/:id', function(_req, res) {
   var { id } = _req.params;
   var { title, preview, content, image } = _req.body;
+  var { admin } = _req.session;
   var updateParams = {
     title,
     preview,
@@ -21,22 +22,31 @@ router.patch('/:id', function(_req, res) {
     image,
     date: new Date(),
   };
-  Post.updateOne({ _id: id }, updateParams, {}, function(err) {
-    if (err) {
-      throw(err);
-    }
-    res.send(_.assign(updateParams, {_id: id }));
-  });
+  if (admin) {
+    Post.updateOne({ _id: id }, updateParams, {}, function(err) {
+      if (err) {
+        throw(err);
+      }
+      res.send(_.assign(updateParams, {_id: id }));
+      return;
+    });
+  }
+  res.status(422);
 });
 
 router.delete('/:id', function(_req, res) {
   var { id } = _req.params;
-  Post.deleteOne({ _id: id }, function(err) {
-    if (err) {
-      throw(err);
-    }
-    res.send(id)
-  });
+  var { admin } = _req.session;
+  if (admin) {
+    Post.deleteOne({ _id: id }, function(err) {
+      if (err) {
+        throw(err);
+      }
+      res.send(id)
+      return;
+    });
+  }
+  res.status(422);
 });
 
 module.exports = router;

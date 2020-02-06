@@ -3,7 +3,8 @@ import React from 'react';
 import { BrowserRouter, Route, Link } from 'react-router-dom';
 import { render } from 'react-dom';
 import { Provider } from 'react-redux';
-import { createStore, compose, applyMiddleware } from 'redux';
+import { createStore, applyMiddleware } from 'redux';
+import { composeWithDevTools } from 'redux-devtools-extension';
 import thunk from 'redux-thunk';
 import reducers from './reducers';
 import url from 'url';
@@ -14,16 +15,10 @@ import LoginForm from './components/LoginForm.jsx';
 import * as actions from './actions';
 
 export default () => {
-  /* eslint-disable no-underscore-dangle */
-  const ext = window.__REDUX_DEVTOOLS_EXTENSION__;
-  const devtoolMiddleware = ext && ext();
-  /* eslint-enable */
-
   const store = createStore(
     reducers,
-    compose(
+    composeWithDevTools(
       applyMiddleware(thunk),
-      devtoolMiddleware,
     )
   );
 

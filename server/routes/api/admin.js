@@ -1,5 +1,5 @@
 var router = require('express').Router(),
-    domain = require('../../index');
+    domain = require('../../');
     Admin = require('../../models/Admin').default;
 
 router.get('/', function(_req, res) {

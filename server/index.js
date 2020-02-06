@@ -5,14 +5,14 @@ var path = require('path'),
     cors = require('cors'),
     fileUpload = require('express-fileupload'),
     session = require('express-session'),
-    mongoose = require('mongoose'),
-    addRoutes = require('./routes').default;
+    mongoose = require('mongoose');
+    require('dotenv').config();
 
 var port = process.env.PORT || 5000;
 
 var rootPath = path.join(__dirname, '../client/dist/public');
 
-var mongoUrl = "mongodb+srv://blogUser:945870@cluster0-3pmqe.mongodb.net/blog?retryWrites=true&w=majority";
+var mongoUrl = process.env.DB_URL;
 
 mongoose.connect(mongoUrl, {
   useNewUrlParser: true,
@@ -28,11 +28,13 @@ module.exports = domain;
 
 app.set('view engine', 'pug');
 app.set('views', path.join(__dirname, '/../client'));
-app.set('test', 'test444')
 app.use('/assets', Express.static(rootPath));
 app.use(Express.json());
 app.use(fileUpload());
-app.use(cors())
+app.use(cors({
+  origin: '*',
+  credentials: true,
+}))
 app.use(session({
   resave: false,
   saveUninitialized: false,
@@ -43,9 +45,6 @@ app.use(require('./routes/index'));
 
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
-db.once('open', function() {
-  // addRoutes(app, { domain });
-})
 
 app.listen(port, function() {
   console.log(`Server was started on ${port}`);

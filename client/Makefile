@@ -1,9 +1,9 @@
 install: install-deps
 
-start:
-	heroku local -f Procfile
+# start:
+# 	heroku local -f Procfile
 
-start-frontend:
+start:
 	npx webpack-dev-server
 
 build:

@@ -5,7 +5,7 @@
   max-width: 1550px
   min-width: 500px
   display: flex
-  justify-content: center
+  +justify-content(center)
   +flex-wrap(wrap)
   img
     height: 300px
@@ -22,20 +22,19 @@
   width: 450px
 
 .post-date
-  // color: #888787
   color: $color5
   font-size: 18px
 
 .upper-post-container
-  display: flex
+  +flexbox()
   +flex-direction(row)
-  align-items: center
-  justify-content: space-between
+  +align-items(center)
+  +justify-content(space-between)
 
 .admin-post-panel
   display: flex
-  flex-direction: row
-  justify-content: flex-end
+  +flex-direction(row)
+  +justify-content(flex-end)
   a
     margin: 0px 5px
 
