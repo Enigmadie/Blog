@@ -19,7 +19,7 @@ class Post extends React.Component {
     <div>
       <h1>{activePost.title}</h1>
       <img src={imgHref} />
-      <p>{activePost.content}</p>
+      <div dangerouslySetInnerHTML={{ __html: activePost.content }} />
     </div>
     );
   }

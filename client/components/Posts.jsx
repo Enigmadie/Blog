@@ -6,16 +6,10 @@ import * as actions from '../actions';
 import Pagination from './Pagination.jsx';
 
 const mapStateToProps = state => {
-  const { currentPage, isAdmin, dataFetchingFromServerState, posts: { byId, allIds } } = state;
+  const { isAdmin, dataFetchingFromServerState, posts: { byId, allIds } } = state;
 
-  const posts = allIds.map((id) => byId[id]).reverse();
-
-  const postsPerPage = 9;
-  const indexOfLastPage = currentPage * postsPerPage;
-  const indexOfFirstPage = indexOfLastPage - postsPerPage;
-  const currentPosts = posts.slice(indexOfFirstPage, indexOfLastPage);
-
-  return { isAdmin, dataFetchingFromServerState, posts: currentPosts };
+  const posts = allIds.map((id) => byId[id])
+  return { isAdmin, dataFetchingFromServerState, posts};
 };
 
 const actionCreators = {

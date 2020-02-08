@@ -4,6 +4,7 @@ import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
 import * as actions from '../../actions';
 import FileUpload from './FileUpload.jsx'
+import MarkDown from './MarkDown.jsx';
 
 const mapStateToProps = (state, { match }) => {
   const { path, params } = match;
@@ -66,14 +67,14 @@ class PostCreator extends React.Component {
               }/>
               { errors.title && touched.title && (<div className='error-message'>{errors.title}</div>)}
               <label htmlFor='preview'>Preview:</label>
-              <Field type='text' name='preview' className={
+              <Field name='preview' name='preview' as='textarea' className={
                 errors.preview && touched.preview
                   ? 'content-input error'
                   : 'content-input'
               }/>
               { errors.preview && touched.preview && (<div className='error-message'>{errors.preview}</div>)}
               <label htmlFor='content'>Content:</label>
-              <Field type='text' name='content' className={
+              <Field name='content' component={MarkDown} className={
                 errors.content && touched.content
                   ? 'content-input error'
                   : 'content-input'
@@ -83,6 +84,7 @@ class PostCreator extends React.Component {
             </Form>
           )}
         </Formik>
+
     </div>
     );
   }

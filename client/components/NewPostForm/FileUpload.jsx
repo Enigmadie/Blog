@@ -1,7 +1,7 @@
 import React from 'react';
 
 export default (props) => {
-  const {field, form} = props;
+  const { field, form } = props;
 
   const handleChange = (e) => {
     const file  =  e.currentTarget.files[0];

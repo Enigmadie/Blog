@@ -7,10 +7,13 @@ const currentPage = handleActions({
   [actions.fetchDataFromServerSuccess](state, { payload: { currentPage } }) {
     return currentPage;
   },
-  [actions.selectPage](state, { payload: { page } }) {
-    return page;
-  },
 }, 1);
+
+const postsCount = handleActions({
+  [actions.fetchDataFromServerSuccess](state, { payload: { postsCount } }) {
+    return postsCount;
+  }
+}, 0);
 
 const posts = handleActions({
   [actions.fetchDataFromServerSuccess](state, { payload: { posts } }) {
@@ -23,8 +26,8 @@ const posts = handleActions({
     const { byId, allIds } = state;
     const { _id } = post;
     return {
-      byId: {...byId, [_id]: post },
-      allIds: [...allIds, _id],
+      byId: {[_id]: post, ...byId },
+      allIds: [_id, ...allIds],
     };
   },
   [actions.editPostSuccess](state, { payload: { post } }) {
@@ -106,6 +109,7 @@ export default combineReducers({
   isAdmin,
   currentPage,
   posts,
+  postsCount,
   adminAuthentificationState,
   postRemovingState,
   postEditingState,

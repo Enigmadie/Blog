@@ -3,7 +3,6 @@ import axios from 'axios';
 
 
 export const addPostSuccess = createAction('ADD_POST');
-export const selectPage = createAction('SELECT_PAGE');
 
 export const removePostSuccess = createAction('REMOVE_POST_SUCCESS');
 export const removePostRequest = createAction('REMOVE_POST_REQUEST');
@@ -25,8 +24,8 @@ export const fetchDataFromServer = (pageData) => async (dispatch) => {
   dispatch(fetchDataFromServerRequest());
   try {
     const fetchUrl = pageData !== null ? `/posts/?page=${pageData.currentPage}` : '/posts';
-    const { data } = await axios.get(fetchUrl);
-    dispatch(fetchDataFromServerSuccess({ isAdmin: data.isAdmin, posts: data.posts, currentPage: data.currentPage  }));
+    const { data: { isAdmin, posts, postsCount, currentPage } } = await axios.get(fetchUrl);
+    dispatch(fetchDataFromServerSuccess({ isAdmin, posts, postsCount, currentPage }));
   } catch (e) {
     dispatch(fetchDataFromServerFailure());
     throw e;
