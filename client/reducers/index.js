@@ -39,11 +39,10 @@ const posts = handleActions({
       allIds,
     };
   },
-  [actions.removePostSuccess](state, { payload: { id } }) {
-    const { byId, allIds } = state;
+  [actions.removePostSuccess](state, { payload: { posts } }) {
     return {
-      byId: _.omit(byId, id),
-      allIds: _.without(allIds, id),
+      byId: _.keyBy(posts, '_id'),
+      allIds: posts.map((el) => el._id),
     };
   },
 }, { byId: {}, allIds: [] });

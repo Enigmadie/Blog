@@ -3,7 +3,7 @@
 
 .posts
   max-width: 1550px
-  min-width: 500px
+  min-width: 200px
   +flexbox()
   +justify-content(center)
   +flex-wrap(wrap)
@@ -11,18 +11,24 @@
     height: 300px
     width: 450px
   h2
-    font-size: 60px
-  p
-    font-size: 20px
+    font-size: 25px
+    margin-top: 25px
+    margin-bottom: 10px
 
 .post
-  margin: 7px
+  margin: 9px
   padding: 20px 25px
-  max-height: 1000px
+  max-height: 650px
   width: 450px
+  word-wrap: break-word
+  text-overflow: ellipsis
 
-.post-date
+.posts-date
   color: $color5
+  font-size: 14px
+
+.posts-preview
+  margin-bottom: 20px
   font-size: 18px
 
 .upper-post-container
@@ -37,4 +43,8 @@
   +justify-content(flex-end)
   a
     margin: 0px 5px
+    cursor: pointer
+  img
+    width: 20px
+    height: 20px
 

@@ -2,10 +2,12 @@ import React from 'react';
 
 export default (props) => {
   const { field, form } = props;
+  const initialValue = form.initialValues.file;
+  const imgSrc = `http://localhost:8080/${initialValue}`;
 
   const handleChange = (e) => {
-    const file  =  e.currentTarget.files[0];
     const reader = new FileReader();
+    const file  =  e.currentTarget.files[0];
     const imgTag = document.getElementById("myimage");
     imgTag.title = file.name;
     reader.onload = (event) => {
@@ -16,10 +18,10 @@ export default (props) => {
   };
 
   return (
-    <div>
+    <>
       <input type='file' onChange={(o) => handleChange(o)} />
-      <img src='' alt='' id='myimage'/>
-    </div>
+      <img src={initialValue !== null ? imgSrc : ''} alt='' id='myimage'/>
+    </>
   );
 }
 

@@ -11,13 +11,14 @@ const converter = new Showdown.Converter({
 
 export default (props) => {
   const { field, form } = props;
+  const initialValue = form.initialValues.content;
 
   const handleChange = (e) => {
     const text = converter.makeHtml(e)
     form.setFieldValue(field.name, text)
   }
 
-  const [value, setValue] = React.useState('');
+  const [value, setValue] = React.useState(initialValue);
   const [selectedTab, setSelectedTab] = React.useState('write')
 
   const setValues = (e) => {

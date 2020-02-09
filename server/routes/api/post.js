@@ -28,10 +28,10 @@ router.patch('/:id', function(_req, res) {
         throw(err);
       }
       res.send(_.assign(updateParams, {_id: id }));
-      return;
     });
+  } else {
+    res.status(422);
   }
-  res.status(422);
 });
 
 router.delete('/:id', function(_req, res) {
@@ -42,11 +42,11 @@ router.delete('/:id', function(_req, res) {
       if (err) {
         throw(err);
       }
-      res.send(id)
-      return;
+      res.send(id);
     });
+  } else {
+    res.status(422);
   }
-  res.status(422);
 });
 
 module.exports = router;

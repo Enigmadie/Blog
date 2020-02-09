@@ -38,8 +38,8 @@ class PostCreator extends React.Component {
           }}
 
           validationSchema={Yup.object().shape({
-            title: Yup.string().required('Can\'t be blank'),
-            preview: Yup.string().required('Can\'t be blank'),
+            title: Yup.string(60).required('Can\'t be blank'),
+            preview: Yup.string().max(200).required('Can\'t be blank'),
             content: Yup.string().required('Can\'t be blank'),
           })}
 
@@ -50,6 +50,7 @@ class PostCreator extends React.Component {
             formData.append('title', title);
             formData.append('preview', preview);
             formData.append('content', content);
+            formData.append('date', new Date());
             isEdited ? editPost(id, { formData }) : addPost({ formData });
             resetForm();
             setSubmitting(false);
@@ -67,14 +68,14 @@ class PostCreator extends React.Component {
               }/>
               { errors.title && touched.title && (<div className='error-message'>{errors.title}</div>)}
               <label htmlFor='preview'>Preview:</label>
-              <Field name='preview' name='preview' as='textarea' className={
+              <Field type='text' name='preview' as='textarea' rows='4' className={
                 errors.preview && touched.preview
                   ? 'content-input error'
                   : 'content-input'
               }/>
               { errors.preview && touched.preview && (<div className='error-message'>{errors.preview}</div>)}
               <label htmlFor='content'>Content:</label>
-              <Field name='content' component={MarkDown} className={
+              <Field name='content'  component={MarkDown} className={
                 errors.content && touched.content
                   ? 'content-input error'
                   : 'content-input'

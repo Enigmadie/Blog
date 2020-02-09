@@ -10,7 +10,7 @@ var path = require('path'),
 
 var port = process.env.PORT || 5000;
 
-var rootPath = path.join(__dirname, '../client/dist/public');
+var rootPath = path.join(__dirname, '/client/dist/public');
 
 var mongoUrl = process.env.DB_URL;
 
@@ -43,8 +43,8 @@ app.use(session({
 
 app.use(require('./routes/index'));
 
-var db = mongoose.connection;
-db.on('error', console.error.bind(console, 'connection error:'));
+// var db = mongoose.connection;
+// db.on('error', console.error.bind(console, 'connection error:'));
 
 app.listen(port, function() {
   console.log(`Server was started on ${port}`);
