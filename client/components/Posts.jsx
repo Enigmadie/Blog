@@ -48,14 +48,16 @@ class Posts extends React.Component {
           const postPath = `/post/${post._id}`
           const editPostPath = `/post/${post._id}/edit`
 
-          return <div className='post' key={post._id}>
+          return <div key={post._id}>
             <img src={imgSrc} />
             <Link to={postPath}><h2>{post.title}</h2></Link>
             <p className='posts-preview'>{post.preview}</p>
-            <p className='posts-date'>{date}</p>
-            <div className='admin-post-panel'>
-              {isAdmin && <Link to={editPostPath}><img src='https://img.icons8.com/office/16/000000/edit.png' /></Link>}
-              {isAdmin && <a onClick={this.handleRemovePost(post._id)}><img src='https://img.icons8.com/office/16/000000/delete-sign.png' /></a>}
+            <div className='posts-bottom-panel'>
+              <p>{date}</p>
+              <div className='admin-post-panel'>
+                {isAdmin && <Link to={editPostPath}><img src='https://img.icons8.com/windows/60/000000/edit.png' /></Link>}
+                {isAdmin && <a onClick={this.handleRemovePost(post._id)}><img src='https://img.icons8.com/windows/64/000000/delete-sign.png' /></a>}
+              </div>
             </div>
           </div>
         }

@@ -16,7 +16,7 @@ class Post extends React.Component {
       return <div className='loader'/>
     }
     return (
-    <div>
+    <div className='post'>
       <h1>{activePost.title}</h1>
       <img src={imgHref} />
       <div dangerouslySetInnerHTML={{ __html: activePost.content }} />
