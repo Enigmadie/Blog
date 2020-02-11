@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Formik, Form, Field } from 'formik';
+import Select from 'react-select';
 import * as Yup from 'yup';
 import * as actions from '../../actions';
 import FileUpload from './FileUpload.jsx'
@@ -20,6 +21,13 @@ const actionCreators = {
   editPost: actions.editPost,
 };
 
+const options = [
+  { value: 'Articles', label: 'Articles'},
+  { value: 'Inspiration', label: 'Inspiration' },
+  { value: 'Study', label: 'Study' },
+  { value: 'Technology', label: 'Technology' }
+];
+
 class PostCreator extends React.Component {
   render() {
     const { isEdited, post, dataFetchingFromServerState  } = this.props;
@@ -32,22 +40,35 @@ class PostCreator extends React.Component {
           initialValues={{
             id: isEdited ? post._id : null,
             title: isEdited ? post.title : '',
+            categories: isEdited ? post.categories : [],
             preview: isEdited ? post.preview : '',
             content: isEdited ? post.content : '',
             file: isEdited ? post.image : null,
           }}
 
           validationSchema={Yup.object().shape({
-            title: Yup.string(60).required('Can\'t be blank'),
-            preview: Yup.string().max(200).required('Can\'t be blank'),
-            content: Yup.string().required('Can\'t be blank'),
+            title: Yup
+              .string(60)
+              .required('Can\'t be blank'),
+            categories: Yup
+              .array()
+              .min(1, 'Pick at least 1 category')
+              .max(3, 'Pick no more than 3 categories'),
+            preview: Yup
+              .string()
+              .max(200)
+              .required('Can\'t be blank'),
+            content: Yup
+              .string()
+              .required('Can\'t be blank'),
           })}
 
-          onSubmit={({ id, title, content, preview, file }, { setSubmitting, resetForm }) => {
+          onSubmit={({ id, title, categories, content, preview, file }, { setSubmitting, resetForm }) => {
             const { addPost, editPost } = this.props;
             const formData = new FormData();
             formData.append('image', file);
             formData.append('title', title);
+            formData.append('categories', JSON.stringify(categories));
             formData.append('preview', preview);
             formData.append('content', content);
             formData.append('date', new Date());
@@ -56,31 +77,55 @@ class PostCreator extends React.Component {
             setSubmitting(false);
           }}
         >
-          {({ errors, touched, isSubmitting }) => (
+          {({ errors, setFieldValue, setFieldTouched, touched, isSubmitting, values }) => (
             <Form >
               <label htmlFor='file'>File upload</label>
               <Field name='file' component={FileUpload}/>
+
               <label htmlFor='title'>Title:</label>
               <Field type='text' name='title' className={
-                errors.title && touched.title
+              errors.title && touched.title
                   ? 'content-input error'
                   : 'content-input'
               }/>
-              { errors.title && touched.title && (<div className='error-message'>{errors.title}</div>)}
+              {
+                errors.title && touched.title && <div className='error-message'>{errors.title}</div>
+              }
+              <label htmlFor='categories'>Category</label>
+              <Select
+                id='color'
+                name='categories'
+                // components={animatedComponent}
+                options={options}
+                isMulti
+                onChange={(value) => setFieldValue('categories', value)}
+                onBlur={() => setFieldTouched('categories', true)}
+                value={values.categories}
+                className={ errors.categories && touched.categories
+                  ? 'error'
+                  : ''
+                }/>
+              {
+                errors.categories && touched.categories && <div className='error-message'>{errors.categories}</div>
+              }
               <label htmlFor='preview'>Preview:</label>
               <Field type='text' name='preview' as='textarea' rows='4' className={
                 errors.preview && touched.preview
                   ? 'content-input error'
                   : 'content-input'
               }/>
-              { errors.preview && touched.preview && (<div className='error-message'>{errors.preview}</div>)}
+              {
+                errors.preview && touched.preview && <div className='error-message'>{errors.preview}</div>
+              }
               <label htmlFor='content'>Content:</label>
               <Field name='content'  component={MarkDown} className={
                 errors.content && touched.content
                   ? 'content-input error'
                   : 'content-input'
               }/>
-              { errors.content && touched.content && (<div className='error-message'>{errors.content}</div>)}
+              {
+                errors.content && touched.content && <div className='error-message'>{errors.content}</div>
+              }
               <button type='submit' disabled={isSubmitting}>Add</button>
             </Form>
           )}

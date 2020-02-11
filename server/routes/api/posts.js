@@ -29,7 +29,13 @@ router.get('/new', function(_req, res) {
 
 router.post('/new', function(_req, res) {
 var { admin } = _req.session;
-var { title, content, preview, date } = _req.body;
+var {
+  title,
+  categories,
+  content,
+  preview,
+  date
+} = _req.body;
 if (admin) {
   if (_req.files) {
     var imgPath = `../client/uploads/${_req.files.image.name}`
@@ -38,6 +44,7 @@ if (admin) {
   var image = _req.files ? `/uploads/${_req.files.image.name}` : null;
   var post = new Post({
     title,
+    categories: JSON.parse(categories),
     content,
     preview,
     image,

@@ -46,7 +46,6 @@ export const authenticationAdmin = ({ login, password }) => async (dispatch) => 
 export const addPost = ({ formData }) => async (dispatch) => {
   const response = await axios.post('/posts/new', formData)
   dispatch(addPostSuccess({ post: { ...response.data } }));
-  // window.location.assign('/')
 };
 
 export const editPost = (id, { formData }) => async (dispatch) => {
@@ -65,7 +64,6 @@ export const removePost = (id) => async (dispatch) => {
   try {
     await axios.delete(`/post/${id}`);
     const response = await axios.get('/posts');
-    console.log(response.data)
     dispatch(removePostSuccess({ posts: response.data.posts }))
   } catch(e) {
     dispatch(removePostFailure());

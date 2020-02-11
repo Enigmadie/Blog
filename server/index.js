@@ -17,7 +17,8 @@ var mongoUrl = process.env.DB_URL;
 mongoose.connect(mongoUrl, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
-});
+}).then(() => console.log('MongoDb connected'))
+  .catch((err) => console.log(err));
 
 var isProduction = process.env.NODE_ENV === 'production';
 var isDevelopment = !isProduction;
@@ -42,9 +43,6 @@ app.use(session({
 }));
 
 app.use(require('./routes/index'));
-
-// var db = mongoose.connection;
-// db.on('error', console.error.bind(console, 'connection error:'));
 
 app.listen(port, function() {
   console.log(`Server was started on ${port}`);

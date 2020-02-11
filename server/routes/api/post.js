@@ -13,10 +13,11 @@ router.get('/:id/edit', function(_req, res) {
 
 router.patch('/:id', function(_req, res) {
   var { id } = _req.params;
-  var { title, preview, content, image } = _req.body;
+  var { title, categories, preview, content, image } = _req.body;
   var { admin } = _req.session;
   var updateParams = {
     title,
+    categories,
     preview,
     content,
     image,

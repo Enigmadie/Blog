@@ -47,9 +47,11 @@ class Posts extends React.Component {
           const imgSrc = `http://localhost:8080${post.image}`;
           const postPath = `/post/${post._id}`
           const editPostPath = `/post/${post._id}/edit`
-
-          return <div key={post._id}>
-            <img src={imgSrc} />
+          return <div className='post-container' key={post._id}>
+            <Link to={postPath}><img src={imgSrc} /></Link>
+            <div className='categories'>
+            {post.categories.map((el, id) => <a key={id}>{el.value}</a>)}
+            </div>
             <Link to={postPath}><h2>{post.title}</h2></Link>
             <p className='posts-preview'>{post.preview}</p>
             <div className='posts-bottom-panel'>

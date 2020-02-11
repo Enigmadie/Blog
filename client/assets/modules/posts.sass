@@ -10,7 +10,7 @@
   @media (max-width: 767px)
     +flex-direction(column)
 
-.posts>div
+.post-container
   margin: 9px
   padding: 20px 15px
   word-wrap: break-word
@@ -27,8 +27,6 @@
     margin: 1px
     img
       width: 100%
-      // max-height: 75%
-      height: 100%
 
 .posts-bottom-panel
   +flexbox()
@@ -54,3 +52,15 @@
     width: 25px
     height: 25px
 
+.categories
+  +flexbox()
+  +flex-direction(row)
+  margin-top: 10px
+  a
+    padding-right: 8px
+    color: $color4
+    font-size: 18px
+    &:after
+      content: ', '
+    &:last-child:after
+      content: normal

@@ -3,27 +3,28 @@
 @import post
 @import posts
 @import pagination
-@import /markdown/index
+@import /markdown
 
 *
   box-sizing: border-box
+
+body
+  background-color: $color2
+  font-family: 'Open Sans', sans-serif
 
 .menu
   background-color: $color1
   height: 50px
   +flexbox()
   padding-left: 12%
-  // +justify-content(center)
   +align-items(center)
+  @media (max-width: 767px)
+    padding-left: 5%
   p
-    padding-right: 15px
+    padding-right: 2%
     color: white
     font-size: 24px
     font-weight: bold
-
-body
-  background-color: $color2
-  font-family: 'Open Sans', sans-serif
 
 .blog-content
   margin: 40px 0

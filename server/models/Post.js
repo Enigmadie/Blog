@@ -2,6 +2,7 @@ var mongoose = require('mongoose');
 
 var postSchema = new mongoose.Schema({
   title: String,
+  categories: Array,
   content: String,
   preview: String,
   image: Object,
