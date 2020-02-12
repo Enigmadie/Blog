@@ -2,7 +2,9 @@ import { createAction } from 'redux-actions';
 import axios from 'axios';
 
 
-export const addPostSuccess = createAction('ADD_POST');
+export const addPostSuccess = createAction('ADD_POST_SUCCESS');
+export const addPostRequest = createAction('ADD_POST_REQUEST');
+export const addPostFailure = createAction('ADD_POST_FAILURE');
 
 export const removePostSuccess = createAction('REMOVE_POST_SUCCESS');
 export const removePostRequest = createAction('REMOVE_POST_REQUEST');
@@ -26,7 +28,7 @@ export const fetchDataFromServer = (pageData) => async (dispatch) => {
     const fetchUrl = pageData !== null ? `/posts/?page=${pageData.currentPage}` : '/posts';
     const { data: { isAdmin, posts, postsCount, currentPage } } = await axios.get(fetchUrl);
     dispatch(fetchDataFromServerSuccess({ isAdmin, posts, postsCount, currentPage }));
-  } catch (e) {
+  } catch(e) {
     dispatch(fetchDataFromServerFailure());
     throw e;
   }
@@ -37,15 +39,21 @@ export const authenticationAdmin = ({ login, password }) => async (dispatch) => 
   try {
     const response = await axios.post('/admin', { data: { login, password } });
     dispatch(authenticationAdminSuccess({ isAdmin: response.data }));
-  } catch (e) {
+  } catch(e) {
     dispatch(authenticationAdminFailure());
     throw e;
   }
 };
 
 export const addPost = ({ formData }) => async (dispatch) => {
-  const response = await axios.post('/posts/new', formData)
-  dispatch(addPostSuccess({ post: { ...response.data } }));
+  dispatch(addPostRequest());
+  try {
+    const response = await axios.post('/posts/new', formData)
+    dispatch(addPostSuccess({ post: { ...response.data } }));
+  } catch(e) {
+    dispatch(addPostFailue());
+    throw e;
+  }
 };
 
 export const editPost = (id, { formData }) => async (dispatch) => {

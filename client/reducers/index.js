@@ -80,6 +80,18 @@ const dataFetchingFromServerState = handleActions({
   },
 }, 'none');
 
+const postAddingState = handleActions({
+  [actions.addPostRequest]() {
+    return 'requested';
+  },
+  [actions.addPostFailure]() {
+    return 'failed';
+  },
+  [actions.addPostSuccess]() {
+    return 'finished';
+  },
+}, 'none');
+
 const postEditingState = handleActions({
   [actions.editPostRequest]() {
     return 'requested';
@@ -110,6 +122,7 @@ export default combineReducers({
   posts,
   postsCount,
   adminAuthentificationState,
+  postAddingState,
   postRemovingState,
   postEditingState,
   dataFetchingFromServerState,

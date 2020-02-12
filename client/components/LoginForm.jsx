@@ -15,6 +15,7 @@ const actionCreators = {
 
 class LoginForm extends React.Component {
   render() {
+    const { history } = this.props;
     return (
       <div className='admin-form'>
         <Formik 
@@ -29,6 +30,7 @@ class LoginForm extends React.Component {
        onSubmit={({ login, password }, { setSubmitting, resetForm }) => {
          const { authenticationAdmin } = this.props;
          authenticationAdmin({ login, password });
+         history.push('/');
          resetForm();
          setSubmitting(false);
        }}

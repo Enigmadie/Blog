@@ -30,7 +30,7 @@ const options = [
 
 class PostCreator extends React.Component {
   render() {
-    const { isEdited, post, dataFetchingFromServerState  } = this.props;
+    const { history, isEdited, post, dataFetchingFromServerState } = this.props;
     if (dataFetchingFromServerState === 'requested') {
       return <div className='loader' />
     }
@@ -44,6 +44,7 @@ class PostCreator extends React.Component {
             preview: isEdited ? post.preview : '',
             content: isEdited ? post.content : '',
             file: isEdited ? post.image : null,
+            date: isEdited ? post.date : new Date(),
           }}
 
           validationSchema={Yup.object().shape({
@@ -63,7 +64,18 @@ class PostCreator extends React.Component {
               .required('Can\'t be blank'),
           })}
 
-          onSubmit={({ id, title, categories, content, preview, file }, { setSubmitting, resetForm }) => {
+      onSubmit={({
+        id,
+        title,
+        categories,
+        content,
+        preview,
+        file,
+        date,
+      }, {
+        setSubmitting,
+        resetForm
+      }) => {
             const { addPost, editPost } = this.props;
             const formData = new FormData();
             formData.append('image', file);
@@ -71,8 +83,9 @@ class PostCreator extends React.Component {
             formData.append('categories', JSON.stringify(categories));
             formData.append('preview', preview);
             formData.append('content', content);
-            formData.append('date', new Date());
+            formData.append('date', date);
             isEdited ? editPost(id, { formData }) : addPost({ formData });
+            setTimeout(() => history.push('/'), 500)
             resetForm();
             setSubmitting(false);
           }}
@@ -91,11 +104,9 @@ class PostCreator extends React.Component {
               {
                 errors.title && touched.title && <div className='error-message'>{errors.title}</div>
               }
-              <label htmlFor='categories'>Category</label>
+              <label htmlFor='categories'>Categories:</label>
               <Select
-                id='color'
                 name='categories'
-                // components={animatedComponent}
                 options={options}
                 isMulti
                 onChange={(value) => setFieldValue('categories', value)}
@@ -118,7 +129,7 @@ class PostCreator extends React.Component {
                 errors.preview && touched.preview && <div className='error-message'>{errors.preview}</div>
               }
               <label htmlFor='content'>Content:</label>
-              <Field name='content'  component={MarkDown} className={
+              <Field name='content' component={MarkDown} className={
                 errors.content && touched.content
                   ? 'content-input error'
                   : 'content-input'

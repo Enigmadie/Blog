@@ -13,15 +13,16 @@ router.get('/:id/edit', function(_req, res) {
 
 router.patch('/:id', function(_req, res) {
   var { id } = _req.params;
-  var { title, categories, preview, content, image } = _req.body;
+  var { title, categories, preview, content, date } = _req.body;
+  // var { image } = _
   var { admin } = _req.session;
   var updateParams = {
     title,
-    categories,
+    categories: JSON.parse(categories),
     preview,
     content,
     image,
-    date: new Date(),
+    date,
   };
   if (admin) {
     Post.updateOne({ _id: id }, updateParams, {}, function(err) {

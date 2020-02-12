@@ -26,10 +26,6 @@ class Posts extends React.Component {
     const { removePost } = this.props;
     removePost(id);
   }
-  handleEditPost = id => () => {
-    const { editPost } = this.props;
-    editPost(id)
-  }
   render() {
     const { isAdmin, dataFetchingFromServerState, posts } = this.props;
     if (dataFetchingFromServerState === 'requested' ) {
