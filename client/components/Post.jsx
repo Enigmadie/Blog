@@ -1,28 +1,25 @@
 import React from 'react';
-import { connect } from 'react-redux';
+import connect from '../connect';
 
 const mapStateToProps = (state, { match }) => {
-  const { posts: { byId }, dataFetchingFromServerState  } = state;
+  const { posts: { data: { byId } }, fetchingState  } = state;
   const activePostId = match.params.id;
-  const activePost = dataFetchingFromServerState === 'finished' ? byId[activePostId] : {};
-  return { activePost, dataFetchingFromServerState  };
+  const activePost = fetchingState === true ? byId[activePostId] : {};
+  return { activePost, fetchingState  };
 };
 
-class Post extends React.Component {
-  render() {
-    const { activePost, dataFetchingFromServerState } = this.props;
-    const imgHref = `http://localhost:8080${activePost.image}`
-    if (dataFetchingFromServerState === 'requested' ) {
-      return <div className='loader'/>
-    }
-    return (
-    <div className='post'>
-      <h1>{activePost.title}</h1>
-      <img src={imgHref} />
-      <div dangerouslySetInnerHTML={{ __html: activePost.content }} />
-    </div>
-    );
+const Post = ({ activePost, fetchingState }) => {
+  const imgHref = `http://localhost:8080${activePost.image}`
+  if (fetchingState === true) {
+    return <div className='loader'/>
   }
-}
+  return (
+  <div className='post'>
+    <h1>{activePost.title}</h1>
+    <img src={imgHref} />
+    <div dangerouslySetInnerHTML={{ __html: activePost.content }} />
+  </div>
+  );
+};
 
 export default connect(mapStateToProps)(Post)

@@ -2,25 +2,19 @@ import '@babel/polyfill';
 import React from 'react';
 import { render } from 'react-dom';
 import { Provider } from 'react-redux';
-import { createStore, applyMiddleware } from 'redux';
-import { composeWithDevTools } from 'redux-devtools-extension';
-import thunk from 'redux-thunk';
+import { configureStore } from '@reduxjs/toolkit';
 import App from './components/index.jsx'
-import reducers from './reducers';
 import url from 'url';
-import * as actions from './actions';
+import reducer, { fetchDataFromServer } from './slices';
 
 export default () => {
-  const store = createStore(
-    reducers,
-    composeWithDevTools(
-      applyMiddleware(thunk),
-    )
-  );
+  const store = configureStore({
+    reducer,
+  });
 
   const { query } = url.parse(window.location.href, true);
   const currentPage = query.page ? { currentPage: query.page } : null;
-  store.dispatch(actions.fetchDataFromServer(currentPage));
+  store.dispatch(fetchDataFromServer(currentPage));
 
   render(
     <Provider store={store}>
