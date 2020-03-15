@@ -3,6 +3,7 @@ import cn from 'classnames';
 import { Formik, Form, Field } from 'formik';
 import Select from 'react-select';
 import * as Yup from 'yup';
+import { find } from 'lodash';
 import connect from '../../connect';
 import FileUpload from './FileUpload.jsx';
 import MarkDown from './MarkDown.jsx';
@@ -10,10 +11,11 @@ import options from './CategoriesSelect.jsx';
 
 const mapStateToProps = (state, { match }) => {
   const { path, params } = match;
-  const { posts: { data: { byId } }, fetchingState } = state;
+  const { posts: { data }, fetchingState } = state;
 
   const isEdited = /edit/gm.test(path);
-  const post = isEdited ? byId[params.id] : null;
+  const editedPost = find(data, { _id: params.id })
+  const post = isEdited ? editedPost : null;
   return { isEdited, post, fetchingState };
 }
 
@@ -55,7 +57,7 @@ const PostForm = ({
               .required('Can\'t be blank'),
           })}
 
-      onSubmit={({
+      onSubmit={ async({
         id,
         title,
         categories,
@@ -74,7 +76,7 @@ const PostForm = ({
             formData.append('preview', preview);
             formData.append('content', content);
             formData.append('date', date);
-            isEdited ? editPost(id, { formData }) : addPost({ formData });
+            isEdited ? await editPost(id, { formData }) : await addPost({ formData });
             setTimeout(() => history.push('/'), 500)
             resetForm();
             setSubmitting(false);

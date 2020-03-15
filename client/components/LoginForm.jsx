@@ -4,7 +4,7 @@ import * as Yup from 'yup';
 import cn from 'classnames';
 import connect from '../connect';
 
-const mapStateToProps = ({ isAdmin: { data } }) => ({ isAdmin: data });
+const mapStateToProps = ({ isAdmin: { status } }) => ({ isAdmin: status });
 
 const LoginForm = ({ history, authenticationAdmin }) => (
   <div className='admin-form'>
@@ -17,8 +17,8 @@ const LoginForm = ({ history, authenticationAdmin }) => (
       login: Yup.string().required('Can\'t be blank'),
       password: Yup.string().required('Can\'t be blank'),
     })}
-   onSubmit={({ login, password }, { setSubmitting, resetForm }) => {
-     authenticationAdmin({ login, password });
+   onSubmit={ async({ login, password }, { setSubmitting, resetForm }) => {
+     await authenticationAdmin({ login, password });
      history.push('/');
      resetForm();
      setSubmitting(false);

@@ -1,11 +1,12 @@
 import React from 'react';
 import _ from 'lodash';
+import cn from 'classnames';
 import connect from '../connect';
 
-const mapStateToProps = state => {
+const mapStateToProps = ({ posts, currentPage }) => {
   return {
-    page: Number(state.currentPage),
-    postsCount: state.posts.postsCount,
+    page: Number(currentPage.page),
+    postsCount: posts.allPostsCount,
   };
 };
 
@@ -29,7 +30,10 @@ const Pagination = ({ page, postsCount }) => {
         <a href={getPageHref(page - 1)}>‹</a>
       </>}
       {pagesColl.map((el, id) => {
-        return <a key={id} href={getPageHref(el)} className={el === page ? 'active' : ''} >{el}</a>
+        const pageCn = cn({
+          active: el == page,
+        });
+        return <a key={id} href={getPageHref(el)} className={pageCn} >{el}</a>
       })}
       {!isLastPage && <>
         <p>...</p>

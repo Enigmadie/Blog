@@ -5,13 +5,12 @@ import Pagination from './Pagination.jsx';
 import connect from '../connect';
 
 const mapStateToProps = state => {
-  const { isAdmin, fetchingState, posts: { data: { byId, allIds } } } = state;
-  const posts = allIds.map((id) => byId[id])
+  const { isAdmin, fetchingState, posts: { data } } = state;
 
   const postsPerPage = 9;
-  const currentPosts = posts.slice(0, postsPerPage);
+  const currentPosts = data.slice(0, postsPerPage);
 
-  return { isAdmin: isAdmin.data, fetchingState, posts: currentPosts };
+  return { isAdmin: isAdmin.status, fetchingState, posts: currentPosts };
 };
 
 const Posts = ({

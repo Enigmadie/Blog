@@ -1,10 +1,14 @@
 import React from 'react';
+import { find } from 'lodash';
 import connect from '../connect';
 
 const mapStateToProps = (state, { match }) => {
-  const { posts: { data: { byId } }, fetchingState  } = state;
+  const { posts: { data }, fetchingState  } = state;
   const activePostId = match.params.id;
-  const activePost = fetchingState === true ? byId[activePostId] : {};
+
+  const post = find(data, { _id: activePostId })
+  const activePost = fetchingState === true ? post : {};
+
   return { activePost, fetchingState  };
 };
 
