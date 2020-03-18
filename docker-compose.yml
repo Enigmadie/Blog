@@ -1,0 +1,15 @@
+version: '3'
+services:
+  client:
+    build: client
+    container_name: blog-client
+    restart: on-failure
+    ports:
+      - "8080:8080"
+  server:
+    build: server
+    container_name: blog-server
+    environment:
+      - NODE_ENV=development
+    ports:
+      - "5000:5000"

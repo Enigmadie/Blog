@@ -28,7 +28,8 @@ var domain = isDevelopment ? 'http://localhost:8080' : '';
 module.exports = domain;
 
 app.set('view engine', 'pug');
-app.set('views', path.join(__dirname, '/../client'));
+console.lot('test')
+// app.set('views', path.join(__dirname, 'index.pug'));
 app.use('/assets', Express.static(rootPath));
 app.use(Express.json());
 app.use(fileUpload());
