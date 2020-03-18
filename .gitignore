@@ -1,6 +1,6 @@
 /client/node_modules/
 /client/dist/
-/client/uploads/
+/uploads/
 /client/package-lock.json
 /server/node_modules/
 /server/.env

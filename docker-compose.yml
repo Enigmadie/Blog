@@ -6,6 +6,8 @@ services:
     restart: on-failure
     ports:
       - "8080:8080"
+    volumes:
+      - ./uploads:/home/uploads
   server:
     build: server
     container_name: blog-server
@@ -13,3 +15,5 @@ services:
       - NODE_ENV=development
     ports:
       - "5000:5000"
+    volumes:
+      - ./uploads:/opt/uploads

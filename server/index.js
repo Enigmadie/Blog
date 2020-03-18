@@ -28,7 +28,6 @@ var domain = isDevelopment ? 'http://localhost:8080' : '';
 module.exports = domain;
 
 app.set('view engine', 'pug');
-console.lot('test')
 // app.set('views', path.join(__dirname, 'index.pug'));
 app.use('/assets', Express.static(rootPath));
 app.use(Express.json());

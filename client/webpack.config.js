@@ -1,6 +1,7 @@
 // @ts-check
 
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const CopyPlugin = require('copy-webpack-plugin');
 const isProduction = process.env.NODE_ENV === 'production';
 const isDevelopment = !isProduction;
 
@@ -18,6 +19,9 @@ module.exports = {
   },
   plugins: [
     new MiniCssExtractPlugin(),
+    new CopyPlugin([
+      { from: '../uploads', to: './uploads' },
+    ]),
   ],
   module: {
     rules: [

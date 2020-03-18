@@ -31,7 +31,7 @@ const Posts = ({
         const date = (differenceInDays(new Date(), postDate) > 3)
           ? format(postDate, 'dd/MM/yyyy')
           : formatDistanceToNow(postDate, { includeSeconds: true, addSuffix: true });
-        const imgSrc = `http://localhost:8080${post.image}`;
+        const imgSrc = `${domain}/assets/${post.image}`;
         const postPath = `/post/${post._id}`
         const editPostPath = `/post/${post._id}/edit`
         return <div className='post-container' key={post._id}>

@@ -5,7 +5,6 @@ import Post from './Post.jsx';
 import NewPostForm from './NewPostForm';
 import LoginForm from './LoginForm.jsx';
 
-
 export default () => (
   <BrowserRouter>
     <nav>

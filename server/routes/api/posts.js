@@ -38,7 +38,7 @@ var {
 } = _req.body;
 if (admin) {
   if (_req.files) {
-    var imgPath = `../client/uploads/${_req.files.image.name}`
+    var imgPath = `../uploads/${_req.files.image.name}`
     _req.files.image.mv(imgPath);
   }
   var image = _req.files ? `/uploads/${_req.files.image.name}` : null;
