@@ -1,6 +1,10 @@
+/* eslint-disable no-param-reassign */
+
 import { createSlice } from '@reduxjs/toolkit';
 import { combineReducers } from 'redux';
 import axios from 'axios';
+
+import selectErrorMessage from '../utils';
 
 import posts, {
   actions as postsActions,
@@ -24,22 +28,23 @@ const asyncActions = {
   authenticationAdmin,
 };
 
-const initialState = {
-  processing: false,
-};
-
 const slice = createSlice({
   name: 'fetchState',
-  initialState,
+  initialState: {
+    processing: false,
+    validationState: 'valid',
+  },
   reducers: {
     fetchDataFromServerRequest(state) {
       state.processing = true;
     },
     fetchDataFromServerSuccess(state) {
       state.processing = false;
+      state.validationState = 'valid';
     },
     fetchDataFromServerFailure(state) {
       state.processing = false;
+      state.validationState = 'invalid';
     },
   },
 });
@@ -54,13 +59,15 @@ export const fetchDataFromServer = (pageData) => async (dispatch) => {
   dispatch(fetchDataFromServerRequest());
   try {
     const fetchUrl = pageData !== null ? `/posts/?page=${pageData.currentPage}` : '/posts';
-    const { data: { isAdmin, posts, postsCount, currentPage } } = await axios.get(fetchUrl);
-    dispatch(actions.initPostsState({ posts, postsCount }));
-    dispatch(actions.initAdminState({ isAdmin }));
-    dispatch(actions.initCurrentPageState({ currentPage }));
+    const { data } = await axios.get(fetchUrl);
+
+    dispatch(actions.initPostsState({ posts: data.posts, postsCount: data.postsCount }));
+    dispatch(actions.initAdminState({ isAdmin: data.isAdmin }));
+    dispatch(actions.initCurrentPageState({ currentPage: data.currentPage }));
     dispatch(fetchDataFromServerSuccess());
-  } catch(e) {
+  } catch (e) {
     dispatch(fetchDataFromServerFailure());
+    selectErrorMessage(e);
     throw e;
   }
 };

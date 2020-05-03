@@ -17,6 +17,9 @@ module.exports = {
     path: `${__dirname}/dist/public`,
     publicPath: '/assets/',
   },
+  devServer: {
+    historyApiFallback: true,
+  },
   plugins: [
     new MiniCssExtractPlugin(),
     new CopyPlugin([
@@ -41,7 +44,7 @@ module.exports = {
               hmr: isDevelopment,
             },
           },
-          { loader: 'css-loader', },
+          { loader: 'css-loader' },
         ],
       },
       {
@@ -57,14 +60,6 @@ module.exports = {
           { loader: 'sass-loader', options: { sourceMap: isDevelopment } },
         ],
       },
-      {
-        test: /\.(jpg|svg|png|gif|ttf)$/,
-        use: [
-          {
-            loader: 'file-loader',
-          }
-        ]
-      }
     ],
   },
 };

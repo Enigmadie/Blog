@@ -1,5 +1,5 @@
 const host = '';
 
-// export default {
-
-// }
+export default {
+  adminPath: () => [host, 'admin'].join('/'),
+}

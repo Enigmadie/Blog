@@ -1,57 +1,85 @@
 import React from 'react';
-import { Formik, Form, Field } from 'formik';
+import { useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
+
+import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import cn from 'classnames';
 import connect from '../connect';
 
-const mapStateToProps = ({ isAdmin: { status } }) => ({ isAdmin: status });
+const LoginForm = ({ history, authenticationAdmin }) => {
+  const { isAdmin } = useSelector((state) => state);
+  const { t } = useTranslation();
+  const blankMsg = t('blank');
 
-const LoginForm = ({ history, authenticationAdmin }) => (
-  <div className='admin-form'>
-    <Formik
-    initialValues={{
+  const formik = useFormik({
+    initialValues: {
       login: '',
       password: '',
-    }}
-    validationSchema={Yup.object().shape({
-      login: Yup.string().required('Can\'t be blank'),
-      password: Yup.string().required('Can\'t be blank'),
-    })}
-   onSubmit={ async({ login, password }, { setSubmitting, resetForm }) => {
-     await authenticationAdmin({ login, password });
-     history.push('/');
-     resetForm();
-     setSubmitting(false);
-   }}
-    >
-  {({ errors, touched, isSubmitting }) => {
-    const hasLoginErrors = errors.login && touched.login;
-    const hasPasswordErrors = errors.password && touched.password;
+    },
+    validationSchema: Yup.object().shape({
+      login: Yup.string().required(blankMsg),
+      password: Yup.string().required(blankMsg),
+    }),
+    onSubmit: async ({ login, password }, { resetForm }) => {
+      await authenticationAdmin({ login, password });
+      history.push('/');
+      resetForm();
+    },
+  });
+  const {
+    errors,
+    values,
+    touched,
+    isSubmitting,
+    handleChange,
+    handleSubmit,
+  } = formik;
 
-    const loginCn = cn({
-      'content-input': true,
-      'error': hasLoginErrors,
-    });
+  const hasLoginErrors = errors.login && touched.login;
+  const hasPasswordErrors = errors.password && touched.password;
+  const hasInputErrors = hasLoginErrors || hasPasswordErrors;
+  const isValidState = isAdmin.validationState === 'valid';
 
-    const passwordCn = cn({
-      'content-input': true,
-      'error': hasPasswordErrors,
-    });
+  const isDisabled = hasInputErrors || isSubmitting || !isValidState;
 
-    return (
-      <Form>
-        <label htmlFor='login'>Login:</label>
-        <Field type='text' name='login' className={loginCn}/>
-        { hasLoginErrors && (<div className='error-message'>{errors.login}</div>)}
+  const loginCn = cn({
+    'content-input': true,
+    error: hasLoginErrors,
+  });
 
-        <label htmlFor='password'>Password:</label>
-        <Field type='password' name='password' className={passwordCn}/>
-        { hasPasswordErrors && (<div className='error-message'>{errors.password}</div>)}
+  const passwordCn = cn({
+    'content-input': true,
+    error: hasPasswordErrors,
+  });
 
-        <button type='submit' disabled={isSubmitting}>Add</button>
-      </Form>
-      )}}
-    </Formik>
-  </div>
-)
-export default connect(mapStateToProps)(LoginForm);
+  return (
+    <form className="login-form" onSubmit={handleSubmit}>
+      <label htmlFor="login">
+        Login:
+        <input
+          name="login"
+          type="text"
+          value={values.login}
+          className={loginCn}
+          onChange={handleChange}
+        />
+      </label>
+      { hasLoginErrors && (<div className="error-message">{errors.login}</div>)}
+      <label htmlFor="password">
+        Password:
+        <input
+          type="password"
+          name="password"
+          value={values.password}
+          className={passwordCn}
+          onChange={handleChange}
+        />
+      </label>
+      { hasPasswordErrors && (<div className="error-message">{errors.password}</div>)}
+      <button type="submit" disabled={isDisabled}>Submit</button>
+    </form>
+  );
+};
+
+export default connect(null)(LoginForm);

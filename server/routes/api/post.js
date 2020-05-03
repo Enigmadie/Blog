@@ -14,7 +14,7 @@ router.get('/:id/edit', function(_req, res) {
 router.patch('/:id', function(_req, res) {
   var { id } = _req.params;
   var { title, categories, preview, content, date } = _req.body;
-  // var { image } = _
+  var image = _req.files ? `/uploads/${_req.files.image.name}` : null;
   var { admin } = _req.session;
   var updateParams = {
     title,

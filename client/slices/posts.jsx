@@ -1,35 +1,30 @@
+/* eslint-disable no-param-reassign */
+
 import { createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
 import _ from 'lodash';
 
-const initialState = {
-  data: [],
-  allPostsCount: 0,
-};
-
 const slice = createSlice({
   name: 'posts',
-  initialState,
+  initialState: {
+    data: [],
+    allPostsCount: 0,
+  },
   reducers: {
     initPostsState(state, { payload: { posts, postsCount } }) {
-      state.data =  posts;
+      state.data = posts;
       state.allPostsCount = postsCount;
     },
     addPostSuccess(state, { payload: { post } }) {
-      state.data = [post, ...state.data];
+      state.data.unshift(post);
     },
     editPostSuccess(state, { payload: { post } }) {
       const { _id } = post;
-
-      state.data.map((el) => {
-        if (el._id === _id) {
-          el = post;
-        }
-        return el;
-      });
+      const currentPostId = _.findIndex(state.data, { _id });
+      state.data[currentPostId] = post;
     },
     removePostSuccess(state) {
-      state.data =  posts;
+      state.data = posts;
     },
   },
 });
