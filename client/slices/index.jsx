@@ -5,6 +5,7 @@ import { combineReducers } from 'redux';
 import axios from 'axios';
 
 import selectErrorMessage from '../utils';
+import routes from '../routes';
 
 import posts, {
   actions as postsActions,
@@ -14,11 +15,13 @@ import posts, {
 } from './posts.jsx';
 import isAdmin, { actions as isAdminActions, authenticationAdmin } from './isAdmin.jsx';
 import currentPage, { actions as currentPageActions } from './currentPage.jsx';
+import activePost, { actions as activePostActions } from './activePost.jsx';
 
 const actions = {
   ...postsActions,
   ...isAdminActions,
   ...currentPageActions,
+  ...activePostActions,
 };
 
 const asyncActions = {
@@ -55,15 +58,47 @@ const {
   fetchDataFromServerFailure,
 } = slice.actions;
 
-export const fetchDataFromServer = (pageData) => async (dispatch) => {
+export const fetchPostsData = (queryData) => async (dispatch) => {
   dispatch(fetchDataFromServerRequest());
   try {
-    const fetchUrl = pageData !== null ? `/posts/?page=${pageData.currentPage}` : '/posts';
+    const fetchUrl = routes.postsPath({
+      page: queryData.page,
+      limit: 12,
+    });
     const { data } = await axios.get(fetchUrl);
-
     dispatch(actions.initPostsState({ posts: data.posts, postsCount: data.postsCount }));
+    dispatch(actions.initCurrentPageState({ currentPage: queryData.page }));
+    dispatch(fetchDataFromServerSuccess());
+  } catch (e) {
+    dispatch(fetchDataFromServerFailure());
+    selectErrorMessage(e);
+    throw e;
+  }
+};
+
+export const fetchActivePostData = (queryData) => async (dispatch) => {
+  dispatch(fetchDataFromServerRequest());
+  try {
+    const fetchUrl = routes.postsPath({
+      id: queryData.id,
+    });
+    const { data } = await axios.get(fetchUrl);
+    dispatch(actions.initActivePostState({ activePost: data.posts }));
+    dispatch(fetchDataFromServerSuccess());
+  } catch (e) {
+    dispatch(fetchDataFromServerFailure());
+    selectErrorMessage(e);
+    throw e;
+  }
+};
+
+export const fetchAdminData = () => async (dispatch) => {
+  dispatch(fetchDataFromServerRequest());
+  try {
+    const fetchUrl = routes.adminApiPath();
+    const { data } = await axios.get(fetchUrl);
+    console.log(data);
     dispatch(actions.initAdminState({ isAdmin: data.isAdmin }));
-    dispatch(actions.initCurrentPageState({ currentPage: data.currentPage }));
     dispatch(fetchDataFromServerSuccess());
   } catch (e) {
     dispatch(fetchDataFromServerFailure());
@@ -76,8 +111,12 @@ export default combineReducers({
   posts,
   isAdmin,
   currentPage,
+  activePost,
   fetchingState: slice.reducer,
 });
+
+asyncActions.fetchPostsData = fetchPostsData;
+asyncActions.fetchActivePostData = fetchActivePostData;
 
 export {
   actions,

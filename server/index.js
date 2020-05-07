@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-var path = require('path'),
+const path = require('path'),
     Express = require('express'),
     cors = require('cors'),
     fileUpload = require('express-fileupload'),
@@ -8,11 +8,11 @@ var path = require('path'),
     mongoose = require('mongoose');
     require('dotenv').config();
 
-var port = process.env.PORT || 5000;
+const port = process.env.PORT || 5000;
 
-var rootPath = path.join(__dirname, '/client/dist/public');
+const rootPath = path.join(__dirname, '/client/dist/public');
 
-var mongoUrl = process.env.DB_URL;
+const mongoUrl = process.env.DB_URL;
 
 mongoose.connect(mongoUrl, {
   useNewUrlParser: true,
@@ -20,11 +20,11 @@ mongoose.connect(mongoUrl, {
 }).then(() => console.log('MongoDb connected'))
   .catch((err) => console.log(err));
 
-var isProduction = process.env.NODE_ENV === 'production';
-var isDevelopment = !isProduction;
+const isProduction = process.env.NODE_ENV === 'production';
+const isDevelopment = !isProduction;
 
-var app = new Express();
-var domain = isDevelopment ? 'http://localhost:8080' : '';
+const app = new Express();
+const domain = isDevelopment ? 'http://localhost:8080' : '';
 module.exports = domain;
 
 app.set('view engine', 'pug');
@@ -35,13 +35,12 @@ app.use(fileUpload());
 app.use(cors({
   origin: '*',
   credentials: true,
-}))
+}));
 app.use(session({
   resave: false,
   saveUninitialized: false,
   secret: 'secret key',
 }));
-
 app.use(require('./routes/index'));
 
 app.listen(port, function() {

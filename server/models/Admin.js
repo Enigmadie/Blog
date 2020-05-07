@@ -1,9 +1,9 @@
-var mongoose = require('mongoose');
+const mongoose = require('mongoose');
 
-var adminLogin = 'admin';
-var adminPassword = 'testtest';
+const adminLogin = 'admin';
+const adminPassword = 'testtest';
 
-var adminSchema = new mongoose.Schema({
+const adminSchema = new mongoose.Schema({
   login: String,
   password: String,
 });

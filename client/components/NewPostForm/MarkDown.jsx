@@ -9,13 +9,12 @@ const converter = new Showdown.Converter({
   tasklists: true,
 });
 
-export default (props) => {
-  const { field, form } = props;
-  const initialValue = form.initialValues.content;
+export default ({ cn, prop }) => {
+  const initialValue = prop.initialValues.content;
 
   const handleChange = (e) => {
     const text = converter.makeHtml(e);
-    form.setFieldValue(field.name, text);
+    prop.setFieldValue('content', text);
   };
 
   const [value, setValue] = React.useState(initialValue);
@@ -28,13 +27,18 @@ export default (props) => {
 
   return (
     <div className="container">
-      <ReactMde
-        value={value}
-        onChange={(el) => setValues(el)}
-        selectedTab={selectedTab}
-        onTabChange={setSelectedTab}
-        generateMarkdownPreview={(markdown) => Promise.resolve(converter.makeHtml(markdown))}
-      />
+      <label htmlFor="content">
+        Content:
+        <ReactMde
+          name="content"
+          className={cn}
+          value={value}
+          onChange={(el) => setValues(el)}
+          selectedTab={selectedTab}
+          onTabChange={setSelectedTab}
+          generateMarkdownPreview={(markdown) => Promise.resolve(converter.makeHtml(markdown))}
+        />
+      </label>
     </div>
   );
 };

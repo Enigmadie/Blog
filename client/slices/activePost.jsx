@@ -3,15 +3,15 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-  page: 1,
+  post: {},
 };
 
 const slice = createSlice({
-  name: 'currentPage',
+  name: 'activePost',
   initialState,
   reducers: {
-    initCurrentPageState(state, { payload: { currentPage } }) {
-      state.page = currentPage;
+    initActivePostState(state, { payload: { activePost } }) {
+      state.post = activePost;
     },
   },
 });

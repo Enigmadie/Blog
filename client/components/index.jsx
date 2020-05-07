@@ -1,11 +1,17 @@
 import React from 'react';
-import { BrowserRouter, Switch, Route, Link } from 'react-router-dom';
+import {
+  BrowserRouter,
+  Switch,
+  Route,
+  Link,
+} from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
-import Posts from './Posts.jsx';
-import Post from './Post.jsx';
+import Posts from './Posts';
+import Post from './Post';
 import NewPostForm from './NewPostForm';
-import LoginForm from './LoginForm.jsx';
+import LoginForm from './LoginForm';
+import NoMatch from './NoMatch';
 
 export default () => {
   const { fetchingState } = useSelector((state) => state);
@@ -15,12 +21,12 @@ export default () => {
     <BrowserRouter>
       <nav>
         <Link to="/">Blog</Link>
+        <div className="menu">
+          <p>Categories</p>
+          <p>About</p>
+          <p>Contact</p>
+        </div>
       </nav>
-      <div className="menu">
-        <p>Categories</p>
-        <p>About</p>
-        <p>Contact</p>
-      </div>
       {isFetching
         ? (<div className="loader">Loading...</div>)
         : (
@@ -31,6 +37,7 @@ export default () => {
               <Route exact path="/post/:id" component={Post} />
               <Route path="/post/:id/edit" component={NewPostForm} />
               <Route exact path="/" component={Posts} />
+              <Route component={NoMatch} />
             </Switch>
           </div>
         )}

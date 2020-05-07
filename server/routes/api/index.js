@@ -1,12 +1,24 @@
-var router = require('express').Router(),
-    domain = require('../../');
+const router = require('express').Router(),
+    Post = require('../../models/Post').default,
+    PostsFilter = require('../../filters/Posts').default;
 
-router.use('/posts', require('./posts'));
-router.use('/admin', require('./admin'));
-router.use('/post', require('./post'));
+router.get('/posts', async function(_req, res) {
+  const postsFilter = new PostsFilter(_req.query, Post);
+  const posts = await postsFilter.getPosts();
+  const postsCount = await postsFilter.getCount();
+    if (!posts) {
+      res.status(422);
+      return;
+    }
+    res.send({
+      posts,
+      postsCount,
+    });
+});
 
-router.get('/', function(_req, res) {
-  res.render('index', { domain });
+router.get('/admin', function(_req, res) {
+  const isAdmin = _req.session.admin ? _req.session.admin : false;
+  res.send({ isAdmin });
 });
 
 module.exports = router;

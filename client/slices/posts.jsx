@@ -2,7 +2,11 @@
 
 import { createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
+import url from 'url';
 import _ from 'lodash';
+
+import routes from '../routes';
+import selectErrorMessage from '../utils';
 
 const slice = createSlice({
   name: 'posts',
@@ -23,7 +27,7 @@ const slice = createSlice({
       const currentPostId = _.findIndex(state.data, { _id });
       state.data[currentPostId] = post;
     },
-    removePostSuccess(state) {
+    removePostSuccess(state, { payload: { posts } }) {
       state.data = posts;
     },
   },
@@ -37,9 +41,10 @@ const {
 
 const addPost = ({ formData }) => async (dispatch) => {
   try {
-    const response = await axios.post('/posts/new', formData)
+    const response = await axios.post('/posts/new', formData);
     dispatch(addPostSuccess({ post: { ...response.data } }));
-  } catch(e) {
+  } catch (e) {
+    selectErrorMessage(e);
     throw e;
   }
 };
@@ -48,7 +53,8 @@ const editPost = (id, { formData }) => async (dispatch) => {
   try {
     const response = await axios.patch(`/post/${id}`, formData);
     dispatch(editPostSuccess({ post: response.data }));
-  } catch(e) {
+  } catch (e) {
+    selectErrorMessage(e);
     throw e;
   }
 };
@@ -56,9 +62,16 @@ const editPost = (id, { formData }) => async (dispatch) => {
 const removePost = (id) => async (dispatch) => {
   try {
     await axios.delete(`/post/${id}`);
-    const response = await axios.get('/posts');
-    dispatch(removePostSuccess({ posts: response.data.posts }))
-  } catch(e) {
+    const { query } = url.parse(window.location.href, true);
+    const currentPage = query.page ? query.page : 1;
+    const fetchUrl = routes.postsPath({
+      page: currentPage,
+      limit: 12,
+    });
+    const { data } = await axios.get(fetchUrl);
+    dispatch(removePostSuccess({ posts: data.posts }));
+  } catch (e) {
+    selectErrorMessage(e);
     throw e;
   }
 };

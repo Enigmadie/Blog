@@ -11,7 +11,7 @@ const mapStateToProps = ({ posts, currentPage }) => {
 };
 
 const Pagination = ({ page, postsCount }) => {
-  const postsPerPage = 9;
+  const postsPerPage = 12;
 
   const getPageHref = page => page === 1 ? '/' : `/?page=${page}`;
   const pages = Math.ceil(postsCount / postsPerPage);
@@ -42,6 +42,6 @@ const Pagination = ({ page, postsCount }) => {
       </>}
     </div>
   );
-}
+};
 
 export default connect(mapStateToProps)(Pagination);

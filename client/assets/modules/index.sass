@@ -13,21 +13,20 @@ body
   font-family: 'Open Sans', sans-serif
 
 .menu
-  background-color: $color1
-  height: 50px
   +flexbox()
-  padding-left: 12%
-  +align-items(center)
+  padding-left: 39px
+  padding-top: 35px
   @media (max-width: 767px)
     padding-left: 5%
   p
-    padding-right: 2%
+    cursor: pointer
+    padding-right: 10px
     color: white
-    font-size: 24px
+    font-size: 21px
     font-weight: bold
 
 .blog-content
-  margin: 40px 0
+  margin: 65px 0
   +flexbox()
   +flex-direction(column)
   +align-items(center)
@@ -37,11 +36,22 @@ a
   color: #000
 
 nav
+  +flexbox()
   background-color: $color5
-  height: 150px
-  padding: 50px 0 0 5%
+  height: 120px
+  padding: 20px 0 0 5%
   a
     color: $color2
-    font-size: 60px
+    font-size: 55px
     font-weight: bold
 
+.no-match
+  +flexbox()
+  +flex-direction(column)
+  +align-items(center)
+  h1
+    margin-top: 25px
+    font-size: 600%
+    padding-bottom: 20px
+  code
+    padding-left: 5px

@@ -1,22 +1,13 @@
-var router = require('express').Router(),
+const router = require('express').Router(),
     _ = require('lodash'),
-    domain = require('../../'),
-    Post = require('../../models/Post').default;
-
-router.get('/:id', function(_req, res) {
-  res.render('index', { domain });
-});
-
-router.get('/:id/edit', function(_req, res) {
-  res.render('index', { domain });
-});
+    Post = require('../models/Post').default;
 
 router.patch('/:id', function(_req, res) {
-  var { id } = _req.params;
-  var { title, categories, preview, content, date } = _req.body;
-  var image = _req.files ? `/uploads/${_req.files.image.name}` : null;
-  var { admin } = _req.session;
-  var updateParams = {
+  const { id } = _req.params;
+  const { title, categories, preview, content, date } = _req.body;
+  const image = _req.files ? `/uploads/${_req.files.image.name}` : null;
+  const { admin } = _req.session;
+  const updateParams = {
     title,
     categories: JSON.parse(categories),
     preview,
@@ -37,8 +28,8 @@ router.patch('/:id', function(_req, res) {
 });
 
 router.delete('/:id', function(_req, res) {
-  var { id } = _req.params;
-  var { admin } = _req.session;
+  const { id } = _req.params;
+  const { admin } = _req.session;
   if (admin) {
     Post.deleteOne({ _id: id }, function(err) {
       if (err) {
