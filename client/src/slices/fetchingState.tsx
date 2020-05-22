@@ -46,6 +46,7 @@ const fetchPostsData = (page: number): AppThunk => async (dispatch) => {
   dispatch(fetchDataFromServerRequest());
   try {
     const fetchUrl = routes.postsPath({
+      name: 'main',
       page,
       limit: 12,
     });
@@ -60,10 +61,29 @@ const fetchPostsData = (page: number): AppThunk => async (dispatch) => {
   }
 };
 
+const fetchCategoryData = (category: string): AppThunk => async (dispatch) => {
+  dispatch(fetchDataFromServerRequest());
+  try {
+    const fetchUrl = routes.postsPath({
+      name: 'category',
+      limit: 20,
+      category,
+    });
+    const { data: { posts, postsCount } } = await axios.get(fetchUrl);
+    dispatch(actions.initPostsState({ data: posts, allPostsCount: postsCount }));
+    dispatch(fetchDataFromServerSuccess());
+  } catch (e) {
+    dispatch(fetchDataFromServerFailure());
+    selectErrorMessage(e);
+    throw e;
+  }
+};
+
 const fetchActivePostData = (id: string): AppThunk => async (dispatch) => {
   dispatch(fetchDataFromServerRequest());
   try {
     const fetchUrl = routes.postsPath({
+      name: 'post',
       id,
     });
     const { data: { posts } } = await axios.get(fetchUrl);
@@ -97,6 +117,7 @@ export {
   fetchPostsData,
   fetchActivePostData,
   fetchAdminData,
+  fetchCategoryData,
 };
 
 export default slice.reducer;

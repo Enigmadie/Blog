@@ -21,7 +21,7 @@ export default ({ prop }: Props): ReactElement => {
         imgTag.title = file.name;
       }
       reader.readAsDataURL(file);
-      prop.setFieldValue('file', file);
+      prop.setFieldValue('image', file);
     }
   };
 

@@ -8,11 +8,11 @@ import { useFormik } from 'formik';
 import Select from 'react-select';
 import * as Yup from 'yup';
 import { find } from 'lodash';
-import { Post } from 'interfaces';
+import { Post, Categories } from 'interfaces';
 
 import FileUpload from './FileUpload';
 import MarkDown from './MarkDown';
-import options from './CategoriesSelect';
+import options from '../CategoriesSelect';
 
 type TParams = {
   history: any;
@@ -72,13 +72,13 @@ const PostForm = ({ history, match }: RouteComponentProps<TParams>): ReactElemen
       image,
     }, { resetForm }) => {
       const formData = new FormData();
+      const categoriesColl = categories.map((el: Categories): string => el.value);
       formData.append('image', image);
       formData.append('title', title);
-      formData.append('categories', JSON.stringify(categories));
+      formData.append('categories', JSON.stringify(categoriesColl));
       formData.append('preview', preview);
       formData.append('content', content);
       formData.append('date', new Date().toString());
-      console.log(new Date().toString());
       isEdited
         ? dispatch(asyncActions.editPost(_id, formData))
         : dispatch(asyncActions.addPost(formData));
@@ -120,6 +120,7 @@ const PostForm = ({ history, match }: RouteComponentProps<TParams>): ReactElemen
     'content-input': true,
     error: hasContentErrors,
   });
+
 
   return (
     <div className="admin-form">

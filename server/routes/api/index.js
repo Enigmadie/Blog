@@ -1,6 +1,7 @@
 const router = require('express').Router(),
     Post = require('../../models/Post').default,
-    PostsFilter = require('../../filters/Posts').default;
+    PostsFilter = require('../../filters/Posts').default,
+    mappedPosts = require('../../utils');
 
 router.get('/posts', async function(_req, res) {
   const postsFilter = new PostsFilter(_req.query, Post);
@@ -11,7 +12,7 @@ router.get('/posts', async function(_req, res) {
       return;
     }
     res.send({
-      posts,
+      posts: mappedPosts(posts),
       postsCount,
     });
 });

@@ -9,6 +9,7 @@ const resources = {
       maxSizeCategory: 'Pick no more than 3 categories',
       network: 'You\'r device lost it\'s internet connection. \n You can try reloading the page',
       server: 'Server error at the moment',
+      emptyCategory: 'There are no posts in this category yet',
     },
   },
 };

@@ -4,6 +4,7 @@
 @import posts
 @import pagination
 @import /markdown
+@import navbar
 
 *
   box-sizing: border-box
@@ -11,19 +12,6 @@
 body
   background-color: $color2
   font-family: 'Open Sans', sans-serif
-
-.menu
-  +flexbox()
-  padding-left: 39px
-  padding-top: 35px
-  @media (max-width: 767px)
-    padding-left: 5%
-  p
-    cursor: pointer
-    padding-right: 10px
-    color: white
-    font-size: 21px
-    font-weight: bold
 
 .blog-content
   margin: 65px 0
@@ -34,16 +22,6 @@ body
 a
   text-decoration: none
   color: #000
-
-nav
-  +flexbox()
-  background-color: $color5
-  height: 120px
-  padding: 20px 0 0 5%
-  a
-    color: $color2
-    font-size: 55px
-    font-weight: bold
 
 .no-match
   +flexbox()

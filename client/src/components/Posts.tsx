@@ -20,6 +20,7 @@ const Posts: React.FC = () => {
     dispatch(fetchPostsData(currentPage));
   }, []);
 
+  console.log(posts)
   return (
     <div className="posts-wrapper">
       {isAdmin.status && <Link className="create-post" to="posts/new">Create new post</Link>}

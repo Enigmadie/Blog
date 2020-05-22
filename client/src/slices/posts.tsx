@@ -55,9 +55,7 @@ const {
 const addPost = (formData: FormData): AppThunk => async (dispatch) => {
   try {
     const response = await axios.post('/posts/new', formData);
-    console.log(formData)
     dispatch(addPostSuccess(response.data));
-    console.log(response.data)
   } catch (e) {
     selectErrorMessage(e);
     throw e;

@@ -12,6 +12,7 @@ import fetchingState, {
   fetchPostsData,
   fetchActivePostData,
   fetchAdminData,
+  fetchCategoryData,
 } from './fetchingState';
 
 import isAdmin, { isAdminActions, authenticationAdmin } from './isAdmin';
@@ -26,6 +27,7 @@ const asyncActions = {
   fetchPostsData,
   fetchActivePostData,
   fetchAdminData,
+  fetchCategoryData,
 };
 
 const actions = {
