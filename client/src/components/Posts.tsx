@@ -7,8 +7,6 @@ import { Post, Categories } from 'interfaces';
 import { getPage, getDistanceDate } from 'utils';
 import Pagination from './Pagination';
 
-declare const domain: string;
-
 const Posts: React.FC = () => {
   const dispatch = useDispatch();
   const { fetchPostsData, removePost } = asyncActions;
@@ -20,7 +18,6 @@ const Posts: React.FC = () => {
     dispatch(fetchPostsData(currentPage));
   }, []);
 
-  console.log(posts)
   return (
     <div className="posts-wrapper">
       {isAdmin.status && <Link className="create-post" to="posts/new">Create new post</Link>}
@@ -28,7 +25,7 @@ const Posts: React.FC = () => {
         {posts.data.map((post: Post) => {
           const postDate = new Date(post.date);
           const date = getDistanceDate(postDate);
-          const imgSrc = `${domain}/assets${post.image}`;
+          const imgSrc = String(post.image);
           const postPath = `/post/${post._id}`
           const editPostPath = `/post/${post._id}/edit`
 

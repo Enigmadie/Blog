@@ -8,8 +8,6 @@ import { getDistanceDate } from 'utils';
 
 type TParams = { name: string };
 
-declare const domain: string;
-
 const Category = ({ match }: RouteComponentProps<TParams>): ReactElement => {
   const dispatch = useDispatch();
   const { fetchCategoryData, removePost } = asyncActions;
@@ -31,7 +29,7 @@ const Category = ({ match }: RouteComponentProps<TParams>): ReactElement => {
       {posts.data.map((post: Post) => {
         const postDate = new Date(post.date);
         const date = getDistanceDate(postDate);
-        const imgSrc = `${domain}/assets${post.image}`;
+        const imgSrc = String(post.image);
         const editPostPath = `/post/${post._id}/edit`
 
         return (
@@ -45,8 +43,7 @@ const Category = ({ match }: RouteComponentProps<TParams>): ReactElement => {
                 {isAdmin.status && <Link to={editPostPath}><img alt="edit" src="https://img.icons8.com/windows/60/000000/edit.png" /></Link>}
                 {isAdmin.status && <a onClick={() => dispatch(removePost(post._id))}><img alt="remove" src='https://img.icons8.com/windows/64/000000/delete-sign.png' /></a>}
               </div>
-            </div>
-          </div>
+            </div> </div>
         );
       })}
     </div>

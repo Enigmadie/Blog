@@ -2,6 +2,7 @@
 
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 const isProduction = process.env.NODE_ENV === 'production';
 const isDevelopment = !isProduction;
 
@@ -14,7 +15,7 @@ module.exports = {
   ],
   output: {
     path: `${__dirname}/dist/public`,
-    publicPath: '/assets/',
+    publicPath: '/',
   },
   devServer: {
     historyApiFallback: true,
@@ -34,6 +35,9 @@ module.exports = {
     new CopyPlugin([
       { from: '../uploads', to: './uploads' },
     ]),
+    new HtmlWebpackPlugin({
+      template: 'src/index.html',
+    })
   ],
   module: {
     rules: [

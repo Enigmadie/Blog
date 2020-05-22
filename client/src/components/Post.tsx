@@ -4,8 +4,6 @@ import { RouteComponentProps } from 'react-router-dom';
 
 import { asyncActions, RootState } from 'slices';
 
-declare const domain: string;
-
 type TParams = { id: string };
 
 const Post = ({ match }: RouteComponentProps<TParams>): ReactElement => {
@@ -18,7 +16,7 @@ const Post = ({ match }: RouteComponentProps<TParams>): ReactElement => {
     dispatch(asyncActions.fetchActivePostData(activePostId));
   }, []);
 
-  const imgHref = `${domain}/assets/${post.image}`;
+  const imgHref = String(post.image);
   return (
     <div className="post">
       <h1>{post.title}</h1>

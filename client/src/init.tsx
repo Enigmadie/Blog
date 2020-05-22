@@ -13,6 +13,7 @@ import './i18n';
 import reducer, { asyncActions, RootState } from 'slices';
 
 function init(): void {
+  console.log(window.location)
   const store = configureStore({
     reducer,
   });

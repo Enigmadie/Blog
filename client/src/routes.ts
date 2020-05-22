@@ -1,6 +1,6 @@
 import * as querystring from 'querystring';
 
-const host = '';
+const host = 'http://localhost:5000';
 const prefix = 'api';
 
 export interface Query {
