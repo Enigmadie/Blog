@@ -2,17 +2,16 @@ import React, { ReactElement } from 'react';
 import { Post } from 'interfaces';
 import { FormikProps } from 'formik';
 
-declare const domain: string;
-
 interface Props {
   prop: FormikProps<Post>;
 }
 
 export default ({ prop }: Props): ReactElement => {
   const initialValue = prop.initialValues.image;
-  const imgSrc = `${domain}/assets${initialValue}`;
+  const imgSrc = String(initialValue);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
+    console.log('test')
     const reader = new FileReader();
     if (e.currentTarget.files !== null) {
       const file = e.currentTarget.files[0];

@@ -33,7 +33,7 @@ const asyncActions = {
 const actions = {
   ...postsActions,
   ...isAdminActions,
-  ...currentPageActions,
+  /* ...currentPageActions, */
   ...activePostActions,
   ...fetchingStateActions,
 };
@@ -41,7 +41,7 @@ const actions = {
 const rootReducer = combineReducers({
   posts,
   isAdmin,
-  currentPage,
+  /* currentPage, */
   activePost,
   fetchingState,
 });

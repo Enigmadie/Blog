@@ -5,6 +5,7 @@ import { RouteComponentProps, Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Post } from 'interfaces';
 import { getDistanceDate } from 'utils';
+import Pagination from './Pagination';
 
 type TParams = { name: string };
 
@@ -23,30 +24,42 @@ const Category = ({ match }: RouteComponentProps<TParams>): ReactElement => {
   }, [category]);
 
   return (
-    <div>
-      <h1>{category}</h1>
-      {posts.data.length === 0 && <p className="category-empty">{emptyMsg}</p>}
-      {posts.data.map((post: Post) => {
-        const postDate = new Date(post.date);
-        const date = getDistanceDate(postDate);
-        const imgSrc = String(post.image);
-        const editPostPath = `/post/${post._id}/edit`
+    <>
+      <h1 className="category-name">{category}</h1>
+      <div className="posts-wrapper">
+        <div className="category-posts">
+          {posts.data.length === 0 && <p className="category-empty">{emptyMsg}</p>}
+          {posts.data.map((post: Post) => {
+            const postDate = new Date(post.date);
+            const date = getDistanceDate(postDate);
+            const imgSrc = String(post.image);
+            const editPostPath = `/post/${post._id}/edit`;
+            const postPath = `/post/${post._id}`;
 
-        return (
-          <div className="category-post">
-            <img src={imgSrc} alt="post" />
-            <h2>{post.title}</h2>
-            <p className="posts-preview">{post.preview}</p>
-            <div className="posts-bottom-panel">
-              <p>{date}</p>
-              <div className="admin-post-panel">
-                {isAdmin.status && <Link to={editPostPath}><img alt="edit" src="https://img.icons8.com/windows/60/000000/edit.png" /></Link>}
-                {isAdmin.status && <a onClick={() => dispatch(removePost(post._id))}><img alt="remove" src='https://img.icons8.com/windows/64/000000/delete-sign.png' /></a>}
+            const removeHandler = (): void => {
+              dispatch(removePost(post._id));
+            };
+            return (
+              <div key={post._id} className="category-post">
+                <Link to={postPath}>
+                  <img src={imgSrc} alt="post" />
+                </Link>
+                <Link to={postPath}><h2>{post.title}</h2></Link>
+                <p className="posts-preview">{post.preview}</p>
+                <div className="posts-bottom-panel">
+                  <p>{date}</p>
+                  <div className="admin-post-panel">
+                    {isAdmin.status && <Link to={editPostPath}><img alt="edit" src="https://img.icons8.com/windows/60/000000/edit.png" /></Link>}
+                    {isAdmin.status && <button type="button" onClick={removeHandler}><img alt="remove" src="https://img.icons8.com/windows/64/000000/delete-sign.png" /></button>}
+                  </div>
+                </div>
               </div>
-            </div> </div>
-        );
-      })}
-    </div>
+            );
+          })}
+        </div>
+      </div>
+      <Pagination />
+    </>
   );
 };
 

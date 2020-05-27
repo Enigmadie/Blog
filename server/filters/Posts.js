@@ -1,3 +1,5 @@
+const mappedPosts = require('../utils');
+
 class Posts {
   constructor(query, model) {
     this.query = query;
@@ -14,12 +16,12 @@ class Posts {
         const limit = Number(this.query.limit);
         const skip = limit * (Number(this.query.page) - 1);
         const posts = await this.model.find({}).sort({ _id: 'desc' }).skip(skip).limit(limit);
-      return posts;
+      return mappedPosts(posts);
       },
       category: async () => {
         const limit = Number(this.query.limit);
         const posts = await this.model.find({categories: {$in: this.query.category}}).limit(limit);
-        return posts;
+        return mappedPosts(posts);
       }
     }
     return nameSelector[this.query.name]();

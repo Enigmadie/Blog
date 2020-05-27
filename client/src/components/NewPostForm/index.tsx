@@ -73,6 +73,7 @@ const PostForm = ({ history, match }: RouteComponentProps<TParams>): ReactElemen
     }, { resetForm }) => {
       const formData = new FormData();
       const categoriesColl = categories.map((el: Categories): string => el.value);
+      console.log(image);
       formData.append('image', image);
       formData.append('title', title);
       formData.append('categories', JSON.stringify(categoriesColl));

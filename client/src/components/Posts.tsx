@@ -26,19 +26,23 @@ const Posts: React.FC = () => {
           const postDate = new Date(post.date);
           const date = getDistanceDate(postDate);
           const imgSrc = String(post.image);
-          const postPath = `/post/${post._id}`
-          const editPostPath = `/post/${post._id}/edit`
+          const postPath = `/post/${post._id}`;
+          const editPostPath = `/post/${post._id}/edit`;
+          const getCategoryPath = (category: string): string => `/category/${category}`;
 
+          const removeHandler = (): void => {
+            dispatch(removePost(post._id));
+          };
           return (
             <div className="post-container" key={post._id}>
               <Link to={postPath}>
                 <img src={imgSrc} alt="post" />
               </Link>
               <div className="categories">
-                {post.categories.map((el: Categories, id: number) => (
-                  <a key={id}>
+                {post.categories.map((el: Categories) => (
+                  <Link key={el.value} to={getCategoryPath(el.value)}>
                     {el.value}
-                  </a>
+                  </Link>
                 ))}
               </div>
               <Link to={postPath}><h2>{post.title}</h2></Link>
@@ -47,7 +51,7 @@ const Posts: React.FC = () => {
                 <p>{date}</p>
                 <div className="admin-post-panel">
                   {isAdmin.status && <Link to={editPostPath}><img alt="edit" src="https://img.icons8.com/windows/60/000000/edit.png" /></Link>}
-                  {isAdmin.status && <a onClick={() => dispatch(removePost(post._id))}><img alt="remove" src='https://img.icons8.com/windows/64/000000/delete-sign.png' /></a>}
+                  {isAdmin.status && <button type="button" onClick={removeHandler}><img alt="remove" src="https://img.icons8.com/windows/64/000000/delete-sign.png" /></button>}
                 </div>
               </div>
             </div>

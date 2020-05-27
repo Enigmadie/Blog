@@ -31,11 +31,11 @@ const Pagination: React.FC = () => {
         <a href={getPageHref(page - 1)}>‹</a>
       </>
       )}
-      {pagesColl.map((el: number, id: number) => {
+      {pagesColl.map((el: number) => {
         const pageCn = cn({
           active: el === page,
         });
-        return <a key={id} href={getPageHref(el)} className={pageCn}>{el}</a>
+        return <a key={el} href={getPageHref(el)} className={pageCn}>{el}</a>;
       })}
       {!isLastPage && (
         <>

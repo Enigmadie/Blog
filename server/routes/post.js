@@ -4,18 +4,22 @@ const router = require('express').Router(),
 
 router.patch('/:id', function(_req, res) {
   const { id } = _req.params;
-  const { title, categories, preview, content, date } = _req.body;
-  const image = _req.files ? `/uploads/${_req.files.image.name}` : null;
+  const { title, categories, preview, image, content, date } = _req.body;
+  const editedImage = _req.files ? `/uploads/${_req.files.image.name}` : image;
   const { admin } = _req.session;
   const updateParams = {
     title,
     categories: JSON.parse(categories),
     preview,
     content,
-    image,
+    image: editedImage,
     date,
   };
   if (admin) {
+    if (_req.files) {
+      const imgPath = `../uploads/${_req.files.image.name}`
+      _req.files.image.mv(imgPath);
+    }
     Post.updateOne({ _id: id }, updateParams, {}, function(err) {
       if (err) {
         throw(err);
@@ -23,7 +27,7 @@ router.patch('/:id', function(_req, res) {
       res.send(_.assign(updateParams, {_id: id }));
     });
   } else {
-    res.status(422);
+    res.status(403);
   }
 });
 
@@ -38,7 +42,7 @@ router.delete('/:id', function(_req, res) {
       res.send(id);
     });
   } else {
-    res.status(422);
+    res.status(403);
   }
 });
 

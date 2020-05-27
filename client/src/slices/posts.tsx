@@ -40,8 +40,9 @@ const slice = createSlice({
       state.data[currentPostId] = payload;
     },
     removePostSuccess(state, action: PayloadAction<PostsInterface>) {
-      const { data } = action.payload;
+      const { data, allPostsCount } = action.payload;
       state.data = data;
+      state.allPostsCount = allPostsCount;
     },
   },
 });
@@ -54,7 +55,7 @@ const {
 
 const addPost = (formData: FormData): AppThunk => async (dispatch) => {
   try {
-    const response = await axios.post('/posts/new', formData);
+    const response = await axios.post(routes.addPostPath(), formData);
     dispatch(addPostSuccess(response.data));
   } catch (e) {
     selectErrorMessage(e);
@@ -64,7 +65,7 @@ const addPost = (formData: FormData): AppThunk => async (dispatch) => {
 
 const editPost = (id: string, formData: FormData): AppThunk => async (dispatch) => {
   try {
-    const response = await axios.patch(`/post/${id}`, formData);
+    const response = await axios.patch(routes.postPath(id), formData);
     dispatch(editPostSuccess(response.data));
   } catch (e) {
     selectErrorMessage(e);
@@ -74,15 +75,15 @@ const editPost = (id: string, formData: FormData): AppThunk => async (dispatch) 
 
 const removePost = (id: string): AppThunk => async (dispatch) => {
   try {
-    await axios.delete(`/post/${id}`);
+    await axios.delete(routes.postPath(id));
     const { query } = url.parse(window.location.href, true);
     const currentPage = query.page ? query.page : 1;
     const fetchUrl = routes.postsPath({
       page: currentPage,
       limit: 12,
     });
-    const { data } = await axios.get(fetchUrl);
-    dispatch(removePostSuccess(data.posts));
+    const { data: { posts, postsCount } } = await axios.get(fetchUrl);
+    dispatch(removePostSuccess({ data: posts, allPostsCount: postsCount }));
   } catch (e) {
     selectErrorMessage(e);
     throw e;

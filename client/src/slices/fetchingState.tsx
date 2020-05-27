@@ -52,7 +52,7 @@ const fetchPostsData = (page: number): AppThunk => async (dispatch) => {
     });
     const { data: { posts, postsCount } } = await axios.get(fetchUrl);
     dispatch(actions.initPostsState({ data: posts, allPostsCount: postsCount }));
-    dispatch(actions.initCurrentPageState({ page }));
+    /* dispatch(actions.initCurrentPageState({ page })); */
     dispatch(fetchDataFromServerSuccess());
   } catch (e) {
     dispatch(fetchDataFromServerFailure());
@@ -101,6 +101,7 @@ const fetchAdminData = (): AppThunk => async (dispatch) => {
   try {
     const fetchUrl = routes.adminApiPath();
     const { data } = await axios.get(fetchUrl);
+    console.log(data)
     dispatch(actions.initAdminState({ status: data.isAdmin }));
     dispatch(fetchDataFromServerSuccess());
   } catch (e) {

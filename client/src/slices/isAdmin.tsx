@@ -3,15 +3,17 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { Authentication } from 'interfaces';
+import { selectErrorMessage } from 'utils';
 
 import { AppThunk } from '../init';
-import { selectErrorMessage } from 'utils';
 import routes from '../routes';
 
 interface IsAdminInterface {
   status: boolean;
   validationState?: 'valid' | 'invalid';
 }
+
+axios.defaults.withCredentials = true;
 
 const initialState = {
   status: false,

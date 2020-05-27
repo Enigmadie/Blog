@@ -1,7 +1,6 @@
 #!/usr/bin/env node
 
-const path = require('path'),
-    Express = require('express'),
+const Express = require('express'),
     cors = require('cors'),
     fileUpload = require('express-fileupload'),
     session = require('express-session'),
@@ -9,8 +8,6 @@ const path = require('path'),
     require('dotenv').config();
 
 const port = process.env.PORT || 5000;
-
-const rootPath = path.join(__dirname, '/client/dist/public');
 
 const mongoUrl = process.env.DB_URL;
 
@@ -33,14 +30,16 @@ module.exports = domain;
 app.use(Express.json());
 app.use(fileUpload());
 app.use(cors({
-  origin: '*',
+  origin: 'http://localhost:8080',
   credentials: true,
 }));
+
 app.use(session({
   resave: false,
   saveUninitialized: false,
   secret: 'secret key',
 }));
+
 app.use(require('./routes/index'));
 
 app.listen(port, function() {

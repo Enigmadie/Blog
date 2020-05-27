@@ -28,8 +28,9 @@ if (admin) {
   post.save();
   res.send(post);
   return;
+} else {
+  res.status(403);
 }
-res.status(422);
 });
 
 module.exports = router;
