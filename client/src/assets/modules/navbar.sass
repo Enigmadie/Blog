@@ -1,66 +1,93 @@
+@mixin drop-menu-arrow($color)
+  content: ''
+  margin-left: 6px
+  margin-bottom: 2px
+  border: solid $color
+  border-width: 0 2px 2px 0
+  display: inline-block
+  padding: 3px
+  transform: rotate(45deg)
+  -webkit-transform: rotate(45deg)
+
 .menu
   +flexbox()
   padding-left: 39px
   padding-top: 35px
-  @media (max-width: 767px)
-    padding-left: 5%
-  p
-    cursor: pointer
-    padding-right: 24px
-    padding-top: 4px
-    color: white
-    font-size: 21px
-    font-weight: bold
+  li
+    a
+      cursor: pointer
+      padding-right: 24px
+      padding-top: 4px
+      color: $color3
+      font-size: 19px
+      font-weight: bold
+      &:hover
+        color: white
 
-nav
+header
   +flexbox()
   background-color: $color5
   height: 120px
   padding: 20px 0 0 5%
-  a
-    color: $color2
+  >a
+    position: relative
+    top: 10px
     font-size: 55px
+    color: $color2
     font-weight: bold
+  li
+    list-style-type: none
 
 .categories-menu
+  padding-bottom: 38px
+  padding-right: 20px
+  font-size: 19px
+  font-weight: bold
+  cursor: pointer
+  color: $color3
   &:after
-    content: ''
-    margin-left: 6px
-    margin-bottom: 2px
-    border: solid white;
-    border-width: 0 2px 2px 0;
-    display: inline-block;
-    padding: 3px;
-    transform: rotate(45deg);
-    -webkit-transform: rotate(45deg);
+    +drop-menu-arrow($color3)
   &:hover
-    .categories-drop-menu
-      position: absolute
-      top: 120px
-      +flexbox()
-      +flex-direction(column)
-      width: 135px
-      height: auto
+    color: white
+    &:after
+      +drop-menu-arrow(white)
+
+ol
+  display: none
+
+nav > .categories-drop-menu
+  position: absolute
+  top: 120px
+  +flexbox()
+  ol
+    +flexbox()
+    +flex-direction(column)
+    width: 135px
+    height: auto
+    li
+      opacity: 0;
+      transform-origin: top center;
+      @for $i from 1 through 4
+        &:nth-child(#{$i})
+          animation-name: topToBottom;
+          animation-duration: 400ms;
+          animation-delay: (150ms * $i) - 300;
+          animation-timing-function: ease-in-out;
+          animation-fill-mode: forwards;
+      padding-bottom: 5px
+      padding-left: 8px
+      font-size: 18px
+      font-weight: 600
+      background-color: $color3
+      color: $color5
+      &:first-child
+        padding-top: 15px
+      &:last-child
+        padding-bottom: 25px
       a
-        opacity: 0;
-        transform-origin: top center;
-        @for $i from 1 through 4
-          &:nth-child(#{$i})
-            animation-name: topToBottom;
-            animation-duration: 400ms;
-            animation-delay: (150ms * $i) - 300;
-            animation-timing-function: ease-in-out;
-            animation-fill-mode: forwards;
-        padding-bottom: 5px
-        padding-left: 8px
-        font-size: 18px
-        font-weight: 600
-        background-color: $color4
-        color: $color2
-        &:first-child
-          padding-top: 15px
-        &:last-child
-          padding-bottom: 25px
+        color: $color4
+        &:hover
+          color: $color2
 
 @keyframes topToBottom
   0%
@@ -70,5 +97,5 @@ nav
     opacity: 1
     transform: rotateX(0deg)
 
-.categories-drop-menu
+.drop-menu
   display: none
