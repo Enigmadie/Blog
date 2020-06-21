@@ -5,6 +5,7 @@ import {
   Route,
 } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
 
 import { RootState } from 'slices';
 import Posts from './Posts';
@@ -14,6 +15,15 @@ import LoginForm from './LoginForm';
 import NoMatch from './NoMatch';
 import Category from './Category';
 import Header from './Header';
+
+toast.configure({
+  position: 'top-right',
+  autoClose: 15000,
+  hideProgressBar: false,
+  closeOnClick: true,
+  pauseOnHover: true,
+  draggable: true,
+});
 
 const App: React.FC = () => {
   const { fetchingState } = useSelector((state: RootState) => state);

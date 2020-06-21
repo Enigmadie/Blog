@@ -20,7 +20,6 @@ const Posts: React.FC = () => {
 
   return (
     <div className="posts-wrapper">
-      {isAdmin.status && <Link className="create-post" to="posts/new">Create new post</Link>}
       <div className="posts">
         {posts.data.map((post: Post) => {
           const postDate = new Date(post.date);

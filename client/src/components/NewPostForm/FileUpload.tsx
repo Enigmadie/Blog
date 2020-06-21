@@ -11,7 +11,6 @@ export default ({ prop }: Props): ReactElement => {
   const imgSrc = String(initialValue);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
-    console.log('test')
     const reader = new FileReader();
     if (e.currentTarget.files !== null) {
       const file = e.currentTarget.files[0];

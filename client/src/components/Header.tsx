@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import cn from 'classnames';
+import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
+
 import { Categories } from 'interfaces';
+import { RootState } from 'slices';
 import CategoriesColl from './CategoriesSelect';
 
 const Header: React.FC = () => {
@@ -9,6 +12,7 @@ const Header: React.FC = () => {
   const [isCloseMenu, setCloseMenu] = useState(false);
   const [isLargeSize, setLargeSizeState] = useState(isLarge);
   const [subMenu, setSubMenuState] = useState(false);
+  const { isAdmin } = useSelector((state: RootState) => state);
 
   const smallMenuCn = cn({
     'menu-btn': true,
@@ -97,6 +101,12 @@ const Header: React.FC = () => {
           <li className={liCn}>
             <Link to="/contact">Contact</Link>
           </li>
+          {isAdmin.status
+            && (
+            <li className={liCn}>
+              <Link className="new-post-li" to="posts/new">New post</Link>
+            </li>
+            )}
         </ul>
         <div className={categoriesDropCn}>
           <ol
