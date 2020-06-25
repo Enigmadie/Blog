@@ -80,7 +80,7 @@ const LoginForm = ({ history }: RouteComponentProps): ReactElement => {
         />
       </label>
       { hasPasswordErrors && (<div className="error-message">{errors.password}</div>)}
-      <button type="submit" disabled={isDisabled}>Submit</button>
+      <button type="submit" className="blog-submit" disabled={isDisabled}><span>Submit</span></button>
     </form>
   );
 };

@@ -169,7 +169,7 @@ const PostForm = ({ history, match }: RouteComponentProps<TParams>): ReactElemen
 
         <MarkDown cn={contentCn} prop={formik} />
         {hasContentErrors && <div className="error-message">{errors.content}</div>}
-        <button type="submit" className="post-form-submit" disabled={isSubmitting}>
+        <button type="submit" className="blog-submit" disabled={isSubmitting}>
           {
             isEdited
               ? <span>Edit</span>
