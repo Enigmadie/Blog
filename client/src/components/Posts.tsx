@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import { asyncActions, RootState } from 'slices';
-import { Post, Categories } from 'interfaces';
+import { Post, Categories, Style } from 'interfaces';
 import { getPage, getDistanceDate } from 'utils';
 import Pagination from './Pagination';
 
@@ -29,13 +29,17 @@ const Posts: React.FC = () => {
           const editPostPath = `/post/${post._id}/edit`;
           const getCategoryPath = (category: string): string => `/category/${category}`;
 
+          const imgStyle: Style = {
+            'background-image': `url(${imgSrc})`,
+          };
+
           const removeHandler = (): void => {
             dispatch(removePost(post._id));
           };
           return (
             <div className="post-container" key={post._id}>
-              <Link to={postPath}>
-                <img src={imgSrc} alt="post" />
+              <Link className="poster-main-wrapper" to={postPath}>
+                <div className="poster-main" style={imgStyle} />
               </Link>
               <div className="categories">
                 {post.categories.map((el: Categories) => (

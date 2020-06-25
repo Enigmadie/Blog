@@ -8,6 +8,45 @@
   form
     +flexbox()
     +flex-direction(column)
+    input
+      &[type="file"]
+        width: 0.1px
+        height: 0.1px
+        opacity: 0
+        overflow: hidden
+        position: absolute
+        z-index: -1
+
+.custom-file-uploader
+  .post-file-uploaded
+    background-color: $color4
+    &:hover
+      background-color: $color4
+  div
+    +flexbox()
+    cursor: pointer
+    border: 2px solid #c8ccd0
+    background-color: #f9f9f9
+    border-radius: 5px
+    justify-content: center
+    align-items: center
+    width: 200px
+    height: 42px
+    &:hover
+      background-color: $color3
+    span
+      margin-left: 5px
+      font-size: 15px
+
+.post-form-submit
+  border: 1px solid #c8ccd0
+  line-height: 35px
+  cursor: pointer
+  background-color: #f9f9f9
+  &:hover
+    background-color: $color3
+  span
+    margin: 0 auto
 
 .error
   border: 2px solid red

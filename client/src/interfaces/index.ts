@@ -17,3 +17,8 @@ export interface Authentication {
   login: string;
   password: string;
 }
+
+
+export interface Style {
+  [key: string]: string;
+}

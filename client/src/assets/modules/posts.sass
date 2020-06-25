@@ -15,9 +15,6 @@
   display: grid
   grid-template-columns: 1fr 1fr 1fr 1fr
   grid-gap: 35px
-  // +flexbox()
-  // +justify-content(center)
-  // +flex-wrap(wrap)
   @media (max-width: 1340px)
     grid-template-columns: 1fr 1fr 1fr
   @media (max-width: 1020px)
@@ -26,14 +23,23 @@
     grid-template-columns: 1fr
     justify-items: center
 
+.poster-main
+  width: 100%
+  height: 100%
+  background-repeat: no-repeat
+  background-size: cover
+  background-position: center
+
+.poster-main-wrapper
+  display: block
+  width: 300px
+  height: 230px
+
 .post-container
   margin: 5px 0
   padding: 10px 0
   word-wrap: break-word
   text-overflow: ellipsis
-  img
-    width: 310px
-    height: 200px
   h2
     font-size: 22px
     margin-top: 15px
@@ -41,13 +47,13 @@
   @media (max-width: 767px)
     padding: 15px 0
     margin: 1px
-    img
+    .poster-main-wrapper
       width: 500px
       height: 350px
   @media (max-width: 520px)
-    img
-      width: 350px
-      height: 230px
+    .poster-main-wrapper
+      width: 90vw
+      height: 60vw
 
 .posts-bottom-panel
   +flexbox()

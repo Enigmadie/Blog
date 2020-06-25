@@ -30,8 +30,8 @@ const Header: React.FC = () => {
   });
 
   const navCn = cn({
-    'nav-open': isCloseMenu,
-    'nav-s': isCloseMenu,
+    'nav-open': isCloseMenu && !isLargeSize,
+    'nav-s': isCloseMenu && !isLargeSize,
     'sub-menu-open': subMenu && !isLargeSize,
   });
 
@@ -112,8 +112,7 @@ const Header: React.FC = () => {
           <ol
             onFocus={(): void => subHandler(true)}
             onMouseOver={(): void => subHandler(true)}
-            onMouseOut={(): void => subHandler(false)}
-            onBlur={(): void => subHandler(false)}
+            onClick={(): void => subHandler(false)}
           >
             {CategoriesColl.map(({ value }: Categories) => {
               const categoryHref = `/category/${value}`;

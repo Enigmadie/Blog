@@ -70,16 +70,17 @@ const PostForm = ({ history, match }: RouteComponentProps<TParams>): ReactElemen
       content,
       preview,
       image,
+      date,
     }, { resetForm }) => {
       const formData = new FormData();
+      const postDate = date !== '' ? date : new Date().toString();
       const categoriesColl = categories.map((el: Categories): string => el.value);
-      console.log(image);
       formData.append('image', image);
       formData.append('title', title);
       formData.append('categories', JSON.stringify(categoriesColl));
       formData.append('preview', preview);
       formData.append('content', content);
-      formData.append('date', new Date().toString());
+      formData.append('date', postDate);
       isEdited
         ? dispatch(asyncActions.editPost(_id, formData))
         : dispatch(asyncActions.addPost(formData));
@@ -168,8 +169,13 @@ const PostForm = ({ history, match }: RouteComponentProps<TParams>): ReactElemen
 
         <MarkDown cn={contentCn} prop={formik} />
         {hasContentErrors && <div className="error-message">{errors.content}</div>}
-
-        <button type="submit" disabled={isSubmitting}>Add</button>
+        <button type="submit" className="post-form-submit" disabled={isSubmitting}>
+          {
+            isEdited
+              ? <span>Edit</span>
+              : <span>Add</span>
+          }
+        </button>
       </form>
     </div>
   );
