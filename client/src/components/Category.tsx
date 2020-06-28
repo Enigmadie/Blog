@@ -3,8 +3,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import { asyncActions, RootState } from 'slices';
 import { RouteComponentProps, Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { Post } from 'interfaces';
-import { getDistanceDate } from 'utils';
+import { Post, Style } from 'interfaces';
+import { getDistanceDate, getImageUrl } from 'utils';
 import Pagination from './Pagination';
 
 type TParams = { name: string };
@@ -26,23 +26,28 @@ const Category = ({ match }: RouteComponentProps<TParams>): ReactElement => {
   return (
     <>
       <h1 className="category-name">{category}</h1>
-      <div className="posts-wrapper">
-        <div className="category-posts">
+      <section className="posts-wrapper">
+        <div className="posts">
           {posts.data.length === 0 && <p className="category-empty">{emptyMsg}</p>}
           {posts.data.map((post: Post) => {
             const postDate = new Date(post.date);
             const date = getDistanceDate(postDate);
-            const imgSrc = String(post.image);
+            const imgSrc = getImageUrl(String(post.image));
             const editPostPath = `/post/${post._id}/edit`;
             const postPath = `/post/${post._id}`;
 
             const removeHandler = (): void => {
               dispatch(removePost(post._id));
             };
+
+            const imgStyle: Style = {
+              backgroundImage: `url(${imgSrc})`,
+            };
+
             return (
-              <div key={post._id} className="category-post">
-                <Link to={postPath}>
-                  <img src={imgSrc} alt="post" />
+              <div key={post._id} className="post-container">
+                <Link className="poster-main-wrapper" to={postPath}>
+                  <div className="poster-main" style={imgStyle} />
                 </Link>
                 <Link to={postPath}><h2>{post.title}</h2></Link>
                 <p className="posts-preview">{post.preview}</p>
@@ -57,7 +62,7 @@ const Category = ({ match }: RouteComponentProps<TParams>): ReactElement => {
             );
           })}
         </div>
-      </div>
+      </section>
       <Pagination />
     </>
   );

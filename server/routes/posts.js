@@ -1,7 +1,8 @@
 const router = require('express').Router(),
-    Post = require('../models/Post').default;
+    Post = require('../models/Post').default,
+    bucket = require('../index');
 
-router.post('/new', function(_req, res) {
+router.post('/new', async function(_req, res, next) {
   const { admin } = _req.session;
   const {
     title,
@@ -12,10 +13,16 @@ router.post('/new', function(_req, res) {
   } = _req.body;
   if (admin) {
     if (_req.files) {
-      const imgPath = `../uploads/${_req.files.image.name}`
-      _req.files.image.mv(imgPath);
+      const file = bucket.file(_req.files.image.name)
+      const stream = file.createWriteStream();
+
+      stream.on('error', (err) => {
+        next(err);
+      });
+
+      stream.end(_req.files.image.data);
     }
-    const image = _req.files ? `/uploads/${_req.files.image.name}` : null;
+    const image = _req.files ? `${_req.files.image.name}` : null;
     const post = new Post({
       title,
       categories: JSON.parse(categories),

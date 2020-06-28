@@ -79,6 +79,7 @@ const removePost = (id: string): AppThunk => async (dispatch) => {
     const { query } = url.parse(window.location.href, true);
     const currentPage = query.page ? query.page : 1;
     const fetchUrl = routes.postsPath({
+      name: 'main',
       page: currentPage,
       limit: 12,
     });

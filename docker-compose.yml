@@ -4,6 +4,8 @@ services:
     build: client
     container_name: blog-client
     restart: on-failure
+    environment:
+      - FRONT_ENV=production
     ports:
       - "8080:8080"
     volumes:
@@ -12,7 +14,7 @@ services:
     build: server
     container_name: blog-server
     environment:
-      - NODE_ENV=development
+      - NODE_ENV=production
     ports:
       - "5000:5000"
     volumes:

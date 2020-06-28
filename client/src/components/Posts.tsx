@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 
 import { asyncActions, RootState } from 'slices';
 import { Post, Categories, Style } from 'interfaces';
-import { getPage, getDistanceDate } from 'utils';
+import { getPage, getDistanceDate, getImageUrl } from 'utils';
 import Pagination from './Pagination';
 
 const Posts: React.FC = () => {
@@ -19,18 +19,17 @@ const Posts: React.FC = () => {
   }, []);
 
   return (
-    <div className="posts-wrapper">
+    <section className="posts-wrapper">
       <div className="posts">
         {posts.data.map((post: Post) => {
           const postDate = new Date(post.date);
           const date = getDistanceDate(postDate);
-          const imgSrc = String(post.image);
+          const imgSrc = getImageUrl(String(post.image));
           const postPath = `/post/${post._id}`;
           const editPostPath = `/post/${post._id}/edit`;
-          const getCategoryPath = (category: string): string => `/category/${category}`;
 
           const imgStyle: Style = {
-            'background-image': `url(${imgSrc})`,
+            backgroundImage: `url(${imgSrc})`,
           };
 
           const removeHandler = (): void => {
@@ -43,7 +42,7 @@ const Posts: React.FC = () => {
               </Link>
               <div className="categories">
                 {post.categories.map((el: Categories) => (
-                  <Link key={el.value} to={getCategoryPath(el.value)}>
+                  <Link key={el.value} to={`/category${el.value}`}>
                     {el.value}
                   </Link>
                 ))}
@@ -62,7 +61,7 @@ const Posts: React.FC = () => {
         })}
       </div>
       <Pagination />
-    </div>
+    </section>
   );
 };
 

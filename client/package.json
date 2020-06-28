@@ -10,7 +10,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "rm -rf dist && npx webpack -p --env production",
     "prepublishOnly": "npm run build",
-    "start": "npx webpack-dev-server --host 0.0.0.0"
+    "start": "npx webpack-dev-server --host 0.0.0.0 --disable-host-check"
   },
   "author": "",
   "license": "ISC",

@@ -112,6 +112,7 @@ const Header: React.FC = () => {
           <ol
             onFocus={(): void => subHandler(true)}
             onMouseOver={(): void => subHandler(true)}
+            onMouseOut={(): void => subHandler(false)}
             onClick={(): void => subHandler(false)}
           >
             {CategoriesColl.map(({ value }: Categories) => {

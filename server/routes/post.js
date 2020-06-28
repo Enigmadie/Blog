@@ -1,11 +1,12 @@
 const router = require('express').Router(),
     _ = require('lodash'),
+    bucket = require('../index'),
     Post = require('../models/Post').default;
 
 router.patch('/:id', function(_req, res) {
   const { id } = _req.params;
   const { title, categories, preview, image, content, date } = _req.body;
-  const editedImage = _req.files ? `/uploads/${_req.files.image.name}` : image;
+  const editedImage = _req.files ? _req.files.image.name : image;
   const { admin } = _req.session;
   const updateParams = {
     title,
@@ -17,8 +18,14 @@ router.patch('/:id', function(_req, res) {
   };
   if (admin) {
     if (_req.files) {
-      const imgPath = `../uploads/${_req.files.image.name}`
-      _req.files.image.mv(imgPath);
+      const file = bucket.file(_req.files.image.name)
+      const stream = file.createWriteStream();
+
+      stream.on('error', (err) => {
+        next(err);
+      });
+
+      stream.end(_req.files.image.data);
     }
     Post.updateOne({ _id: id }, updateParams, {}, function(err) {
       if (err) {

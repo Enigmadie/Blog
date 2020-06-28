@@ -20,3 +20,5 @@ export const getDistanceDate = (postDate: Date): string => {
     ? format(postDate, 'dd/MM/yyyy')
     : formatDistanceToNow(postDate, { includeSeconds: true, addSuffix: true });
 };
+
+export const getImageUrl = (imgName: string): string => `https://storage.googleapis.com/blog-enigma/${imgName}`;

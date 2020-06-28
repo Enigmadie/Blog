@@ -1,7 +1,8 @@
 import React, { useEffect, ReactElement } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { RouteComponentProps, Link } from 'react-router-dom';
-import { getDistanceDate } from 'utils';
+import { getDistanceDate, getImageUrl } from 'utils';
+import { Style } from 'interfaces';
 
 import { asyncActions, RootState } from 'slices';
 
@@ -9,9 +10,10 @@ type TParams = { id: string };
 
 const Post = ({ match }: RouteComponentProps<TParams>): ReactElement => {
   const dispatch = useDispatch();
-  const { fetchActivePostData, removePost } = asyncActions;
+  const { fetchActivePostData, fetchPostsData, removePost } = asyncActions;
   const { activePost: { post } } = useSelector((state: RootState) => state);
   const { isAdmin } = useSelector((state: RootState) => state);
+  const { posts } = useSelector((state: RootState) => state);
 
   const activePostId = match.params.id;
 
@@ -19,27 +21,58 @@ const Post = ({ match }: RouteComponentProps<TParams>): ReactElement => {
     dispatch(fetchActivePostData(activePostId));
   }, []);
 
+  useEffect(() => {
+    const firstPage = 1;
+    const limitPosts = 5;
+    dispatch(fetchPostsData(firstPage, limitPosts));
+  }, []);
+
   const removeHandler = (): void => {
     dispatch(removePost(post._id));
   };
 
-  const imgHref = String(post.image);
+  const imgHref = getImageUrl(String(post.image));
   const postDate = new Date(post.date);
   const date = post.date ? getDistanceDate(postDate) : '';
   const editPostPath = `/post/${post._id}/edit`;
+
+  const imgStyle: Style = {
+    backgroundImage: `url(${imgHref})`,
+  };
   return (
-    <div className="post">
-      <h1>{post.title}</h1>
-      <div className="posts-bottom-panel">
-        <p>{date}</p>
-        <div className="admin-post-panel">
+    <section className="post-wrapper">
+      <div className="post">
+        <div className="post-actions">
           {isAdmin.status && <Link to={editPostPath}><img alt="edit" src="https://img.icons8.com/windows/60/000000/edit.png" /></Link>}
-          {isAdmin.status && <button type="button" onClick={removeHandler}><img alt="remove" src="https://img.icons8.com/windows/64/000000/delete-sign.png" /></button>}
+          {isAdmin.status && <button type="button" onClick={removeHandler}><img alt="remove" src="https://img.icons8.com/windows/64/000000/delete.png" /></button>}
+          <img alt="comment" src="https://img.icons8.com/windows/60/000000/topic.png" />
+        </div>
+        <div className="post-data">
+          <h1>{post.title}</h1>
+          <span>
+            <p>{`${date} in`}</p>
+            <div>
+              {post.categories && post.categories.map((el: string) => (
+                <Link key={el} to={`/category/${el}`}>
+                  {el}
+                </Link>
+              ))}
+            </div>
+          </span>
+          <div className="poster-post-wrapper">
+            <div className="poster-post" style={imgStyle} />
+          </div>
+          <div dangerouslySetInnerHTML={{ __html: post.content }} />
         </div>
       </div>
-      <img src={imgHref} alt="poster" />
-      <div dangerouslySetInnerHTML={{ __html: post.content }} />
-    </div>
+      <div className="right-block-post">
+        <div className="border-posts" />
+        <h2 className="new-posts-topic">New Posts</h2>
+        <div className="recent-posts">
+          {posts.data.map(({ title, _id }) => <Link to={`/post/${_id}`}><h3>{title}</h3></Link>)}
+        </div>
+      </div>
+    </section>
   );
 };
 

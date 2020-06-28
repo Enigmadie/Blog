@@ -38,6 +38,10 @@ nav .sub-menu {
       a {
         font-size: 1.2rem;
         font-weight: normal;
+        height: 100%;
+        width: 100%;
+        text-align: center;
+        padding-top: 18px;
       }
     }
   }
@@ -222,6 +226,10 @@ nav .nav-links {
     }
     a {
       color: white;
+      height: 100%;
+      width: 100%;
+      text-align: center;
+      padding-top: 18px;
     }
     ol {
       display: none;

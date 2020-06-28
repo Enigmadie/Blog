@@ -42,17 +42,16 @@ const {
   fetchDataFromServerFailure,
 } = slice.actions;
 
-const fetchPostsData = (page: number): AppThunk => async (dispatch) => {
+const fetchPostsData = (page: number, limit = 12): AppThunk => async (dispatch) => {
   dispatch(fetchDataFromServerRequest());
   try {
     const fetchUrl = routes.postsPath({
       name: 'main',
       page,
-      limit: 12,
+      limit,
     });
     const { data: { posts, postsCount } } = await axios.get(fetchUrl);
     dispatch(actions.initPostsState({ data: posts, allPostsCount: postsCount }));
-    /* dispatch(actions.initCurrentPageState({ page })); */
     dispatch(fetchDataFromServerSuccess());
   } catch (e) {
     dispatch(fetchDataFromServerFailure());
@@ -101,7 +100,6 @@ const fetchAdminData = (): AppThunk => async (dispatch) => {
   try {
     const fetchUrl = routes.adminApiPath();
     const { data } = await axios.get(fetchUrl);
-    console.log(data)
     dispatch(actions.initAdminState({ status: data.isAdmin }));
     dispatch(fetchDataFromServerSuccess());
   } catch (e) {

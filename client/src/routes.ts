@@ -1,6 +1,12 @@
 import * as querystring from 'querystring';
 
-const host = 'http://localhost:5000';
+const isProduction = process.env.FRONT_ENV === 'production';
+const isDevelopment = !isProduction;
+
+const host = isDevelopment
+  ? 'http://localhost:5000'
+  : 'http://0.0.0.0:5000';
+
 const prefix = 'api';
 
 export interface Query {
