@@ -9,18 +9,19 @@
 
 .post-actions
   width: 50px
+  z-index: 1
   @media (max-width: 660px)
     +flexbox()
   a, button
     margin-right: 5px
-    cursor: pointer
     border: none
     background: none
     padding: 0
-    opacity: 0.8
   img
+    opacity: 0.8
     width: 50px
     height: 50px
+    cursor: pointer
   a
     img
       background-color: $color1
@@ -77,8 +78,9 @@
 .poster-post-wrapper
   width: 100%
   height: 420px
+  margin-bottom: 40px
   @media (max-width: 660px)
-    height: 40vw
+    height: 55vw
   .poster-post
     +align-self(center)
     background-repeat: no-repeat
@@ -87,7 +89,6 @@
     margin: 0 auto
     width: 100%
     height: 100%
-    margin-bottom: 60px
 
 .right-block-post
   width: 100%

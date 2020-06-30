@@ -1,7 +1,7 @@
 // @ts-check
 
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const CopyPlugin = require('copy-webpack-plugin');
+const Webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const isProduction = process.env.NODE_ENV === 'production';
 const isDevelopment = !isProduction;
@@ -23,18 +23,19 @@ module.exports = {
   resolve: {
     extensions: ['.js', '.jsx', '.ts', '.tsx'],
     alias: {
-      components: path.resolve(__dirname, 'src/components/index.tsx'),
+      components: path.resolve(__dirname, 'src/components/'),
       slices: path.resolve(__dirname, 'src/slices/index.tsx'),
       interfaces: path.resolve(__dirname, 'src/interfaces/index.ts'),
       utils: path.resolve(__dirname, 'src/utils/index.ts'),
+      pages: path.resolve(__dirname, 'src/pages/'),
     },
   },
   devtool: 'source-map',
   plugins: [
+    new Webpack.DefinePlugin({
+      'FRONT_ENV': JSON.stringify(process.env.FRONT_ENV),
+    }),
     new MiniCssExtractPlugin(),
-    new CopyPlugin([
-      { from: '../uploads', to: './uploads' },
-    ]),
     new HtmlWebpackPlugin({
       template: 'src/index.html',
     })

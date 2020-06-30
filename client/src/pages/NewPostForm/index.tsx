@@ -12,7 +12,7 @@ import { Post, Categories } from 'interfaces';
 
 import FileUpload from './FileUpload';
 import MarkDown from './MarkDown';
-import options from '../CategoriesSelect';
+import options from 'components/CategoriesSelect';
 
 type TParams = {
   history: any;

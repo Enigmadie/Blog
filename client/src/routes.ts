@@ -1,11 +1,13 @@
 import * as querystring from 'querystring';
 
-const isProduction = process.env.FRONT_ENV === 'production';
+declare const FRONT_ENV: string;
+
+const isProduction = FRONT_ENV === 'production';
 const isDevelopment = !isProduction;
 
 const host = isDevelopment
   ? 'http://localhost:5000'
-  : 'http://0.0.0.0:5000';
+  : 'https://blog-al-server.azurewebsites.net';
 
 const prefix = 'api';
 

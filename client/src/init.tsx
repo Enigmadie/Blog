@@ -8,9 +8,10 @@ import './assets/application.sass';
 import 'core-js/stable';
 import 'regenerator-runtime/runtime';
 
-import App from 'components';
-import './i18n';
 import reducer, { asyncActions, RootState } from 'slices';
+import App from './App';
+import './i18n';
+
 
 function init(): void {
   const store = configureStore({

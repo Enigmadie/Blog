@@ -11,15 +11,13 @@ type TParams = { id: string };
 const Post = ({ match }: RouteComponentProps<TParams>): ReactElement => {
   const dispatch = useDispatch();
   const { fetchActivePostData, fetchPostsData, removePost } = asyncActions;
-  const { activePost: { post } } = useSelector((state: RootState) => state);
-  const { isAdmin } = useSelector((state: RootState) => state);
-  const { posts } = useSelector((state: RootState) => state);
+  const { isAdmin, posts, activePost: { post } } = useSelector((state: RootState) => state);
 
   const activePostId = match.params.id;
 
   useEffect(() => {
     dispatch(fetchActivePostData(activePostId));
-  }, []);
+  }, [activePostId]);
 
   useEffect(() => {
     const firstPage = 1;

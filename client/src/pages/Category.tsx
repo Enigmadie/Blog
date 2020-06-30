@@ -5,15 +5,14 @@ import { RouteComponentProps, Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Post, Style } from 'interfaces';
 import { getDistanceDate, getImageUrl } from 'utils';
-import Pagination from './Pagination';
+import Pagination from 'components/Pagination';
 
 type TParams = { name: string };
 
 const Category = ({ match }: RouteComponentProps<TParams>): ReactElement => {
   const dispatch = useDispatch();
   const { fetchCategoryData, removePost } = asyncActions;
-  const { isAdmin } = useSelector((state: RootState) => state);
-  const { posts } = useSelector((state: RootState) => state);
+  const { isAdmin, posts } = useSelector((state: RootState) => state);
 
   const category = match.params.name;
   const { t } = useTranslation();

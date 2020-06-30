@@ -2,20 +2,22 @@ version: '3'
 services:
   client:
     build: client
+    image: enigmadie/client:v1
     container_name: blog-client
     restart: on-failure
     environment:
       - FRONT_ENV=production
     ports:
       - "8080:8080"
-    volumes:
-      - ./uploads:/home/uploads
+    # volumes:
+    #   - ./uploads:/home/uploads
   server:
     build: server
+    image: enigmadie/server:v1
     container_name: blog-server
     environment:
       - NODE_ENV=production
     ports:
       - "5000:5000"
-    volumes:
-      - ./uploads:/opt/uploads
+    # volumes:
+    #   - ./uploads:/opt/uploads

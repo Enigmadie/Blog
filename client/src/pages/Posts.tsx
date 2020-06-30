@@ -5,13 +5,12 @@ import { Link } from 'react-router-dom';
 import { asyncActions, RootState } from 'slices';
 import { Post, Categories, Style } from 'interfaces';
 import { getPage, getDistanceDate, getImageUrl } from 'utils';
-import Pagination from './Pagination';
+import Pagination from 'components/Pagination';
 
 const Posts: React.FC = () => {
   const dispatch = useDispatch();
   const { fetchPostsData, removePost } = asyncActions;
-  const { isAdmin } = useSelector((state: RootState) => state);
-  const { posts } = useSelector((state: RootState) => state);
+  const { isAdmin, posts } = useSelector((state: RootState) => state);
 
   useEffect((): void => {
     const currentPage = getPage(window.location.href);
