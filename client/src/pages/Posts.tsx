@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import { asyncActions, RootState } from 'slices';
-import { Post, Categories, Style } from 'interfaces';
+import { Post2 as Post, Style } from 'interfaces';
 import { getPage, getDistanceDate, getImageUrl } from 'utils';
 import Pagination from 'components/Pagination';
 
@@ -21,7 +21,7 @@ const Posts: React.FC = () => {
     <section className="posts-wrapper">
       <div className="posts">
         {posts.data.map((post: Post) => {
-          const postDate = new Date(post.date);
+          const postDate = new Date(post.createdAt);
           const date = getDistanceDate(postDate);
           const imgSrc = getImageUrl(String(post.image));
           const postPath = `/post/${post._id}`;
@@ -39,13 +39,13 @@ const Posts: React.FC = () => {
               <Link className="poster-main-wrapper" to={postPath}>
                 <div className="poster-main" style={imgStyle} />
               </Link>
-              <div className="categories">
-                {post.categories.map((el: Categories) => (
-                  <Link key={el.value} to={`/category${el.value}`}>
-                    {el.value}
-                  </Link>
-                ))}
-              </div>
+              {/* <div className="categories"> */}
+              {/*   {post.categories.map((el: Categories) => ( */}
+              {/*     <Link key={el.value} to={`/category${el.value}`}> */}
+              {/*       {el.value} */}
+              {/*     </Link> */}
+              {/*   ))} */}
+              {/* </div> */}
               <Link to={postPath}><h2>{post.title}</h2></Link>
               <p className="posts-preview">{post.preview}</p>
               <div className="posts-bottom-panel">

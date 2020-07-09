@@ -5,3 +5,4 @@ deploy:
 	docker tag pet_server registry.heroku.com/blog-al/server
 	docker push registry.heroku.com/blog-al/server
 	heroku container:release client server --app=blog-al
+

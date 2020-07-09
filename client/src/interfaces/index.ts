@@ -10,7 +10,18 @@ export interface Post {
   preview: string;
   content: string;
   image: string | Blob;
-  date: string;
+  createdAt: string;
+}
+
+
+export interface Post2 {
+  _id: string;
+  title: string;
+  categories: Categories[];
+  preview: string;
+  content: string;
+  image: string | Blob;
+  createdAt: string;
 }
 
 export interface Authentication {

@@ -34,7 +34,7 @@ const PostForm = ({ history, match }: RouteComponentProps<TParams>): ReactElemen
     preview: '',
     content: '',
     image: '',
-    date: '',
+    createdAt: '',
   };
 
   const initialValues = editedPost !== undefined ? editedPost : defaultPostData;
@@ -70,17 +70,17 @@ const PostForm = ({ history, match }: RouteComponentProps<TParams>): ReactElemen
       content,
       preview,
       image,
-      date,
+      createdAt,
     }, { resetForm }) => {
       const formData = new FormData();
-      const postDate = date !== '' ? date : new Date().toString();
+      const postDate = createdAt !== '' ? createdAt : new Date().toString();
       const categoriesColl = categories.map((el: Categories): string => el.value);
       formData.append('image', image);
       formData.append('title', title);
       formData.append('categories', JSON.stringify(categoriesColl));
       formData.append('preview', preview);
       formData.append('content', content);
-      formData.append('date', postDate);
+      formData.append('createdAt', postDate);
       isEdited
         ? dispatch(asyncActions.editPost(_id, formData))
         : dispatch(asyncActions.addPost(formData));

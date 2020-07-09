@@ -1,26 +1,48 @@
-const mongoose = require('mongoose');
+'use strict';
 
-const postSchema = new mongoose.Schema({
-  title: {
-    type: String,
-    minlength: 1,
-    maxlength: 60,
-  },
-  categories: Array,
-  content: {
-    type: String,
-    minlength: 1,
-  },
-  preview: {
-    type: String,
-    minlength: 1,
-    maxlength: 200,
-  },
-  image: Object,
-  date: Date,
-}, {
-  collection: 'posts_data',
-});
+module.exports = (db, DataTypes) => {
+  const Post = db.define('Post', {
+    id: {
+      type: DataTypes.BIGINT,
+      primaryKey: true,
+      autoIncrement: true,
+    },
+    title: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        len: [1, 60],
+      },
+    },
+    content: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        len: [1, 50000],
+      },
+    },
+    preview: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        len: [1, 350],
+      },
+    },
+    createdAt: {
+      type: DataTypes.DATE,
+    },
+    image: {
+      type: DataTypes.STRING,
+    },
+  }, {
+    tableName: 'post',
+    timestamps: false,
+  });
 
-exports.default = mongoose.model('Post', postSchema);
+  Post.associate = (models) => {
+    models.Post.belongsToMany(models.Category, { through: 'post_categories' })
+  };
+
+  return Post;
+};
 

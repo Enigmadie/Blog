@@ -19,6 +19,9 @@
     "lodash": "^4.17.15",
     "mongodb": "^3.5.7",
     "mongoose": "^5.9.15",
-    "nodemon": "^2.0.4"
+    "nodemon": "^2.0.4",
+    "pg": "^8.2.1",
+    "sequelize": "^6.3.0",
+    "sequelize-cli": "^6.1.0"
   }
 }

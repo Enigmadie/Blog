@@ -15,8 +15,12 @@ class Posts {
       main: async () => {
         const limit = Number(this.query.limit);
         const skip = limit * (Number(this.query.page) - 1);
-        const posts = await this.model.find({}).sort({ _id: 'desc' }).skip(skip).limit(limit);
-      return mapPosts(posts);
+        const posts = await this.model.findAll({
+          order: [ [ 'createdAt', 'DESC' ] ],
+          offset: skip,
+          limit: limit,
+        });
+      return posts;
       },
       category: async () => {
         const limit = Number(this.query.limit);
@@ -28,13 +32,8 @@ class Posts {
   }
 
   async getCount() {
-    const postsCount = await this.model.countDocuments({}, function(e, posts) {
-      if (e) {
-        throw e;
-      }
-      return posts;
-    });
-    return postsCount;
+    const { count } = await this.model.findAndCountAll({});
+    return count;
   }
 }
 
