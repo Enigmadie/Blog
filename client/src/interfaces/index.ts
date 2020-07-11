@@ -10,7 +10,7 @@ export interface Post {
   preview: string;
   content: string;
   image: string | Blob;
-  createdAt: string;
+  created_at: string;
 }
 
 
@@ -21,7 +21,7 @@ export interface Post2 {
   preview: string;
   content: string;
   image: string | Blob;
-  createdAt: string;
+  created_at: string;
 }
 
 export interface Authentication {

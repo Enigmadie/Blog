@@ -33,6 +33,5 @@ db.sequelize = sequelize;
 
 db.sequelize.sync();
 
-console.log(db)
 // db.tutorials = require("./tutorial.model.js")(sequelize, Sequelize);
 module.exports = db;

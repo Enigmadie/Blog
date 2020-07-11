@@ -16,12 +16,12 @@
     "express": "^4.17.1",
     "express-fileupload": "^1.1.6",
     "express-session": "^1.17.1",
-    "lodash": "^4.17.15",
-    "mongodb": "^3.5.7",
-    "mongoose": "^5.9.15",
+    "lodash": "^4.17.19",
+    "mongodb": "^3.5.9",
+    "mongoose": "^5.9.22",
     "nodemon": "^2.0.4",
-    "pg": "^8.2.1",
-    "sequelize": "^6.3.0",
-    "sequelize-cli": "^6.1.0"
+    "pg": "^8.3.0",
+    "sequelize": "^6.3.1",
+    "sequelize-cli": "^6.2.0"
   }
 }

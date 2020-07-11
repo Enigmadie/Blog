@@ -21,7 +21,7 @@ const Posts: React.FC = () => {
     <section className="posts-wrapper">
       <div className="posts">
         {posts.data.map((post: Post) => {
-          const postDate = new Date(post.createdAt);
+          const postDate = new Date(post.created_at);
           const date = getDistanceDate(postDate);
           const imgSrc = getImageUrl(String(post.image));
           const postPath = `/post/${post._id}`;

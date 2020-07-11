@@ -7,20 +7,13 @@ module.exports = (db, DataTypes) => {
       primaryKey: true,
       autoIncrement: true,
     },
-    postId: {
-      type: DataTypes.BIGINT,
-      allowNull: false,
-    },
-    categoryId: {
-      type: DataTypes.BIGINT,
-      allowNull: false,
-    },
     createdAt: {
       type: DataTypes.DATE,
-    }
+    },
   }, {
-      tableName: 'post_categories',
-      timestamps: false,
+    tableName: 'post_categories',
+    timestamps: false,
+    underscored: true,
   });
   return PostCategories;
 };

@@ -15,12 +15,13 @@ module.exports = (db, DataTypes) => {
       },
     },
   }, {
-      tableName: 'category',
-      timestamps: false,
+    tableName: 'category',
+    timestamps: false,
+    underscored: true,
   });
 
   Category.associate = (models) => {
-    models.Category.belongsToMany(models.Post, { through: 'post_categories' })
+    models.Category.belongsToMany(models.Post, { through: models.PostCategories })
   };
 
   return Category;

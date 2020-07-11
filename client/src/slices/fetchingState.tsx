@@ -46,9 +46,10 @@ const fetchPostsData = (page: number, limit = 12): AppThunk => async (dispatch) 
   dispatch(fetchDataFromServerRequest());
   try {
     const fetchUrl = routes.postsPath({
-      name: 'main',
       page,
+      offset: limit * (Number(page) - 1),
       limit,
+      order: 'created_at',
     });
     const { data: { posts, postsCount } } = await axios.get(fetchUrl);
     dispatch(actions.initPostsState({ data: posts, allPostsCount: postsCount }));
@@ -64,9 +65,8 @@ const fetchCategoryData = (category: string): AppThunk => async (dispatch) => {
   dispatch(fetchDataFromServerRequest());
   try {
     const fetchUrl = routes.postsPath({
-      name: 'category',
       limit: 20,
-      category,
+      order: 'created_at',
     });
     const { data: { posts, postsCount } } = await axios.get(fetchUrl);
     dispatch(actions.initPostsState({ data: posts, allPostsCount: postsCount }));
@@ -82,11 +82,10 @@ const fetchActivePostData = (id: string): AppThunk => async (dispatch) => {
   dispatch(fetchDataFromServerRequest());
   try {
     const fetchUrl = routes.postsPath({
-      name: 'post',
       id,
     });
     const { data: { posts } } = await axios.get(fetchUrl);
-    dispatch(actions.initActivePostState({ post: posts }));
+    dispatch(actions.initActivePostState({ post: posts[0] }));
     dispatch(fetchDataFromServerSuccess());
   } catch (e) {
     dispatch(fetchDataFromServerFailure());

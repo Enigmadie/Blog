@@ -28,7 +28,7 @@ module.exports = (db, DataTypes) => {
         len: [1, 350],
       },
     },
-    createdAt: {
+    created_at: {
       type: DataTypes.DATE,
     },
     image: {
@@ -37,10 +37,11 @@ module.exports = (db, DataTypes) => {
   }, {
     tableName: 'post',
     timestamps: false,
+    underscored: true,
   });
 
   Post.associate = (models) => {
-    models.Post.belongsToMany(models.Category, { through: 'post_categories' })
+    models.Post.belongsToMany(models.Category, { through: models.PostCategories })
   };
 
   return Post;

@@ -7,8 +7,9 @@ router.post('/new', async function(_req, res, next) {
   const {
     title,
     content,
+    categories,
     preview,
-    createdAt
+    created_at
   } = _req.body;
   if (true === true) {
     if (_req.files) {
@@ -28,11 +29,23 @@ router.post('/new', async function(_req, res, next) {
       content,
       preview,
       image,
-      createdAt,
-    }).error(function(e) {
-      console.log(e)
-      res.status(403);
+      created_at,
     });
+
+    const categoriesArr = JSON.parse(categories);
+
+    categoriesArr.forEach(async (category) => {
+      const categoryItem = await models.Category.findAll({
+        where: { category }
+      });
+
+      await models.PostCategories.create({
+        createdAt: new Date(),
+        CategoryId: categoryItem[0].dataValues.id,
+        PostId: post.dataValues.id,
+      });
+    });
+
     res.send(post);
     return;
   } else {

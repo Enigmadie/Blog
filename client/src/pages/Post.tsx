@@ -30,7 +30,7 @@ const Post = ({ match }: RouteComponentProps<TParams>): ReactElement => {
   };
 
   const imgHref = getImageUrl(String(post.image));
-  const postDate = new Date(post.createdAt);
+  const postDate = new Date(post.created_at);
   const date = post.date ? getDistanceDate(postDate) : '';
   const editPostPath = `/post/${post._id}/edit`;
 

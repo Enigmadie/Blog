@@ -29,7 +29,7 @@ const Category = ({ match }: RouteComponentProps<TParams>): ReactElement => {
         <div className="posts">
           {posts.data.length === 0 && <p className="category-empty">{emptyMsg}</p>}
           {posts.data.map((post: Post) => {
-            const postDate = new Date(post.createdAt);
+            const postDate = new Date(post.created_at);
             const date = getDistanceDate(postDate);
             const imgSrc = getImageUrl(String(post.image));
             const editPostPath = `/post/${post._id}/edit`;
