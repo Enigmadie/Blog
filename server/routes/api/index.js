@@ -4,8 +4,9 @@ const router = require('express').Router(),
 
 router.get('/posts', async function(req, res) {
   const postsFilter = new PostsFilter(req.query, models.Post);
-  const posts = await postsFilter.getPosts();
+  const posts = await postsFilter.getPosts(models.Category);
   const postsCount = await postsFilter.getCount();
+
   if (!posts) {
     res.status(422);
     return;

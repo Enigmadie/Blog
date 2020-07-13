@@ -2,6 +2,7 @@ import React, { useEffect, ReactElement } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { RouteComponentProps, Link } from 'react-router-dom';
 import { getDistanceDate, getImageUrl } from 'utils';
+import { Categories } from 'interfaces';
 import { Style } from 'interfaces';
 
 import { asyncActions, RootState } from 'slices';
@@ -26,13 +27,13 @@ const Post = ({ match }: RouteComponentProps<TParams>): ReactElement => {
   }, []);
 
   const removeHandler = (): void => {
-    dispatch(removePost(post._id));
+    dispatch(removePost(post.id));
   };
 
   const imgHref = getImageUrl(String(post.image));
   const postDate = new Date(post.created_at);
-  const date = post.date ? getDistanceDate(postDate) : '';
-  const editPostPath = `/post/${post._id}/edit`;
+  const date = post.created_at ? getDistanceDate(postDate) : '';
+  const editPostPath = `/post/${post.id}/edit`;
 
   const imgStyle: Style = {
     backgroundImage: `url(${imgHref})`,
@@ -50,9 +51,9 @@ const Post = ({ match }: RouteComponentProps<TParams>): ReactElement => {
           <span>
             <p>{`${date} in`}</p>
             <div>
-              {post.categories && post.categories.map((el: string) => (
-                <Link key={el} to={`/category/${el}`}>
-                  {el}
+              {post.categories && post.categories.map((el: Categories) => (
+                <Link key={el.value} to={`/category/${el.value}`}>
+                  {el.value}
                 </Link>
               ))}
             </div>
@@ -67,7 +68,7 @@ const Post = ({ match }: RouteComponentProps<TParams>): ReactElement => {
         <div className="border-posts" />
         <h2 className="new-posts-topic">New Posts</h2>
         <div className="recent-posts">
-          {posts.data.map(({ title, _id }) => <Link to={`/post/${_id}`}><h3>{title}</h3></Link>)}
+          {posts.data.map(({ title, id }) => <Link to={`/post/${id}`}><h3>{title}</h3></Link>)}
         </div>
       </div>
     </section>

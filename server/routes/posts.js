@@ -11,7 +11,7 @@ router.post('/new', async function(_req, res, next) {
     preview,
     created_at
   } = _req.body;
-  if (true === true) {
+  if (true) {
     if (_req.files) {
       const file = bucket.file(_req.files.image.name)
       const stream = file.createWriteStream();
@@ -23,7 +23,6 @@ router.post('/new', async function(_req, res, next) {
       stream.end(_req.files.image.data);
     }
     const image = _req.files ? `${_req.files.image.name}` : null;
-
     const post = await models.Post.create({
       title,
       content,
@@ -41,8 +40,8 @@ router.post('/new', async function(_req, res, next) {
 
       await models.PostCategories.create({
         createdAt: new Date(),
-        CategoryId: categoryItem[0].dataValues.id,
-        PostId: post.dataValues.id,
+        category_id: categoryItem[0].dataValues.id,
+        post_id: post.dataValues.id,
       });
     });
 

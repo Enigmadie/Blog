@@ -32,11 +32,11 @@ const Category = ({ match }: RouteComponentProps<TParams>): ReactElement => {
             const postDate = new Date(post.created_at);
             const date = getDistanceDate(postDate);
             const imgSrc = getImageUrl(String(post.image));
-            const editPostPath = `/post/${post._id}/edit`;
-            const postPath = `/post/${post._id}`;
+            const editPostPath = `/post/${post.id}/edit`;
+            const postPath = `/post/${post.id}`;
 
             const removeHandler = (): void => {
-              dispatch(removePost(post._id));
+              dispatch(removePost(post.id));
             };
 
             const imgStyle: Style = {
@@ -44,7 +44,7 @@ const Category = ({ match }: RouteComponentProps<TParams>): ReactElement => {
             };
 
             return (
-              <div key={post._id} className="post-container">
+              <div key={post.id} className="post-container">
                 <Link className="poster-main-wrapper" to={postPath}>
                   <div className="poster-main" style={imgStyle} />
                 </Link>

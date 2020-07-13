@@ -9,10 +9,10 @@ import Select from 'react-select';
 import * as Yup from 'yup';
 import { find } from 'lodash';
 import { Post, Categories } from 'interfaces';
+import options from 'components/CategoriesSelect';
 
 import FileUpload from './FileUpload';
 import MarkDown from './MarkDown';
-import options from 'components/CategoriesSelect';
 
 type TParams = {
   history: any;
@@ -25,10 +25,10 @@ const PostForm = ({ history, match }: RouteComponentProps<TParams>): ReactElemen
   const { data } = useSelector((state: RootState) => state.posts);
   const { path, params } = match;
   const isEdited = /edit/gm.test(path);
-  const editedPost: Post | undefined = find(data, { _id: params.id });
+  const editedPost: Post | undefined = find(data, { id: params.id });
 
   const defaultPostData: Post = {
-    _id: '',
+    id: '',
     title: '',
     categories: [],
     preview: '',
@@ -64,7 +64,7 @@ const PostForm = ({ history, match }: RouteComponentProps<TParams>): ReactElemen
         .required(blankMsg),
     }),
     onSubmit: ({
-      _id,
+      id,
       title,
       categories,
       content,
@@ -74,7 +74,7 @@ const PostForm = ({ history, match }: RouteComponentProps<TParams>): ReactElemen
     }, { resetForm }) => {
       const formData = new FormData();
       const postDate = created_at !== '' ? created_at : new Date().toString();
-      const categoriesColl = categories.map((el: Categories): string => el.value);
+      const categoriesColl = categories.map((el: Categories): string | undefined => el.value);
       formData.append('image', image);
       formData.append('title', title);
       formData.append('categories', JSON.stringify(categoriesColl));
@@ -82,7 +82,7 @@ const PostForm = ({ history, match }: RouteComponentProps<TParams>): ReactElemen
       formData.append('content', content);
       formData.append('created_at', postDate);
       isEdited
-        ? dispatch(asyncActions.editPost(_id, formData))
+        ? dispatch(asyncActions.editPost(id, formData))
         : dispatch(asyncActions.addPost(formData));
       setTimeout(() => history.push('/'), 500);
       resetForm();

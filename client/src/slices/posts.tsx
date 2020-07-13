@@ -35,8 +35,8 @@ const slice = createSlice({
     },
     editPostSuccess(state, action: PayloadAction<Post>) {
       const { payload } = action;
-      const { _id } = payload;
-      const currentPostId = _.findIndex(state.data, { _id });
+      const { id } = payload;
+      const currentPostId = _.findIndex(state.data, { id });
       state.data[currentPostId] = payload;
     },
     removePostSuccess(state, action: PayloadAction<PostsInterface>) {

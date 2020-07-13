@@ -1,10 +1,5 @@
 const _ = require('lodash');
 
-const mapPosts = (posts) => posts.map((post) => {
-  post.categories = post.categories.map((el) => ({ value: el, label: el }));
-  return post;
-});
-
 const getFinderOptions = (query) => {
   const keys = Object.keys(query);
   const finderOptions = {};
@@ -37,10 +32,12 @@ const getFinderOptions = (query) => {
 
   keys.forEach((item) => {
     const findedKey = _.find(querySelector, { key: item });
-    finderOptions[item] = findedKey.action(query[item]);
+    if (findedKey) {
+      finderOptions[item] = findedKey.action(query[item]);
+    }
   });
 
   return finderOptions;
 };
 
-module.exports = { mapPosts, getFinderOptions };
+module.exports = getFinderOptions;

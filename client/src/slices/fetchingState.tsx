@@ -2,7 +2,7 @@
 
 import { createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
-import { selectErrorMessage } from 'utils';
+import { selectErrorMessage, mapCategories } from 'utils';
 
 import { actions } from './index';
 import { AppThunk } from '../init';
@@ -52,7 +52,10 @@ const fetchPostsData = (page: number, limit = 12): AppThunk => async (dispatch) 
       order: 'created_at',
     });
     const { data: { posts, postsCount } } = await axios.get(fetchUrl);
-    dispatch(actions.initPostsState({ data: posts, allPostsCount: postsCount }));
+    dispatch(actions.initPostsState({
+      data: mapCategories(posts),
+      allPostsCount: postsCount,
+    }));
     dispatch(fetchDataFromServerSuccess());
   } catch (e) {
     dispatch(fetchDataFromServerFailure());
@@ -65,6 +68,7 @@ const fetchCategoryData = (category: string): AppThunk => async (dispatch) => {
   dispatch(fetchDataFromServerRequest());
   try {
     const fetchUrl = routes.postsPath({
+      category,
       limit: 20,
       order: 'created_at',
     });
@@ -85,7 +89,10 @@ const fetchActivePostData = (id: string): AppThunk => async (dispatch) => {
       id,
     });
     const { data: { posts } } = await axios.get(fetchUrl);
-    dispatch(actions.initActivePostState({ post: posts[0] }));
+    const post = mapCategories(posts);
+    dispatch(actions.initActivePostState({
+      post: post[0],
+    }));
     dispatch(fetchDataFromServerSuccess());
   } catch (e) {
     dispatch(fetchDataFromServerFailure());

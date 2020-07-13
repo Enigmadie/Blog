@@ -1,10 +1,11 @@
 export interface Categories {
-  value: string;
-  label: string;
+  value?: string;
+  label?: string;
+  category? : string;
 }
 
 export interface Post {
-  _id: string;
+  id: string;
   title: string;
   categories: Categories[];
   preview: string;
@@ -13,16 +14,6 @@ export interface Post {
   created_at: string;
 }
 
-
-export interface Post2 {
-  _id: string;
-  title: string;
-  categories: Categories[];
-  preview: string;
-  content: string;
-  image: string | Blob;
-  created_at: string;
-}
 
 export interface Authentication {
   login: string;

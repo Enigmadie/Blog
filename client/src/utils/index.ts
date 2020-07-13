@@ -1,6 +1,7 @@
 import i18n from 'i18next';
 import { toast } from 'react-toastify';
 import { formatDistanceToNow, format, differenceInDays } from 'date-fns';
+import { Post, Categories } from 'interfaces';
 import url from 'url';
 
 export const selectErrorMessage = (e: any): void => {
@@ -22,3 +23,10 @@ export const getDistanceDate = (postDate: Date): string => {
 };
 
 export const getImageUrl = (imgName: string): string => `https://storage.googleapis.com/blog-enigma/${imgName}`;
+
+
+export const mapCategories = (posts: Post[]): Post[] => posts.map((post: Post) => {
+  post.categories = post.categories
+    .map(({ category }: Categories) => ({ value: category, label: category }));
+  return post;
+});

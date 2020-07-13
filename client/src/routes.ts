@@ -19,6 +19,7 @@ export default {
   adminPath: (): string => [host, 'admin'].join('/'),
   adminApiPath: (): string => [host, prefix, 'admin'].join('/'),
   postsPath: (query: Query): string => [host, prefix, 'posts', `?${querystring.stringify(query)}`].join('/'),
+  categoriesPath: (query: Query): string => [host, prefix, 'categories', `?${querystring.stringify(query)}`].join('/'),
   addPostPath: (): string => [host, 'posts', 'new'].join('/'),
   postPath: (id: string): string => [host, 'post', id].join('/'),
 };

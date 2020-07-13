@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import { asyncActions, RootState } from 'slices';
-import { Post2 as Post, Style } from 'interfaces';
+import { Post, Style, Categories } from 'interfaces';
 import { getPage, getDistanceDate, getImageUrl } from 'utils';
 import Pagination from 'components/Pagination';
 
@@ -24,28 +24,28 @@ const Posts: React.FC = () => {
           const postDate = new Date(post.created_at);
           const date = getDistanceDate(postDate);
           const imgSrc = getImageUrl(String(post.image));
-          const postPath = `/post/${post._id}`;
-          const editPostPath = `/post/${post._id}/edit`;
+          const postPath = `/post/${post.id}`;
+          const editPostPath = `/post/${post.id}/edit`;
 
           const imgStyle: Style = {
             backgroundImage: `url(${imgSrc})`,
           };
 
           const removeHandler = (): void => {
-            dispatch(removePost(post._id));
+            dispatch(removePost(post.id));
           };
           return (
-            <div className="post-container" key={post._id}>
+            <div className="post-container" key={post.id}>
               <Link className="poster-main-wrapper" to={postPath}>
                 <div className="poster-main" style={imgStyle} />
               </Link>
-              {/* <div className="categories"> */}
-              {/*   {post.categories.map((el: Categories) => ( */}
-              {/*     <Link key={el.value} to={`/category${el.value}`}> */}
-              {/*       {el.value} */}
-              {/*     </Link> */}
-              {/*   ))} */}
-              {/* </div> */}
+              <div className="categories">
+                {post.categories && post.categories.map((el: Categories) => (
+                  <Link key={el.value} to={`/category/${el.value}`}>
+                    {el.value}
+                  </Link>
+                ))}
+              </div>
               <Link to={postPath}><h2>{post.title}</h2></Link>
               <p className="posts-preview">{post.preview}</p>
               <div className="posts-bottom-panel">

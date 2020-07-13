@@ -41,7 +41,12 @@ module.exports = (db, DataTypes) => {
   });
 
   Post.associate = (models) => {
-    models.Post.belongsToMany(models.Category, { through: models.PostCategories })
+    models.Post.belongsToMany(models.Category, {
+      through: models.PostCategories,
+      as: 'categories',
+      foreignKey: 'post_id',
+      otherKey: 'category_id',
+    })
   };
 
   return Post;
