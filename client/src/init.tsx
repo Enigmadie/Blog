@@ -24,7 +24,7 @@ function init(): void {
     <Provider store={store}>
       <App />
     </Provider>,
-    document.getElementById('blog'),
+    document.body,
   );
 }
 

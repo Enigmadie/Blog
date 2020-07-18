@@ -2,10 +2,10 @@ import React, { useEffect, ReactElement } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { RouteComponentProps, Link } from 'react-router-dom';
 import { getDistanceDate, getImageUrl } from 'utils';
-import { Categories } from 'interfaces';
-import { Style } from 'interfaces';
+import { Categories, Style } from 'interfaces';
 
 import { asyncActions, RootState } from 'slices';
+import Comments from './PostComments';
 
 type TParams = { id: string };
 
@@ -31,8 +31,8 @@ const Post = ({ match }: RouteComponentProps<TParams>): ReactElement => {
   };
 
   const imgHref = getImageUrl(String(post.image));
-  const postDate = new Date(post.created_at);
-  const date = post.created_at ? getDistanceDate(postDate) : '';
+  const postDate = new Date(post.createdAt);
+  const date = post.createdAt ? getDistanceDate(postDate) : '';
   const editPostPath = `/post/${post.id}/edit`;
 
   const imgStyle: Style = {
@@ -62,6 +62,7 @@ const Post = ({ match }: RouteComponentProps<TParams>): ReactElement => {
             <div className="poster-post" style={imgStyle} />
           </div>
           <div dangerouslySetInnerHTML={{ __html: post.content }} />
+          <Comments />
         </div>
       </div>
       <div className="right-block-post">

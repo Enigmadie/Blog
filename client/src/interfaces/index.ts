@@ -11,9 +11,18 @@ export interface Post {
   preview: string;
   content: string;
   image: string | Blob;
-  created_at: string;
+  createdAt: string;
+  updatedAt: string;
 }
 
+export interface PostFormik {
+  id: string;
+  title: string;
+  categories: Categories[];
+  preview: string;
+  content: string;
+  image: string | Blob;
+}
 
 export interface Authentication {
   login: string;

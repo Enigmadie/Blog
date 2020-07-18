@@ -2,27 +2,27 @@ const router = require('express').Router(),
     models = require('../models'),
     bucket = require('../index');
 
-router.post('/new', async function(_req, res, next) {
-  const { admin } = _req.session;
+router.post('/new', async function(req, res, next) {
+  const { admin } = req.session;
   const {
     title,
     content,
     categories,
     preview,
     created_at
-  } = _req.body;
+  } = req.body;
   if (true) {
-    if (_req.files) {
-      const file = bucket.file(_req.files.image.name)
+    if (req.files) {
+      const file = bucket.file(req.files.image.name)
       const stream = file.createWriteStream();
 
       stream.on('error', (err) => {
         next(err);
       });
 
-      stream.end(_req.files.image.data);
+      stream.end(req.files.image.data);
     }
-    const image = _req.files ? `${_req.files.image.name}` : null;
+    const image = req.files ? `${req.files.image.name}` : null;
     const post = await models.Post.create({
       title,
       content,

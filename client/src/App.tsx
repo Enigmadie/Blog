@@ -10,7 +10,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 import { RootState } from 'slices';
 import Posts from 'pages/Posts';
-import Post from 'pages/Post';
+import Post from 'pages/Post/index';
 import NewPostForm from 'pages/NewPostForm/index';
 import LoginForm from 'pages/LoginForm';
 import NoMatch from 'pages/NoMatch';
@@ -35,7 +35,7 @@ const App: React.FC = () => {
     <BrowserRouter>
       <Header />
       {isFetching && (<div className="loader" />)}
-      <div className="blog-content">
+      <main>
         <Switch>
           <Route path="/admin" component={LoginForm} />
           <Route path="/category/:name" component={Category} />
@@ -45,7 +45,7 @@ const App: React.FC = () => {
           <Route exact path="/" component={Posts} />
           <Route component={NoMatch} />
         </Switch>
-      </div>
+      </main>
     </BrowserRouter>
   );
 };

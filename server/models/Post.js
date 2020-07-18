@@ -28,15 +28,12 @@ module.exports = (db, DataTypes) => {
         len: [1, 350],
       },
     },
-    created_at: {
-      type: DataTypes.DATE,
-    },
     image: {
       type: DataTypes.STRING,
     },
   }, {
     tableName: 'post',
-    timestamps: false,
+    timestamps: true,
     underscored: true,
   });
 
@@ -46,7 +43,11 @@ module.exports = (db, DataTypes) => {
       as: 'categories',
       foreignKey: 'post_id',
       otherKey: 'category_id',
-    })
+    });
+
+    models.Post.hasMany(models.Comment, {
+      as: 'comments',
+    });
   };
 
   return Post;

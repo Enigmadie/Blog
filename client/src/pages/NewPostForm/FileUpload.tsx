@@ -1,10 +1,10 @@
 import React, { ReactElement, useState } from 'react';
-import { Post } from 'interfaces';
+import { PostFormik } from 'interfaces';
 import { FormikProps } from 'formik';
 import cn from 'classnames';
 
 interface Props {
-  prop: FormikProps<Post>;
+  prop: FormikProps<PostFormik>;
 }
 
 export default ({ prop }: Props): ReactElement => {

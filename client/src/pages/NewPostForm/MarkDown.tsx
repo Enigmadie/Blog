@@ -2,7 +2,7 @@ import ReactMde from 'react-mde';
 import Showdown from 'showdown';
 import React, { ReactElement, useState } from 'react';
 import { FormikProps } from 'formik';
-import { Post } from 'interfaces';
+import { PostFormik } from 'interfaces';
 
 const converter = new Showdown.Converter({
   tables: true,
@@ -13,7 +13,7 @@ const converter = new Showdown.Converter({
 
 interface Props {
   cn: string;
-  prop: FormikProps<Post>;
+  prop: FormikProps<PostFormik>;
 }
 
 export default ({ cn, prop }: Props): ReactElement => {

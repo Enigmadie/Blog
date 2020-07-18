@@ -18,10 +18,6 @@ const getFinderOptions = (query) => {
       action: (skip) => skip,
     },
     {
-      key: 'id',
-      action: (id) => id,
-    },
-    {
       key: 'order',
       action: (row) => {
         const order = (row[0] !== '!') ? 'DESC' : 'ASC';
@@ -34,6 +30,11 @@ const getFinderOptions = (query) => {
     const findedKey = _.find(querySelector, { key: item });
     if (findedKey) {
       finderOptions[item] = findedKey.action(query[item]);
+    } else {
+      if (!finderOptions.where) {
+        finderOptions.where = {};
+      }
+      finderOptions.where[item] = query[item];
     }
   });
 

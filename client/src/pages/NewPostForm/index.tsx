@@ -8,7 +8,7 @@ import { useFormik } from 'formik';
 import Select from 'react-select';
 import * as Yup from 'yup';
 import { find } from 'lodash';
-import { Post, Categories } from 'interfaces';
+import { PostFormik, Categories } from 'interfaces';
 import options from 'components/CategoriesSelect';
 
 import FileUpload from './FileUpload';
@@ -25,16 +25,15 @@ const PostForm = ({ history, match }: RouteComponentProps<TParams>): ReactElemen
   const { data } = useSelector((state: RootState) => state.posts);
   const { path, params } = match;
   const isEdited = /edit/gm.test(path);
-  const editedPost: Post | undefined = find(data, { id: params.id });
+  const editedPost: PostFormik | undefined = find(data, { id: params.id });
 
-  const defaultPostData: Post = {
+  const defaultPostData: PostFormik = {
     id: '',
     title: '',
     categories: [],
     preview: '',
     content: '',
     image: '',
-    created_at: '',
   };
 
   const initialValues = editedPost !== undefined ? editedPost : defaultPostData;
@@ -70,17 +69,14 @@ const PostForm = ({ history, match }: RouteComponentProps<TParams>): ReactElemen
       content,
       preview,
       image,
-      created_at,
     }, { resetForm }) => {
       const formData = new FormData();
-      const postDate = created_at !== '' ? created_at : new Date().toString();
       const categoriesColl = categories.map((el: Categories): string | undefined => el.value);
       formData.append('image', image);
       formData.append('title', title);
       formData.append('categories', JSON.stringify(categoriesColl));
       formData.append('preview', preview);
       formData.append('content', content);
-      formData.append('created_at', postDate);
       isEdited
         ? dispatch(asyncActions.editPost(id, formData))
         : dispatch(asyncActions.addPost(formData));

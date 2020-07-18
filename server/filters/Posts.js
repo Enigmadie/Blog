@@ -28,6 +28,6 @@ class Posts {
     const { count } = await this.model.findAndCountAll({});
     return count;
   }
-}
+};
 
 exports.default = Posts;

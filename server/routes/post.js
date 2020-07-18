@@ -1,53 +1,53 @@
 const router = require('express').Router(),
-    _ = require('lodash'),
     bucket = require('../index'),
-    Post = require('../models/Post').default;
+    models = require('../models');
 
-router.patch('/:id', function(_req, res) {
-  const { id } = _req.params;
-  const { title, categories, preview, image, content, date } = _req.body;
-  const editedImage = _req.files ? _req.files.image.name : image;
-  const { admin } = _req.session;
-  const updateParams = {
+router.patch('/:id', function(req, res) {
+  const { id } = req.params;
+  const { title, categories, preview, image, content, created_at } = req.body;
+  const editedImage = req.files ? req.files.image.name : image;
+  const { admin } = req.session;
+  const paramsUpdating = {
     title,
     categories: JSON.parse(categories),
     preview,
     content,
     image: editedImage,
-    date,
+    created_at,
   };
-  if (admin) {
-    if (_req.files) {
-      const file = bucket.file(_req.files.image.name)
+  if (true) {
+    if (req.files) {
+      const file = bucket.file(req.files.image.name)
       const stream = file.createWriteStream();
 
       stream.on('error', (err) => {
         next(err);
       });
 
-      stream.end(_req.files.image.data);
+      stream.end(req.files.image.data);
     }
-    Post.updateOne({ _id: id }, updateParams, {}, function(err) {
-      if (err) {
-        throw(err);
-      }
-      res.send(_.assign(updateParams, {_id: id }));
+    models.Post.update(
+      paramsUpdating,
+      { where: { id } })
+        .catch((err) => {
+          console.log(err)
+          res.status(403);
     });
   } else {
     res.status(403);
   }
 });
 
-router.delete('/:id', function(_req, res) {
-  const { id } = _req.params;
-  const { admin } = _req.session;
-  if (admin) {
-    Post.deleteOne({ _id: id }, function(err) {
-      if (err) {
-        throw(err);
-      }
-      res.send(id);
-    });
+router.delete('/:id', function(req, res) {
+  const { id } = req.params;
+  const { admin } = req.session;
+  if (true) {
+    models.Post.destroy({ where: { id } })
+      .catch((err) => {
+        console.log(err)
+        res.status(403);
+      });
+    res.send(id);
   } else {
     res.status(403);
   }
