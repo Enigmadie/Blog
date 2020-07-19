@@ -29,6 +29,17 @@ export interface Authentication {
   password: string;
 }
 
+export interface Comment {
+  id: string;
+  content: string;
+  createdAt: string;
+  updatedAt: string;
+  postId: string;
+}
+
+export interface CommentFormik {
+  content: string;
+}
 
 export interface Style {
   [key: string]: string;

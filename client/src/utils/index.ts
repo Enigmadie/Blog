@@ -1,3 +1,5 @@
+/* eslint-disable no-param-reassign */
+
 import i18n from 'i18next';
 import { toast } from 'react-toastify';
 import { formatDistanceToNow, format, differenceInDays } from 'date-fns';

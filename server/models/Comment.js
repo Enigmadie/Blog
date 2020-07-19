@@ -8,7 +8,7 @@ module.exports = (db, DataTypes) => {
       autoIncrement: true,
     },
     content: {
-      type: DataTypes.STRING,
+      type: DataTypes.TEXT,
       allowNull: false,
       validate: {
         len: [1, 50000],
@@ -22,7 +22,7 @@ module.exports = (db, DataTypes) => {
 
   Comment.associate = (models) => {
     models.Comment.belongsTo(models.Post, {
-      foreignKey: 'post_id',
+      foreignKey: 'postId',
       as: 'post',
     });
   };

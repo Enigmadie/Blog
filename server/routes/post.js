@@ -2,6 +2,56 @@ const router = require('express').Router(),
     bucket = require('../index'),
     models = require('../models');
 
+router.post('/', async function(req, res) {
+  const { admin } = req.session;
+  const {
+    title,
+    content,
+    categories,
+    preview,
+    created_at
+  } = req.body;
+  if (true) {
+    if (req.files) {
+      const file = bucket.file(req.files.image.name)
+      const stream = file.createWriteStream();
+
+      stream.on('error', (err) => {
+        console.log(err);
+      });
+
+      stream.end(req.files.image.data);
+    }
+    const image = req.files ? `${req.files.image.name}` : null;
+    const post = await models.Post.create({
+      title,
+      content,
+      preview,
+      image,
+      created_at,
+    });
+
+    const categoriesArr = JSON.parse(categories);
+
+    categoriesArr.forEach(async (category) => {
+      const categoryItem = await models.Category.findAll({
+        where: { category }
+      });
+
+      await models.PostCategories.create({
+        createdAt: new Date(),
+        category_id: categoryItem[0].dataValues.id,
+        post_id: post.dataValues.id,
+      });
+    });
+
+    res.send(post);
+    return;
+  } else {
+    res.status(403);
+  }
+});
+
 router.patch('/:id', function(req, res) {
   const { id } = req.params;
   const { title, categories, preview, image, content, created_at } = req.body;

@@ -8,6 +8,7 @@ class Comments {
 
   async getComments() {
     const finderOptions = getFinderOptions(this.query);
+    finderOptions.attributes = ['id', 'content', 'createdAt', 'updatedAt'];
     const comments = await this.model.findAll(finderOptions);
     return comments;
   }

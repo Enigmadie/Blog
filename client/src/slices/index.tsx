@@ -11,29 +11,30 @@ import fetchingState, {
   fetchingStateActions,
   fetchPostsData,
   fetchActivePostData,
+  fetchActivePostComments,
   fetchAdminData,
   fetchCategoryData,
 } from './fetchingState';
 
 import isAdmin, { isAdminActions, authenticationAdmin } from './isAdmin';
-import currentPage, { currentPageActions } from './currentPage';
-import activePost, { activePostActions } from './activePost';
+import activePost, { activePostActions, addComment } from './activePost';
 
 const asyncActions = {
   addPost,
   editPost,
   removePost,
+  addComment,
   authenticationAdmin,
   fetchPostsData,
   fetchActivePostData,
   fetchAdminData,
   fetchCategoryData,
+  fetchActivePostComments,
 };
 
 const actions = {
   ...postsActions,
   ...isAdminActions,
-  /* ...currentPageActions, */
   ...activePostActions,
   ...fetchingStateActions,
 };
@@ -41,7 +42,6 @@ const actions = {
 const rootReducer = combineReducers({
   posts,
   isAdmin,
-  /* currentPage, */
   activePost,
   fetchingState,
 });

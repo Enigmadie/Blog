@@ -19,12 +19,13 @@ router.get('/posts', async function(req, res) {
 });
 
 router.get('/comments', async function(req, res) {
-  const commentsFilter = new CommentsFilter(req.query, models.Comments);
-  const comments = await commentsFilter.getPosts();
+  const commentsFilter = new CommentsFilter(req.query, models.Comment);
+  const comments = await commentsFilter.getComments();
   if (!comments) {
     res.status(422);
     return;
   }
+  console.log(comments)
   res.send({
     comments,
   });

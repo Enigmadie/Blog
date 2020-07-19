@@ -1,4 +1,5 @@
-const getFinderOptions = require('../utils');
+const getFinderOptions = require('../utils'),
+  _ = require('lodash');
 
 class Posts {
   constructor(query, model) {
@@ -7,14 +8,15 @@ class Posts {
   }
 
   async getPosts(associateModel) {
-    const finderOptions = getFinderOptions(this.query);
-    const isCategory = this.query.category;
+    const category = this.query.category;
+    const omitedQuery = _.omit(this.query, 'category');
+    const finderOptions = getFinderOptions(omitedQuery);
 
     finderOptions.include = [{
       model: associateModel,
       as: 'categories',
       attributes: ['category'],
-      where: isCategory ? { category: this.query.category } : null,
+      where: category ? { category } : null,
       through: {
         attributes: [],
       }

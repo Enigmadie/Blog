@@ -62,7 +62,7 @@ const Post = ({ match }: RouteComponentProps<TParams>): ReactElement => {
             <div className="poster-post" style={imgStyle} />
           </div>
           <div dangerouslySetInnerHTML={{ __html: post.content }} />
-          <Comments />
+          <Comments id={activePostId} />
         </div>
       </div>
       <div className="right-block-post">

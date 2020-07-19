@@ -1,5 +1,5 @@
-const router = require('express').Router(),
-    Admin = require('../models/Admin').default;
+const router = require('express').Router();
+    // Admin = require('../models/Admin').default;
 
 router.post('/', function(req, res) {
   const { login, password } = req.body.data;

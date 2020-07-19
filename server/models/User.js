@@ -15,11 +15,12 @@
 // exports.default = mongoose.model('Admin', adminSchema);
 
 module.exports = (db, DataTypes) => {
-  const Admin = db.define('Admin', {
+  const User = db.define('User', {
     login: {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
+        isEmail: true,
         len: [1, 60],
       },
     },
@@ -30,7 +31,11 @@ module.exports = (db, DataTypes) => {
         len: [1, 50000],
       },
     },
+  }, {
+    tableName: 'user',
+    timestamps: true,
+    underscored: true,
   });
 
-  return Admin
+  return User;
 };

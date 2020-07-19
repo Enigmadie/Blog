@@ -42,10 +42,10 @@ const {
   fetchDataFromServerFailure,
 } = slice.actions;
 
-const fetchPostsData = (page: number, limit = 12): AppThunk => async (dispatch) => {
+const fetchPostsData = (page: number, limit = 12): AppThunk => async (dispatch): Promise<void> => {
   dispatch(fetchDataFromServerRequest());
   try {
-    const fetchUrl = routes.postsPath({
+    const fetchUrl = routes.postsApiPath({
       page,
       offset: limit * (Number(page) - 1),
       limit,
@@ -64,10 +64,10 @@ const fetchPostsData = (page: number, limit = 12): AppThunk => async (dispatch) 
   }
 };
 
-const fetchCategoryData = (category: string): AppThunk => async (dispatch) => {
+const fetchCategoryData = (category: string): AppThunk => async (dispatch): Promise<void> => {
   dispatch(fetchDataFromServerRequest());
   try {
-    const fetchUrl = routes.postsPath({
+    const fetchUrl = routes.postsApiPath({
       category,
       limit: 20,
       order: 'created_at',
@@ -82,15 +82,16 @@ const fetchCategoryData = (category: string): AppThunk => async (dispatch) => {
   }
 };
 
-const fetchActivePostData = (id: string): AppThunk => async (dispatch) => {
+const fetchActivePostData = (id: string): AppThunk => async (dispatch): Promise<void> => {
   dispatch(fetchDataFromServerRequest());
   try {
-    const fetchUrl = routes.postsPath({
+    const fetchUrl = routes.postsApiPath({
       id,
     });
     const { data: { posts } } = await axios.get(fetchUrl);
+
     const post = mapCategories(posts);
-    dispatch(actions.initActivePostState({
+    dispatch(actions.initActivePostData({
       post: post[0],
     }));
     dispatch(fetchDataFromServerSuccess());
@@ -101,7 +102,24 @@ const fetchActivePostData = (id: string): AppThunk => async (dispatch) => {
   }
 };
 
-const fetchAdminData = (): AppThunk => async (dispatch) => {
+
+const fetchActivePostComments = (id: string): AppThunk => async (dispatch): Promise<void> => {
+  dispatch(fetchDataFromServerRequest());
+  try {
+    const fetchUrl = routes.commentsApiPath({
+      postId: id,
+    });
+    const { data: { comments } } = await axios.get(fetchUrl);
+    dispatch(actions.initActivePostComments({ comments }));
+    dispatch(fetchDataFromServerSuccess());
+  } catch (e) {
+    dispatch(fetchDataFromServerFailure());
+    selectErrorMessage(e);
+    throw e;
+  }
+};
+
+const fetchAdminData = (): AppThunk => async (dispatch): Promise<void> => {
   dispatch(fetchDataFromServerRequest());
   try {
     const fetchUrl = routes.adminApiPath();
@@ -120,6 +138,7 @@ const fetchingStateActions = slice.actions;
 export {
   fetchingStateActions,
   fetchPostsData,
+  fetchActivePostComments,
   fetchActivePostData,
   fetchAdminData,
   fetchCategoryData,

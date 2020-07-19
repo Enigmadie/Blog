@@ -15,7 +15,7 @@ module.exports = (db, DataTypes) => {
       },
     },
     content: {
-      type: DataTypes.STRING,
+      type: DataTypes.TEXT,
       allowNull: false,
       validate: {
         len: [1, 50000],

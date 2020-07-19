@@ -119,7 +119,6 @@ const PostForm = ({ history, match }: RouteComponentProps<TParams>): ReactElemen
     error: hasContentErrors,
   });
 
-
   return (
     <div className="admin-form">
       <form onSubmit={handleSubmit}>

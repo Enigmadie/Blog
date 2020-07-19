@@ -16,9 +16,11 @@ export interface Query {
 }
 
 export default {
-  adminPath: (): string => [host, 'admin'].join('/'),
   adminApiPath: (): string => [host, prefix, 'admin'].join('/'),
-  postsPath: (query: Query): string => [host, prefix, 'posts', `?${querystring.stringify(query)}`].join('/'),
-  addPostPath: (): string => [host, 'posts', 'new'].join('/'),
-  postPath: (id: string): string => [host, 'post', id].join('/'),
+  postsApiPath: (query: Query): string => [host, prefix, 'posts', `?${querystring.stringify(query)}`].join('/'),
+  commentsApiPath: (query: Query): string => [host, prefix, 'comments', `?${querystring.stringify(query)}`].join('/'),
+
+  adminPath: (): string => [host, 'admin'].join('/'),
+  postPath: (id = ''): string => [host, 'post', id].join('/'),
+  commentPath: (id = ''): string => [host, 'comment', id].join('/'),
 };
