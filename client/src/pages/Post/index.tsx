@@ -11,20 +11,29 @@ type TParams = { id: string };
 
 const Post = ({ match }: RouteComponentProps<TParams>): ReactElement => {
   const dispatch = useDispatch();
-  const { fetchActivePostData, fetchPostsData, removePost } = asyncActions;
-  const { isAdmin, posts, activePost: { post } } = useSelector((state: RootState) => state);
+  const {
+    fetchActivePostComments,
+    fetchActivePostData,
+    fetchPostsData,
+    removePost,
+  } = asyncActions;
+
+  const {
+    isAdmin,
+    posts,
+    activePost: { post },
+  } = useSelector((state: RootState) => state);
 
   const activePostId = match.params.id;
 
   useEffect(() => {
     dispatch(fetchActivePostData(activePostId));
-  }, [activePostId]);
+    dispatch(fetchActivePostComments(activePostId));
 
-  useEffect(() => {
     const firstPage = 1;
     const limitPosts = 5;
     dispatch(fetchPostsData(firstPage, limitPosts));
-  }, []);
+  }, [activePostId]);
 
   const removeHandler = (): void => {
     dispatch(removePost(post.id));
@@ -69,7 +78,7 @@ const Post = ({ match }: RouteComponentProps<TParams>): ReactElement => {
         <div className="border-posts" />
         <h2 className="new-posts-topic">New Posts</h2>
         <div className="recent-posts">
-          {posts.data.map(({ title, id }) => <Link to={`/post/${id}`}><h3>{title}</h3></Link>)}
+          {posts.data.map(({ title, id }) => <div key={id}><Link to={`/post/${id}`}><h3>{title}</h3></Link></div>)}
         </div>
       </div>
     </section>

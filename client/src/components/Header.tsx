@@ -118,7 +118,7 @@ const Header: React.FC = () => {
             {CategoriesColl.map(({ value }: Categories) => {
               const categoryHref = `/category/${value}`;
               return (
-                <li className={dropLiCn}>
+                <li key={value} className={dropLiCn}>
                   <Link to={categoryHref}>{value}</Link>
                 </li>
               );

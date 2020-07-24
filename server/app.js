@@ -9,15 +9,12 @@ const Express = require('express'),
     { Storage } = require('@google-cloud/storage');
     require('dotenv').config();
 
-const port = process.env.PORT || 5000;
-
 const googleCloud = new Storage({
   keyFilename: path.join(__dirname, './gstore.json'),
   projectId: 'inlaid-reach-266916',
 })
 
 db.sequelize.authenticate()
-  .then(() => console.log('Database connected'))
   .catch((err) => console.log(`Error: ${err}`))
 
 const bucket = googleCloud.bucket('blog-enigma');
@@ -41,6 +38,5 @@ app.use(session({
 
 app.use(require('./routes/index'));
 
-app.listen(port, function() {
-  console.log(`Server was started on ${port}`);
-});
+module.exports = app;
+

@@ -17,13 +17,20 @@ import fetchingState, {
 } from './fetchingState';
 
 import isAdmin, { isAdminActions, authenticationAdmin } from './isAdmin';
-import activePost, { activePostActions, addComment } from './activePost';
+import activePost, {
+  activePostActions,
+  addComment,
+  editComment,
+  removeComment,
+} from './activePost';
 
 const asyncActions = {
   addPost,
   editPost,
   removePost,
   addComment,
+  editComment,
+  removeComment,
   authenticationAdmin,
   fetchPostsData,
   fetchActivePostData,

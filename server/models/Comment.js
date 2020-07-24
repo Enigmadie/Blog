@@ -1,5 +1,7 @@
 'use strict';
 
+const getFinderOptions = require('../utils');
+
 module.exports = (db, DataTypes) => {
   const Comment = db.define('Comment', {
     id: {
@@ -26,6 +28,18 @@ module.exports = (db, DataTypes) => {
       as: 'post',
     });
   };
+
+  Comment.getComments = async (query, models) => {
+    const finderOptions = getFinderOptions(query);
+    finderOptions.attributes = ['id', 'content', 'createdAt', 'updatedAt'];
+    const comments = await models.Comment.findAll(finderOptions);
+    return comments;
+  };
+
+  Comment.getCount = async (models) => {
+    const { count } = await models.Comment.findAndCountAll({});
+    return count;
+  }
 
   return Comment;
 };

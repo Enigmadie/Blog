@@ -1,5 +1,5 @@
 const router = require('express').Router(),
-    bucket = require('../index'),
+    bucket = require('../app'),
     models = require('../models');
 
 router.post('/', async function(req, res) {
@@ -9,7 +9,6 @@ router.post('/', async function(req, res) {
     content,
     categories,
     preview,
-    created_at
   } = req.body;
   if (true) {
     if (req.files) {
@@ -28,7 +27,6 @@ router.post('/', async function(req, res) {
       content,
       preview,
       image,
-      created_at,
     });
 
     const categoriesArr = JSON.parse(categories);
@@ -52,9 +50,9 @@ router.post('/', async function(req, res) {
   }
 });
 
-router.patch('/:id', function(req, res) {
+router.patch('/:id', async function(req, res) {
   const { id } = req.params;
-  const { title, categories, preview, image, content, created_at } = req.body;
+  const { title, categories, preview, image, content } = req.body;
   const editedImage = req.files ? req.files.image.name : image;
   const { admin } = req.session;
   const paramsUpdating = {
@@ -63,7 +61,6 @@ router.patch('/:id', function(req, res) {
     preview,
     content,
     image: editedImage,
-    created_at,
   };
   if (true) {
     if (req.files) {
@@ -76,7 +73,7 @@ router.patch('/:id', function(req, res) {
 
       stream.end(req.files.image.data);
     }
-    models.Post.update(
+    await models.Post.update(
       paramsUpdating,
       { where: { id } })
         .catch((err) => {
@@ -88,11 +85,11 @@ router.patch('/:id', function(req, res) {
   }
 });
 
-router.delete('/:id', function(req, res) {
+router.delete('/:id', async function(req, res) {
   const { id } = req.params;
   const { admin } = req.session;
   if (true) {
-    models.Post.destroy({ where: { id } })
+    await models.Post.destroy({ where: { id } })
       .catch((err) => {
         console.log(err)
         res.status(403);

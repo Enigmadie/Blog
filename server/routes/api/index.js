@@ -1,13 +1,9 @@
 const router = require('express').Router(),
-    models = require('../../models'),
-    PostsFilter = require('../../filters/Posts').default,
-    CommentsFilter = require('../../filters/Comments').default;
+    models = require('../../models');
 
 router.get('/posts', async function(req, res) {
-  const postsFilter = new PostsFilter(req.query, models.Post);
-  const posts = await postsFilter.getPosts(models.Category);
-  const postsCount = await postsFilter.getCount();
-
+  const posts = await models.Post.getPosts(req.query, models);
+  const postsCount = await models.Post.getCount(models);
   if (!posts) {
     res.status(422);
     return;
@@ -15,17 +11,15 @@ router.get('/posts', async function(req, res) {
   res.send({
     posts,
     postsCount,
-  });
+  }).status(200);
 });
 
 router.get('/comments', async function(req, res) {
-  const commentsFilter = new CommentsFilter(req.query, models.Comment);
-  const comments = await commentsFilter.getComments();
+  const comments = await models.Comment.getComments(req.query, models);
   if (!comments) {
     res.status(422);
     return;
   }
-  console.log(comments)
   res.send({
     comments,
   });

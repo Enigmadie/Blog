@@ -34,7 +34,6 @@ export interface Comment {
   content: string;
   createdAt: string;
   updatedAt: string;
-  postId: string;
 }
 
 export interface CommentFormik {

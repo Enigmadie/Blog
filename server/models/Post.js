@@ -1,5 +1,8 @@
 'use strict';
 
+const getFinderOptions = require('../utils'),
+  _ = require('lodash');
+
 module.exports = (db, DataTypes) => {
   const Post = db.define('Post', {
     id: {
@@ -48,6 +51,30 @@ module.exports = (db, DataTypes) => {
     models.Post.hasMany(models.Comment, {
       as: 'comments',
     });
+  };
+
+  Post.getPosts = async (query, models) => {
+    const category = query.category;
+    const omitedQuery = _.omit(query, 'category');
+    const finderOptions = getFinderOptions(omitedQuery);
+
+    finderOptions.include = [{
+      model: models.Category,
+      as: 'categories',
+      attributes: ['category'],
+      where: category ? { category } : null,
+      through: {
+        attributes: [],
+      }
+    }];
+
+    const posts = await models.Post.findAll(finderOptions);
+    return posts;
+  };
+
+  Post.getCount = async (models) => {
+    const { count } = await models.Post.findAndCountAll({});
+    return count;
   };
 
   return Post;

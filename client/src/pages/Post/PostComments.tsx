@@ -1,9 +1,9 @@
-import React, { useEffect, ReactElement } from 'react';
+import React, { ReactElement } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { RouteComponentProps, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import { CommentFormik } from 'interfaces';
+import { CommentFormik, Comment } from 'interfaces';
 import cn from 'classnames';
 
 import { asyncActions, RootState } from 'slices';
@@ -12,12 +12,13 @@ type TParams = { id: string };
 
 const PostComments = ({ id }: TParams): ReactElement => {
   const dispatch = useDispatch();
-  const { fetchActivePostComments } = asyncActions;
   const { activePost: { comments } } = useSelector((state: RootState) => state);
 
   const initialValues: CommentFormik = {
     content: '',
   };
+
+  const { removeComment } = asyncActions;
 
   const formik = useFormik({
     initialValues,
@@ -33,11 +34,6 @@ const PostComments = ({ id }: TParams): ReactElement => {
       resetForm();
     },
   });
-
-  useEffect(() => {
-    dispatch(fetchActivePostComments(id));
-    console.log(comments);
-  }, []);
 
   const {
     errors,
@@ -55,23 +51,36 @@ const PostComments = ({ id }: TParams): ReactElement => {
     error: hasContentErrors,
   });
 
+  const removeHandler = (commentId: string): void => {
+    dispatch(removeComment(commentId));
+  };
+
   return (
     <>
-      <form onSubmit={handleSubmit}>
-        <input
-          type="content"
-          name="content"
-          value={values.content}
-          onChange={handleChange}
-          className={contentCn}
-        />
-        <button type="submit" className="blog-submit" disabled={isSubmitting}>
-          Add
-        </button>
-      </form>
-      <div className="post-comments">
-        {comments.map((comment) => (
-          <p>{comment}</p>
+      <div className="post-comments-form">
+        <form onSubmit={handleSubmit}>
+          <input
+            type="content"
+            name="content"
+            value={values.content}
+            onChange={handleChange}
+            className={contentCn}
+          />
+          <button type="submit" className="blog-submit" disabled={isSubmitting}>
+            Add
+          </button>
+        </form>
+        <div className="post-comments-counter">
+          Comments:
+          {comments.length}
+        </div>
+      </div>
+      <div className="post-comments-wrapper">
+        {comments.map((comment: Comment) => (
+          <div className="post-comment" key={comment.id}>
+            <p>{comment.content}</p>
+            <button type="button" onClick={(): void => removeHandler(comment.id)}>Delete</button>
+          </div>
         ))}
       </div>
     </>

@@ -42,9 +42,11 @@ const Posts: React.FC = () => {
               </Link>
               <div className="categories">
                 {post.categories && post.categories.map((el: Categories) => (
-                  <Link key={el.value} to={`/category/${el.value}`}>
-                    {el.value}
-                  </Link>
+                  <div key={el.value}>
+                    <Link to={`/category/${el.value}`}>
+                      {el.value}
+                    </Link>
+                  </div>
                 ))}
               </div>
               <Link to={postPath}><h2>{post.title}</h2></Link>

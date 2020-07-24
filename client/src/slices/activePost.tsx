@@ -49,9 +49,9 @@ const slice = createSlice({
       const currentCommentId = _.findIndex(state.comments, { id });
       state.comments[currentCommentId] = payload;
     },
-    removeCommentSuccess(state, action: PayloadAction<Comment>): void {
+    removeCommentSuccess(state, action: PayloadAction<number>): void {
       const { payload } = action;
-      state.comments.unshift(payload);
+      _.remove(state.comments, (comment) => comment.id === String(payload));
     },
   },
 });
@@ -64,13 +64,43 @@ const {
   removeCommentSuccess,
 } = slice.actions;
 
-const addComment = (id: string, content: string): AppThunk => async (dispatch): Promise<void> => {
+const addComment = (
+  postId: string,
+  content: string,
+): AppThunk => async (dispatch): Promise<void> => {
   try {
     const response = await axios.post(routes.commentPath(), {
       content,
-      postId: id,
+      postId,
     });
     dispatch(addCommentSuccess(response.data));
+  } catch (e) {
+    selectErrorMessage(e);
+    throw e;
+  }
+};
+
+const editComment = (
+  id: string,
+  postId: string,
+  content: string,
+): AppThunk => async (dispatch): Promise<void> => {
+  try {
+    const response = await axios.patch(routes.commentPath(id), {
+      content,
+      postId,
+    });
+    dispatch(editCommentSuccess(response.data));
+  } catch (e) {
+    selectErrorMessage(e);
+    throw e;
+  }
+};
+
+const removeComment = (id: string): AppThunk => async (dispatch): Promise<void> => {
+  try {
+    const response = await axios.delete(routes.commentPath(id));
+    dispatch(removeCommentSuccess(response.data));
   } catch (e) {
     selectErrorMessage(e);
     throw e;
@@ -80,6 +110,8 @@ const addComment = (id: string, content: string): AppThunk => async (dispatch): 
 export {
   actions as activePostActions,
   addComment,
+  editComment,
+  removeComment,
 };
 
 export default slice.reducer;

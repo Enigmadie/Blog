@@ -7,7 +7,7 @@ const Sequelize = require('sequelize'),
 const dbUrl = process.env.DB_URL;
 
 const sequelize = new Sequelize(dbUrl, {
-  logging: true,
+  logging: false,
 });
 
 const db = {};
