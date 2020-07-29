@@ -1,0 +1,17 @@
+---
+
+plugins:
+  - jest
+
+extends:
+  - "eslint:recommended"
+  - "airbnb-base"
+
+env:
+  node: true
+  jest: true
+  es6: true
+  es2017: true
+
+rules:
+  no-console: 0

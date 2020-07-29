@@ -1,5 +1,3 @@
-'use strict';
-
 module.exports = (db, DataTypes) => {
   const PostCategories = db.define('PostCategories', {
     id: {

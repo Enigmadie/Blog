@@ -21,8 +21,8 @@ const getFinderOptions = (query) => {
       key: 'order',
       action: (row) => {
         const order = (row[0] !== '!') ? 'DESC' : 'ASC';
-        return [ [ row, order ] ]
-      }
+        return [[row, order]];
+      },
     },
   ];
 

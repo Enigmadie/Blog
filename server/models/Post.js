@@ -1,7 +1,5 @@
-'use strict';
-
-const getFinderOptions = require('../utils'),
-  _ = require('lodash');
+const _ = require('lodash');
+const getFinderOptions = require('../utils');
 
 module.exports = (db, DataTypes) => {
   const Post = db.define('Post', {
@@ -54,7 +52,7 @@ module.exports = (db, DataTypes) => {
   };
 
   Post.getPosts = async (query, models) => {
-    const category = query.category;
+    const { category } = query;
     const omitedQuery = _.omit(query, 'category');
     const finderOptions = getFinderOptions(omitedQuery);
 
@@ -65,7 +63,7 @@ module.exports = (db, DataTypes) => {
       where: category ? { category } : null,
       through: {
         attributes: [],
-      }
+      },
     }];
 
     const posts = await models.Post.findAll(finderOptions);
@@ -79,4 +77,3 @@ module.exports = (db, DataTypes) => {
 
   return Post;
 };
-

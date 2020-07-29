@@ -1,5 +1,3 @@
-'use strict';
-
 const getFinderOptions = require('../utils');
 
 module.exports = (db, DataTypes) => {
@@ -39,8 +37,7 @@ module.exports = (db, DataTypes) => {
   Comment.getCount = async (models) => {
     const { count } = await models.Comment.findAndCountAll({});
     return count;
-  }
+  };
 
   return Comment;
 };
-

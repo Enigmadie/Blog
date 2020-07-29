@@ -1,21 +1,25 @@
 #!/usr/bin/env node
 
-const Express = require('express'),
-    cors = require('cors'),
-    path = require('path'),
-    fileUpload = require('express-fileupload'),
-    session = require('express-session'),
-    db = require('./models'),
-    { Storage } = require('@google-cloud/storage');
-    require('dotenv').config();
+const Express = require('express');
+const cors = require('cors');
+const path = require('path');
+const fileUpload = require('express-fileupload');
+const session = require('express-session');
+const { Storage } = require('@google-cloud/storage');
+const db = require('./models');
+require('dotenv').config();
 
 const googleCloud = new Storage({
   keyFilename: path.join(__dirname, './gstore.json'),
   projectId: 'inlaid-reach-266916',
-})
+});
 
 db.sequelize.authenticate()
-  .catch((err) => console.log(`Error: ${err}`))
+  .catch((err) => console.log(`Error: ${err}`));
+
+if (process.env.NODE_ENV === 'tes') {
+  console.log(222);
+}
 
 const bucket = googleCloud.bucket('blog-enigma');
 
@@ -39,4 +43,3 @@ app.use(session({
 app.use(require('./routes/index'));
 
 module.exports = app;
-

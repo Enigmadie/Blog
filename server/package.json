@@ -4,14 +4,14 @@
   "description": "server blog",
   "main": "server.js",
   "scripts": {
-    "test": "jest --runInBand --detectOpenHandles",
+    "test": "jest --detectOpenHandles",
     "start": "nodemon server.js"
   },
   "jest": {
     "testEnvironment": "node",
-      "coveragePathIgnorePatterns": [
-        "/node_modules/"
-      ]
+    "coveragePathIgnorePatterns": [
+      "/node_modules/"
+    ]
   },
   "author": "",
   "license": "ISC",
@@ -31,7 +31,13 @@
     "sequelize-cli": "^6.2.0"
   },
   "devDependencies": {
+    "eslint": "^7.5.0",
+    "eslint-config-airbnb-base": "^14.2.0",
+    "eslint-plugin-import": "^2.22.0",
+    "eslint-plugin-jest": "^23.19.0",
     "jest": "^26.1.0",
+    "jest-cli": "^26.1.0",
+    "sequelize-mock": "^0.10.2",
     "supertest": "^4.0.2"
   }
 }

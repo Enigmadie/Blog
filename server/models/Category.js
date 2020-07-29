@@ -1,5 +1,3 @@
-'use strict';
-
 module.exports = (db, DataTypes) => {
   const Category = db.define('Category', {
     id: {
