@@ -119,12 +119,10 @@ const fetchActivePostComments = (id: string): AppThunk => async (dispatch): Prom
   }
 };
 
-const fetchAdminData = (): AppThunk => async (dispatch): Promise<void> => {
+const fetchAdminData = (): AppThunk => (dispatch): void => {
   dispatch(fetchDataFromServerRequest());
   try {
-    const fetchUrl = routes.adminApiPath();
-    const { data } = await axios.get(fetchUrl);
-    dispatch(actions.initAdminState({ status: data.isAdmin }));
+    dispatch(actions.initAdminState());
     dispatch(fetchDataFromServerSuccess());
   } catch (e) {
     dispatch(fetchDataFromServerFailure());

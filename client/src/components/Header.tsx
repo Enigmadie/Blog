@@ -12,7 +12,7 @@ const Header: React.FC = () => {
   const [isCloseMenu, setCloseMenu] = useState(false);
   const [isLargeSize, setLargeSizeState] = useState(isLarge);
   const [subMenu, setSubMenuState] = useState(false);
-  const { isAdmin } = useSelector((state: RootState) => state);
+  const { profile } = useSelector((state: RootState) => state);
 
   const smallMenuCn = cn({
     'menu-btn': true,
@@ -101,12 +101,18 @@ const Header: React.FC = () => {
           <li className={liCn}>
             <Link to="/contact">Contact</Link>
           </li>
-          {isAdmin.status
+          {profile.isAdmin
             && (
             <li className={liCn}>
               <Link className="new-post-li" to="posts/new">New post</Link>
             </li>
             )}
+          <li className={liCn}>
+            <Link to="/signup">Sign up</Link>
+          </li>
+          <li className={liCn}>
+            <Link to="/login">Log In</Link>
+          </li>
         </ul>
         <div className={categoriesDropCn}>
           <ol

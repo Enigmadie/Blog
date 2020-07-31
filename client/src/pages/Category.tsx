@@ -12,7 +12,7 @@ type TParams = { name: string };
 const Category = ({ match }: RouteComponentProps<TParams>): ReactElement => {
   const dispatch = useDispatch();
   const { fetchCategoryData, removePost } = asyncActions;
-  const { isAdmin, posts } = useSelector((state: RootState) => state);
+  const { profile, posts } = useSelector((state: RootState) => state);
 
   const category = match.params.name;
   const { t } = useTranslation();
@@ -53,8 +53,8 @@ const Category = ({ match }: RouteComponentProps<TParams>): ReactElement => {
                 <div className="posts-bottom-panel">
                   <p>{date}</p>
                   <div className="admin-post-panel">
-                    {isAdmin.status && <Link to={editPostPath}><img alt="edit" src="https://img.icons8.com/windows/60/000000/edit.png" /></Link>}
-                    {isAdmin.status && <button type="button" onClick={removeHandler}><img alt="remove" src="https://img.icons8.com/windows/64/000000/delete-sign.png" /></button>}
+                    {profile.isAdmin && <Link to={editPostPath}><img alt="edit" src="https://img.icons8.com/windows/60/000000/edit.png" /></Link>}
+                    {profile.isAdmin && <button type="button" onClick={removeHandler}><img alt="remove" src="https://img.icons8.com/windows/64/000000/delete-sign.png" /></button>}
                   </div>
                 </div>
               </div>

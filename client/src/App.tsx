@@ -12,7 +12,8 @@ import { RootState } from 'slices';
 import Posts from 'pages/Posts';
 import Post from 'pages/Post/index';
 import NewPostForm from 'pages/NewPostForm/index';
-import LoginForm from 'pages/LoginForm';
+import SignUp from 'pages/LoginForm/SignUp';
+import LogIn from 'pages/LoginForm/LogIn';
 import NoMatch from 'pages/NoMatch';
 import Category from 'pages/Category';
 import Header from 'components/Header';
@@ -27,9 +28,9 @@ toast.configure({
 });
 
 const App: React.FC = () => {
-  const { fetchingState, isAdmin } = useSelector((state: RootState) => state);
+  const { fetchingState, profile } = useSelector((state: RootState) => state);
   const isFetching = fetchingState.processing === true;
-  const NewPostRoute = isAdmin.status ? NewPostForm : NoMatch;
+  const NewPostRoute = profile.isAdmin ? NewPostForm : NoMatch;
 
   return (
     <BrowserRouter>
@@ -37,7 +38,8 @@ const App: React.FC = () => {
       {isFetching && (<div className="loader" />)}
       <main>
         <Switch>
-          <Route path="/admin" component={LoginForm} />
+          <Route path="/signup" component={SignUp} />
+          <Route path="/login" component={LogIn} />
           <Route path="/category/:name" component={Category} />
           <Route path="/posts/new" component={NewPostRoute} />
           <Route exact path="/post/:id" component={Post} />

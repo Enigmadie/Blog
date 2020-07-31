@@ -174,7 +174,7 @@ nav .sub-menu {
   right: 0px;
   top: 120px;
   width: 375px;
-  height: 370px;
+  height: 550px;
   display: flex;
   background: rgba(0, 0, 0, 0.70);
   backdrop-filter: blur(20px);
@@ -209,6 +209,22 @@ nav .nav-links {
   width: 100%;
   padding-left: 0;
   li {
+    &:nth-last-child(2) {
+      margin-top: 35px;
+      margin-bottom: 5px;
+      &:before {
+        content: '';
+        position: absolute;
+        display: block;
+        bottom: 70px;
+        right: 86px;
+        height: 3px;
+        width: 200px;
+        color: white;
+        background-color: white;
+      }
+      // border-top: 3px solid white;
+    }
     @include flex-center();
     position: relative;
     width: 100%;

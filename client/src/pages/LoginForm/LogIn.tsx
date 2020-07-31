@@ -8,9 +8,9 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import cn from 'classnames';
 
-const LoginForm = ({ history }: RouteComponentProps): ReactElement => {
+const LogIn = ({ history }: RouteComponentProps): ReactElement => {
   const dispatch = useDispatch();
-  const { isAdmin } = useSelector((state: RootState) => state);
+  const { profile } = useSelector((state: RootState) => state);
   const { t } = useTranslation();
   const blankMsg = t('blank');
 
@@ -24,8 +24,8 @@ const LoginForm = ({ history }: RouteComponentProps): ReactElement => {
       password: Yup.string().required(blankMsg),
     }),
     onSubmit: ({ login, password }, { resetForm }): void => {
-      dispatch(asyncActions.authenticationAdmin({ login, password }));
-      history.push('/');
+      dispatch(asyncActions.authenticationProfile({ login, password }));
+      /* history.push('/'); */
       resetForm();
     },
   });
@@ -42,7 +42,7 @@ const LoginForm = ({ history }: RouteComponentProps): ReactElement => {
   const hasLoginErrors = errors.login && touched.login;
   const hasPasswordErrors = errors.password && touched.password;
   const hasInputErrors = hasLoginErrors || hasPasswordErrors;
-  const isValidState = isAdmin.validationState === 'valid';
+  const isValidState = profile.validationState === 'valid';
 
   const isDisabled = hasInputErrors || isSubmitting || !isValidState;
 
@@ -58,8 +58,9 @@ const LoginForm = ({ history }: RouteComponentProps): ReactElement => {
 
   return (
     <form className="login-form" onSubmit={handleSubmit}>
+      <h1>Log in</h1>
       <label htmlFor="login">
-        Login:
+        Name:
         <input
           name="login"
           type="text"
@@ -85,4 +86,4 @@ const LoginForm = ({ history }: RouteComponentProps): ReactElement => {
   );
 };
 
-export default LoginForm;
+export default LogIn;

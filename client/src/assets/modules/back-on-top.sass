@@ -1,0 +1,28 @@
+.back-on-top
+  display: block
+  opacity: 0.2
+  background: $color5
+  position: fixed
+  right: 60px
+  top: 10%
+  width: 90px
+  height: 90px
+  border: none
+  &:hover
+    cursor: pointer
+    img
+      opacity: 0.5
+  img
+    opacity: 0.2
+    display: block
+    height: 50px
+    margin: 0 auto
+    margin-top: 20px
+
+.button-hide
+  display: none
+
+
+@media (max-width: 1000px)
+  .back-on-top
+    display: none

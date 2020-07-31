@@ -16,7 +16,7 @@ import fetchingState, {
   fetchCategoryData,
 } from './fetchingState';
 
-import isAdmin, { isAdminActions, authenticationAdmin } from './isAdmin';
+import profile, { profileActions, authenticationProfile, registrationProfile } from './profile';
 import activePost, {
   activePostActions,
   addComment,
@@ -31,7 +31,8 @@ const asyncActions = {
   addComment,
   editComment,
   removeComment,
-  authenticationAdmin,
+  authenticationProfile,
+  registrationProfile,
   fetchPostsData,
   fetchActivePostData,
   fetchAdminData,
@@ -41,14 +42,14 @@ const asyncActions = {
 
 const actions = {
   ...postsActions,
-  ...isAdminActions,
+  ...profileActions,
   ...activePostActions,
   ...fetchingStateActions,
 };
 
 const rootReducer = combineReducers({
   posts,
-  isAdmin,
+  profile,
   activePost,
   fetchingState,
 });

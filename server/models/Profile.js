@@ -1,10 +1,9 @@
 module.exports = (db, DataTypes) => {
-  const User = db.define('User', {
+  const Profile = db.define('Profile', {
     login: {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
-        isEmail: true,
         len: [1, 60],
       },
     },
@@ -16,10 +15,15 @@ module.exports = (db, DataTypes) => {
       },
     },
   }, {
-    tableName: 'user',
+    tableName: 'profile',
     timestamps: true,
     underscored: true,
   });
 
-  return User;
+  Profile.getProfiles = async (models) => {
+    const profiles = await models.Profile.findAll({});
+    return profiles;
+  };
+
+  return Profile;
 };

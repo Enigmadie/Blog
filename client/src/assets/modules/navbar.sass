@@ -17,6 +17,12 @@
   padding-left: 39px
   padding-top: 35px
   li
+    &:last-child
+      position: absolute
+      right: 69px
+    &:nth-last-child(2)
+      position: absolute
+      right: 150px
     a
       cursor: pointer
       padding-right: 24px
@@ -60,6 +66,16 @@ header
 
 ol
   display: none
+
+.nav-login-wrapper
+  position: absolute
+  right: 25px
+  @media (max-width: 1020px)
+    position: static
+    +flexbox()
+    +flex-direction(column)
+    &:first-child
+      border-top: 3px solid white
 
 nav > .categories-drop-menu
   position: absolute

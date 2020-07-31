@@ -5,6 +5,7 @@ import { getDistanceDate, getImageUrl } from 'utils';
 import { Categories, Style } from 'interfaces';
 
 import { asyncActions, RootState } from 'slices';
+import BackOnTop from 'components/BackOnTop';
 import Comments from './PostComments';
 
 type TParams = { id: string };
@@ -19,7 +20,7 @@ const Post = ({ match }: RouteComponentProps<TParams>): ReactElement => {
   } = asyncActions;
 
   const {
-    isAdmin,
+    profile,
     posts,
     activePost: { post },
   } = useSelector((state: RootState) => state);
@@ -49,10 +50,11 @@ const Post = ({ match }: RouteComponentProps<TParams>): ReactElement => {
   };
   return (
     <section className="post-wrapper">
+      <BackOnTop limit={450} />
       <div className="post">
         <div className="post-actions">
-          {isAdmin.status && <Link to={editPostPath}><img alt="edit" src="https://img.icons8.com/windows/60/000000/edit.png" /></Link>}
-          {isAdmin.status && <button type="button" onClick={removeHandler}><img alt="remove" src="https://img.icons8.com/windows/64/000000/delete.png" /></button>}
+          {profile.isAdmin && <Link to={editPostPath}><img alt="edit" src="https://img.icons8.com/windows/60/000000/edit.png" /></Link>}
+          {profile.isAdmin && <button type="button" onClick={removeHandler}><img alt="remove" src="https://img.icons8.com/windows/64/000000/delete.png" /></button>}
           <img alt="comment" src="https://img.icons8.com/windows/60/000000/topic.png" />
         </div>
         <div className="post-data">
