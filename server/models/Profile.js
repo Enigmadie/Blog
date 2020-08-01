@@ -14,6 +14,10 @@ module.exports = (db, DataTypes) => {
         len: [1, 50000],
       },
     },
+    isAdmin: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+    },
   }, {
     tableName: 'profile',
     timestamps: true,

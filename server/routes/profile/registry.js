@@ -21,13 +21,6 @@ router.post('/', async (req, res) => {
     console.log(err);
     res.status(403);
   });
-  // const admin = new Admin({ login, password });
-  // const hasAccess = admin.checkAccess();
-  // req.session.admin = hasAccess;
-  // const hasAccess = true;
-  // req.session.save(() => {
-  //   res.send(hasAccess);
-  // });
 });
 
 module.exports = router;
