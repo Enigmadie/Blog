@@ -1,3 +1,5 @@
+const getFinderOptions = require('../utils');
+
 module.exports = (db, DataTypes) => {
   const Profile = db.define('Profile', {
     login: {
@@ -16,6 +18,7 @@ module.exports = (db, DataTypes) => {
     },
     isAdmin: {
       type: DataTypes.BOOLEAN,
+      defaultValue: false,
       allowNull: false,
     },
   }, {
@@ -24,8 +27,9 @@ module.exports = (db, DataTypes) => {
     underscored: true,
   });
 
-  Profile.getProfiles = async (models) => {
-    const profiles = await models.Profile.findAll({});
+  Profile.getProfiles = async (query, models) => {
+    const finderOptions = getFinderOptions(query);
+    const profiles = await models.Profile.findAll(finderOptions);
     return profiles;
   };
 

@@ -1,20 +1,25 @@
 import React, { useState, useEffect } from 'react';
 import cn from 'classnames';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import { Categories } from 'interfaces';
-import { RootState } from 'slices';
+import { RootState, actions } from 'slices';
 import CategoriesColl from './CategoriesSelect';
 
 const Header: React.FC = () => {
   const isLarge = window.innerWidth >= 1020;
+
   const [isCloseMenu, setCloseMenu] = useState(false);
   const [isLargeSize, setLargeSizeState] = useState(isLarge);
   const [subMenu, setSubMenuState] = useState(false);
   const [subMenuEl, setSubMenuEl] = useState('');
+
   const { profile } = useSelector((state: RootState) => state);
   const hasLogin = profile.login.length > 0;
+
+  const { logoutProfile } = actions;
+  const dispatch = useDispatch();
 
   const smallMenuCn = cn({
     'menu-btn': true,
@@ -84,6 +89,11 @@ const Header: React.FC = () => {
   const menuHandler = (): void => {
     setCloseMenu(!isCloseMenu);
     setSubMenuState(false);
+  };
+
+  const logoutHandler = (): void => {
+    localStorage.setItem('authorization', '');
+    dispatch(logoutProfile());
   };
 
   return (
@@ -175,7 +185,7 @@ const Header: React.FC = () => {
               <a>Profile</a>
             </li>
             <li className={dropLiCn}>
-              <a>Log Out</a>
+              <button type="button" onClick={logoutHandler}>Log Out</button>
             </li>
           </ol>
         </div>

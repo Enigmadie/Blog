@@ -12,11 +12,16 @@ import fetchingState, {
   fetchPostsData,
   fetchActivePostData,
   fetchActivePostComments,
-  fetchAdminData,
   fetchCategoryData,
 } from './fetchingState';
 
-import profile, { profileActions, authenticationProfile, registrationProfile } from './profile';
+import profile, {
+  profileActions,
+  authenticationProfile,
+  registrationProfile,
+  checkAuthToken,
+} from './profile';
+
 import activePost, {
   activePostActions,
   addComment,
@@ -33,9 +38,9 @@ const asyncActions = {
   removeComment,
   authenticationProfile,
   registrationProfile,
+  checkAuthToken,
   fetchPostsData,
   fetchActivePostData,
-  fetchAdminData,
   fetchCategoryData,
   fetchActivePostComments,
 };

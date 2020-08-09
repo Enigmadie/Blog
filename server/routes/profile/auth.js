@@ -1,4 +1,6 @@
 const router = require('express').Router();
+const jwt = require('jsonwebtoken');
+const tokenKey = require('../../token-key');
 const models = require('../../models');
 
 router.post('/', async (req, res) => {
@@ -9,9 +11,14 @@ router.post('/', async (req, res) => {
     },
   }).then(async (el) => {
     if (el.length > 0) {
-      const profile = el[0];
-      if (profile.dataValues.password === password) {
-        res.send(profile);
+      const profile = el[0].dataValues;
+      if (profile.password === password) {
+        const token = jwt.sign({
+          id: profile.id,
+          login: profile.login,
+          isAdmin: profile.isAdmin,
+        }, tokenKey);
+        res.send({ ...profile, token });
       } else {
         res.status(403);
       }

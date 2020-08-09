@@ -17,10 +17,6 @@ const googleCloud = new Storage({
 db.sequelize.authenticate()
   .catch((err) => console.log(`Error: ${err}`));
 
-if (process.env.NODE_ENV === 'tes') {
-  console.log(222);
-}
-
 const bucket = googleCloud.bucket('blog-enigma');
 
 module.exports = bucket;

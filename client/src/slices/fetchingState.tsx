@@ -119,18 +119,6 @@ const fetchActivePostComments = (id: string): AppThunk => async (dispatch): Prom
   }
 };
 
-const fetchAdminData = (): AppThunk => (dispatch): void => {
-  dispatch(fetchDataFromServerRequest());
-  try {
-    dispatch(actions.initAdminState());
-    dispatch(fetchDataFromServerSuccess());
-  } catch (e) {
-    dispatch(fetchDataFromServerFailure());
-    selectErrorMessage(e);
-    throw e;
-  }
-};
-
 const fetchingStateActions = slice.actions;
 
 export {
@@ -138,7 +126,6 @@ export {
   fetchPostsData,
   fetchActivePostComments,
   fetchActivePostData,
-  fetchAdminData,
   fetchCategoryData,
 };
 

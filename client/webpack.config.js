@@ -10,7 +10,7 @@ const isDevelopment = !isProduction;
 const path = require('path');
 
 module.exports = {
-  mode: process.env.NODE_ENV || 'development',
+  mode: process.env.FRONT_ENV || 'development',
   entry: [
     `${__dirname}/src/init.tsx`,
   ],

@@ -1,25 +1,18 @@
 const router = require('express').Router();
 const jwt = require('jsonwebtoken');
+const tokenKey = require('../token-key');
 const models = require('../models');
 
-const tokenKey = '1a2b-3c4d-5e6f-7g8h';
-
-router.use(async (req, res, next) => {
-  if (req.headers.authorization) {
-    jwt.verify(req.headers.authorization.split(' ')[1], tokenKey, (err, payload) => {
+router.use((req, res, next) => {
+  if (req.headers.authorization.length > 0) {
+    jwt.verify(req.headers.authorization, tokenKey, async (err, payload) => {
       if (err) {
         next();
       } else if (payload) {
-        const profiles = models.Profile.getProfiles();
-        profiles.forEach((profile) => {
-          if (profile.id === payload.id) {
-            req.profile = profile;
-            console.log(profile);
-            next();
-          }
-        });
-
-        if (!req.profile) next();
+        const profiles = await models.Profile.getProfiles({ id: payload.id }, models);
+        if (profiles.length > 0) {
+          req.profile = profiles[0].dataValues;
+        }
       }
     });
   }

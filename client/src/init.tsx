@@ -18,7 +18,7 @@ function init(): void {
     reducer,
   });
 
-  store.dispatch(asyncActions.fetchAdminData());
+  store.dispatch(asyncActions.checkAuthToken());
 
   render(
     <Provider store={store}>

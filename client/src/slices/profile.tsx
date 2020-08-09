@@ -4,6 +4,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { Authentication } from 'interfaces';
 import { selectErrorMessage } from 'utils';
+import jwtDecode from 'jwt-decode';
 
 import { AppThunk } from '../init';
 import routes from '../routes';
@@ -15,6 +16,11 @@ interface ProfileInterface {
 }
 
 axios.defaults.withCredentials = true;
+const isAuth = localStorage.getItem('authorization');
+axios.defaults.headers.common.authorization = isAuth
+  ? localStorage.getItem('authorization')
+  : '';
+
 
 const initialState = {
   login: '',
@@ -26,9 +32,6 @@ const slice = createSlice({
   name: 'profile',
   initialState,
   reducers: {
-    initAdminState(state): void {
-      state.isAdmin = true;
-    },
     authenticationProfileSuccess(state, action: PayloadAction<ProfileInterface>): void {
       const { login, isAdmin } = action.payload;
       state.login = login;
@@ -43,6 +46,10 @@ const slice = createSlice({
     },
     registrationProfileFailure(state): void {
       state.validationState = 'invalid';
+    },
+    logoutProfile(state): void {
+      state.login = '';
+      state.isAdmin = false;
     },
   },
 });
@@ -77,6 +84,8 @@ const authenticationProfile = (
       login: response.data.login,
       isAdmin: response.data.isAdmin,
     }));
+    localStorage.setItem('authorization', response.data.token);
+    axios.defaults.headers.common.authorization = localStorage.getItem('authorization');
   } catch (e) {
     dispatch(authenticationProfileFailure());
     selectErrorMessage(e);
@@ -84,8 +93,25 @@ const authenticationProfile = (
   }
 };
 
+const checkAuthToken = () => (dispatch) => {
+  if (isAuth) {
+    const decodedData = jwtDecode(isAuth);
+    const { login, isAdmin } = decodedData;
+
+    dispatch(authenticationProfileSuccess({
+      login,
+      isAdmin,
+    }));
+  }
+};
+
 const { actions } = slice;
 
-export { actions as profileActions, authenticationProfile, registrationProfile };
+export {
+  actions as profileActions,
+  checkAuthToken,
+  authenticationProfile,
+  registrationProfile,
+};
 
 export default slice.reducer;
