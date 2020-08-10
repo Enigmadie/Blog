@@ -5,6 +5,7 @@ module.exports = (db, DataTypes) => {
     login: {
       type: DataTypes.STRING,
       allowNull: false,
+      unique: true,
       validate: {
         len: [1, 60],
       },
@@ -26,6 +27,12 @@ module.exports = (db, DataTypes) => {
     timestamps: true,
     underscored: true,
   });
+
+  Profile.associate = (models) => {
+    models.Profile.hasMany(models.Comment, {
+      as: 'comments',
+    });
+  };
 
   Profile.getProfiles = async (query, models) => {
     const finderOptions = getFinderOptions(query);

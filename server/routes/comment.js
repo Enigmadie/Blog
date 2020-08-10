@@ -2,12 +2,14 @@ const router = require('express').Router();
 const models = require('../models');
 
 router.post('/', async (req, res) => {
-  const { postId, content } = req.body;
-  const comment = await models.Comment.create({
+  const { postId, profileId, content } = req.body;
+  await models.Comment.create({
     content,
     postId,
+    profileId,
   });
-  res.send(comment);
+
+  res.send({}).status(200);
 });
 
 router.patch('/:id', async (req, res) => {

@@ -12,12 +12,13 @@ router.use((req, res, next) => {
         const profiles = await models.Profile.getProfiles({ id: payload.id }, models);
         if (profiles.length > 0) {
           req.profile = profiles[0].dataValues;
+          next();
         }
       }
     });
+  } else {
+    next();
   }
-
-  next();
 });
 
 router.use('/api', require('./api'));

@@ -4,16 +4,16 @@ const bucket = require('../app');
 const models = require('../models');
 
 router.post('/', async (req, res) => {
-  const { admin } = req.session;
   const {
     title,
     content,
     categories,
     preview,
   } = req.body;
-  if (true) {
+  const { isAdmin } = req.profile;
+  if (isAdmin) {
     if (req.files) {
-      const file = bucket.file(req.files.image.name)
+      const file = bucket.file(req.files.image.name);
       const stream = file.createWriteStream();
 
       stream.on('error', (err) => {
@@ -63,7 +63,7 @@ router.patch('/:id', async (req, res, next) => {
     content,
   } = req.body;
   const editedImage = req.files ? req.files.image.name : image;
-  const { admin } = req.session;
+  const { isAdmin } = req.profile;
   const paramsUpdating = {
     title,
     categories: JSON.parse(categories),
@@ -71,7 +71,7 @@ router.patch('/:id', async (req, res, next) => {
     content,
     image: editedImage,
   };
-  if (true) {
+  if (isAdmin) {
     if (req.files) {
       const file = bucket.file(req.files.image.name);
       const stream = file.createWriteStream();
@@ -98,15 +98,14 @@ router.patch('/:id', async (req, res, next) => {
 
 router.delete('/:id', async (req, res) => {
   const { id } = req.params;
-  const { admin } = req.session;
-  if (true) {
+  const { isAdmin } = req.profile;
+  if (isAdmin) {
     await models.Post.destroy({ where: { id } })
       .then(() => res.send({ id }))
       .catch((err) => {
         console.log(err);
         res.status(403);
       });
-    // res.send({ id });
   } else {
     res.status(403);
   }

@@ -29,9 +29,16 @@ export interface Authentication {
   password: string;
 }
 
+export interface Profile {
+  id: string;
+  login: string;
+  isAdmin: boolean;
+}
+
 export interface Comment {
   id: string;
   content: string;
+  profile: Profile;
   createdAt: string;
   updatedAt: string;
 }

@@ -7,18 +7,19 @@ import { CommentFormik, Comment } from 'interfaces';
 import cn from 'classnames';
 
 import { asyncActions, RootState } from 'slices';
+import MarkDown from './MarkDown';
 
 type TParams = { id: string };
 
 const PostComments = ({ id }: TParams): ReactElement => {
   const dispatch = useDispatch();
-  const { activePost: { comments } } = useSelector((state: RootState) => state);
+  const { activePost: { comments }, profile } = useSelector((state: RootState) => state);
 
   const initialValues: CommentFormik = {
     content: '',
   };
 
-  const { removeComment } = asyncActions;
+  const { removeComment, addComment } = asyncActions;
 
   const formik = useFormik({
     initialValues,
@@ -30,7 +31,7 @@ const PostComments = ({ id }: TParams): ReactElement => {
     onSubmit: ({
       content,
     }, { resetForm }) => {
-      dispatch(asyncActions.addComment(id, content));
+      dispatch(addComment(id, profile.id, content));
       resetForm();
     },
   });
@@ -39,9 +40,7 @@ const PostComments = ({ id }: TParams): ReactElement => {
     errors,
     touched,
     handleSubmit,
-    handleChange,
     isSubmitting,
-    values,
   } = formik;
 
   const hasContentErrors = errors.content && touched.content;
@@ -59,26 +58,23 @@ const PostComments = ({ id }: TParams): ReactElement => {
     <>
       <div className="post-comments-form">
         <form onSubmit={handleSubmit}>
-          <input
-            type="content"
-            name="content"
-            value={values.content}
-            onChange={handleChange}
-            className={contentCn}
-          />
-          <button type="submit" className="blog-submit" disabled={isSubmitting}>
-            Add
-          </button>
+          <div className="post-comments-counter">
+            Comments:
+            {comments.length}
+          </div>
+          <div className="post-comments-markdown">
+            <MarkDown cn={contentCn} prop={formik} />
+            <button type="submit" className="blog-submit" disabled={isSubmitting}>
+              Add
+            </button>
+          </div>
         </form>
-        <div className="post-comments-counter">
-          Comments:
-          {comments.length}
-        </div>
       </div>
       <div className="post-comments-wrapper">
         {comments.map((comment: Comment) => (
           <div className="post-comment" key={comment.id}>
-            <p>{comment.content}</p>
+            <div>{comment.profile.login}</div>
+            <p dangerouslySetInnerHTML={{ __html: comment.content }} />
             <button type="button" onClick={(): void => removeHandler(comment.id)}>Delete</button>
           </div>
         ))}

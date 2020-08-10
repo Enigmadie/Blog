@@ -39,9 +39,9 @@ const slice = createSlice({
       const { comments } = action.payload;
       state.comments = comments;
     },
-    addCommentSuccess(state, action: PayloadAction<Comment>): void {
-      const { payload } = action;
-      state.comments.unshift(payload);
+    addCommentSuccess(state, action: PayloadAction<ActivePostCommentsInterface>): void {
+      const { comments } = action.payload;
+      state.comments = comments;
     },
     editCommentSuccess(state, action: PayloadAction<Comment>): void {
       const { payload } = action;
@@ -66,14 +66,22 @@ const {
 
 const addComment = (
   postId: string,
+  profileId: string,
   content: string,
 ): AppThunk => async (dispatch): Promise<void> => {
   try {
-    const response = await axios.post(routes.commentPath(), {
+    await axios.post(routes.commentPath(), {
       content,
+      profileId,
       postId,
     });
-    dispatch(addCommentSuccess(response.data));
+
+    const fetchUrl = routes.commentsApiPath({
+      postId,
+    });
+
+    const { data: { comments } } = await axios.get(fetchUrl);
+    dispatch(addCommentSuccess({ comments }));
   } catch (e) {
     selectErrorMessage(e);
     throw e;

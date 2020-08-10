@@ -57,22 +57,24 @@ const Post = ({ match }: RouteComponentProps<TParams>): ReactElement => {
           {profile.isAdmin && <button type="button" onClick={removeHandler}><img alt="remove" src="https://img.icons8.com/windows/64/000000/delete.png" /></button>}
           <img alt="comment" src="https://img.icons8.com/windows/60/000000/topic.png" />
         </div>
-        <div className="post-data">
-          <h1>{post.title}</h1>
-          <span>
-            <p>{`${date} in`}</p>
-            <div>
-              {post.categories && post.categories.map((el: Categories) => (
-                <Link key={el.value} to={`/category/${el.value}`}>
-                  {el.value}
-                </Link>
-              ))}
+        <div className="post-data-wrapper">
+          <div className="post-data">
+            <h1>{post.title}</h1>
+            <span>
+              <p>{`${date} in`}</p>
+              <div>
+                {post.categories && post.categories.map((el: Categories) => (
+                  <Link key={el.value} to={`/category/${el.value}`}>
+                    {el.value}
+                  </Link>
+                ))}
+              </div>
+            </span>
+            <div className="poster-post-wrapper">
+              <div className="poster-post" style={imgStyle} />
             </div>
-          </span>
-          <div className="poster-post-wrapper">
-            <div className="poster-post" style={imgStyle} />
+            <div dangerouslySetInnerHTML={{ __html: post.content }} />
           </div>
-          <div dangerouslySetInnerHTML={{ __html: post.content }} />
           <Comments id={activePostId} />
         </div>
       </div>

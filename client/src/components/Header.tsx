@@ -116,7 +116,7 @@ const Header: React.FC = () => {
             onMouseOver={(): void => subHandler(true, 'categories')}
             onMouseOut={(): void => subHandler(false, 'categories')}
             className={categoriesCn}
-            >
+          >
             Categories
           </li>
           <li className={liCn}>
@@ -132,9 +132,10 @@ const Header: React.FC = () => {
                 onClick={(): void => setSubMenuState(true)}
                 onMouseOver={(): void => subHandler(true, 'profile')}
                 onMouseOut={(): void => subHandler(false, 'profile')}
-                className={profileCn}>
+                className={profileCn}
+              >
                 <a className="login-header">
-                  {isLarge && <img alt="login-img" src="https://img.icons8.com/ultraviolet/28/000000/user.png"/>}
+                  {isLarge && <img alt="login-img" src="https://img.icons8.com/ultraviolet/28/000000/user.png" />}
                   <p>{profile.login}</p>
                 </a>
               </li>
@@ -170,26 +171,28 @@ const Header: React.FC = () => {
             </ol>
           </div>
         )}
-          {profile.isAdmin === true && subMenuEl === 'profile' && (
-        <div className={profileDropCn}>
-          <ol
-            onFocus={(): void => subHandler(true, 'profile')}
-            onMouseOver={(): void => subHandler(true, 'profile')}
-            onMouseOut={(): void => subHandler(false, 'profile')}
-            onClick={(): void => subHandler(false, 'profile')}
-          >
-            <li className={dropLiCn}>
-              <Link to="posts/new">New post</Link>
-            </li>
-            <li className={dropLiCn}>
-              <a>Profile</a>
-            </li>
-            <li className={dropLiCn}>
-              <button type="button" onClick={logoutHandler}>Log Out</button>
-            </li>
-          </ol>
-        </div>
-          )}
+        {subMenuEl === 'profile' && (
+          <div className={profileDropCn}>
+            <ol
+              onFocus={(): void => subHandler(true, 'profile')}
+              onMouseOver={(): void => subHandler(true, 'profile')}
+              onMouseOut={(): void => subHandler(false, 'profile')}
+              onClick={(): void => subHandler(false, 'profile')}
+            >
+              {profile.isAdmin === true && (
+                <li className={dropLiCn}>
+                  <Link to="posts/new" className="new-post-header">New post</Link>
+                </li>
+              )}
+              <li className={dropLiCn}>
+                <Link to={`profile/${profile.login}`}>Profile</Link>
+              </li>
+              <li className={dropLiCn}>
+                <button type="button" onClick={logoutHandler}>Log Out</button>
+              </li>
+            </ol>
+          </div>
+        )}
       </nav>
     </header>
   );

@@ -25,11 +25,23 @@ module.exports = (db, DataTypes) => {
       foreignKey: 'postId',
       as: 'post',
     });
+
+    models.Comment.belongsTo(models.Profile, {
+      foreignKey: 'profileId',
+      as: 'profile',
+    });
   };
 
   Comment.getComments = async (query, models) => {
     const finderOptions = getFinderOptions(query);
     finderOptions.attributes = ['id', 'content', 'createdAt', 'updatedAt'];
+
+    finderOptions.include = [{
+      model: models.Profile,
+      as: 'profile',
+      attributes: ['id', 'login', 'isAdmin'],
+    }];
+
     const comments = await models.Comment.findAll(finderOptions);
     return comments;
   };

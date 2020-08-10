@@ -10,6 +10,7 @@ import { AppThunk } from '../init';
 import routes from '../routes';
 
 interface ProfileInterface {
+  id: string;
   login: string;
   isAdmin: boolean;
   validationState?: 'valid' | 'invalid';
@@ -23,6 +24,7 @@ axios.defaults.headers.common.authorization = isAuth
 
 
 const initialState = {
+  id: '',
   login: '',
   isAdmin: false,
   validationState: 'valid',
@@ -33,7 +35,8 @@ const slice = createSlice({
   initialState,
   reducers: {
     authenticationProfileSuccess(state, action: PayloadAction<ProfileInterface>): void {
-      const { login, isAdmin } = action.payload;
+      const { login, isAdmin, id } = action.payload;
+      state.id = id;
       state.login = login;
       state.isAdmin = isAdmin;
       state.validationState = 'valid';
@@ -81,6 +84,7 @@ const authenticationProfile = (
   try {
     const response = await axios.post(routes.authPath(), { data: { login, password } });
     dispatch(authenticationProfileSuccess({
+      id: response.data.id,
       login: response.data.login,
       isAdmin: response.data.isAdmin,
     }));
@@ -96,9 +100,10 @@ const authenticationProfile = (
 const checkAuthToken = () => (dispatch) => {
   if (isAuth) {
     const decodedData = jwtDecode(isAuth);
-    const { login, isAdmin } = decodedData;
+    const { id, login, isAdmin } = decodedData;
 
     dispatch(authenticationProfileSuccess({
+      id,
       login,
       isAdmin,
     }));

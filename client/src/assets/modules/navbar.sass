@@ -9,9 +9,6 @@
   transform: rotate(45deg)
   -webkit-transform: rotate(45deg)
 
-.menu .new-post-li
-  color: $color1
-
 .menu
   +flexbox()
   padding-left: 39px
@@ -124,10 +121,10 @@ nav > .profile-drop-menu
       padding-left: 8px
       font-size: 18px
       font-weight: 600
+      .new-post-header
+        color: $color1
       &:first-child
         padding-top: 15px
-        a, button
-          color: $color1
       &:last-child
         padding-bottom: 25px
       a, button
