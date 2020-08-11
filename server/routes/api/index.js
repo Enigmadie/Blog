@@ -16,7 +16,6 @@ router.get('/posts', async (req, res) => {
 
 router.get('/comments', async (req, res) => {
   const comments = await models.Comment.getComments(req.query, models);
-  console.log(comments);
   if (!comments) {
     res.status(422);
     return;

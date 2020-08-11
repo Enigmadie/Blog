@@ -23,18 +23,19 @@ const Post = ({ match }: RouteComponentProps<TParams>): ReactElement => {
     profile,
     posts,
     activePost: { post },
+    ui: { commentsSort },
   } = useSelector((state: RootState) => state);
 
   const activePostId = match.params.id;
 
   useEffect(() => {
     dispatch(fetchActivePostData(activePostId));
-    dispatch(fetchActivePostComments(activePostId));
+    dispatch(fetchActivePostComments(activePostId, commentsSort));
 
     const firstPage = 1;
     const limitPosts = 5;
     dispatch(fetchPostsData(firstPage, limitPosts));
-  }, [activePostId]);
+  }, [activePostId, commentsSort]);
 
   const removeHandler = (): void => {
     dispatch(removePost(post.id));

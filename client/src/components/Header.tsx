@@ -181,7 +181,7 @@ const Header: React.FC = () => {
             >
               {profile.isAdmin === true && (
                 <li className={dropLiCn}>
-                  <Link to="posts/new" className="new-post-header">New post</Link>
+                  <Link to="/posts/new" className="new-post-header">New post</Link>
                 </li>
               )}
               <li className={dropLiCn}>

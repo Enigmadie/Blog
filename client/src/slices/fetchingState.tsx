@@ -103,11 +103,15 @@ const fetchActivePostData = (id: string): AppThunk => async (dispatch): Promise<
 };
 
 
-const fetchActivePostComments = (id: string): AppThunk => async (dispatch): Promise<void> => {
+const fetchActivePostComments = (
+  id: string,
+  sort: string,
+): AppThunk => async (dispatch): Promise<void> => {
   dispatch(fetchDataFromServerRequest());
   try {
     const fetchUrl = routes.commentsApiPath({
       postId: id,
+      order: sort,
     });
     const { data: { comments } } = await axios.get(fetchUrl);
     dispatch(actions.initActivePostComments({ comments }));

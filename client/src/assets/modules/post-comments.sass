@@ -7,12 +7,15 @@
   +flexbox()
   +flex-direction(column)
   +justify-content(space-between)
-  border-bottom: 1px solid black
   margin-top: 50px
 
 .post-comments-markdown
+  +flexbox()
+  +flex-direction(column)
   .blog-submit
-    width: 200px
+    +align-self(center)
+    width: 100%
+    margin-top: 10px
 
 .post-comment
   +flexbox()
@@ -21,3 +24,41 @@
     font-weight: 600
   button
     margin-left: 15px
+
+.post-comments-menu
+  +flexbox()
+  +justify-content(space-between)
+  +align-items(center)
+  margin: 0 6px
+  height: 54px
+  .blog-submit
+    margin-top: 0
+
+.post-comments-sort
+  +flexbox()
+  p
+    font-size: 16px
+    &:nth-child(2)
+      padding-right: 3px
+      padding-left: 6px
+    &:nth-child(3)
+      padding-left: 3px
+    &:nth-child(2), &:nth-child(3)
+      cursor: pointer
+      text-decoration: underline
+
+.post-comments-counter
+  height: 40px
+  +flexbox()
+  +align-items(center)
+  p
+    font-size: 22px
+    font-weight: bold
+    margin-right: 8px
+  span
+    display: inline-block
+    font-weight: bold
+    color: white
+    background-color: black
+    padding: 1px
+    border-radius: 5px

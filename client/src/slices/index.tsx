@@ -29,6 +29,8 @@ import activePost, {
   removeComment,
 } from './activePost';
 
+import ui, { uiActions } from './ui';
+
 const asyncActions = {
   addPost,
   editPost,
@@ -50,6 +52,7 @@ const actions = {
   ...profileActions,
   ...activePostActions,
   ...fetchingStateActions,
+  ...uiActions,
 };
 
 const rootReducer = combineReducers({
@@ -57,6 +60,7 @@ const rootReducer = combineReducers({
   profile,
   activePost,
   fetchingState,
+  ui,
 });
 
 export type RootState = ReturnType<typeof rootReducer>
