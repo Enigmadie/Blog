@@ -4,7 +4,8 @@ const tokenKey = require('../token-key');
 const models = require('../models');
 
 router.use((req, res, next) => {
-  if (req.headers.authorization.length > 0) {
+  const isAuth = req.headers.authorization;
+  if (isAuth && isAuth.length > 0) {
     jwt.verify(req.headers.authorization, tokenKey, async (err, payload) => {
       if (err) {
         next();
@@ -12,8 +13,8 @@ router.use((req, res, next) => {
         const profiles = await models.Profile.getProfiles({ id: payload.id }, models);
         if (profiles.length > 0) {
           req.profile = profiles[0].dataValues;
-          next();
         }
+        next();
       }
     });
   } else {

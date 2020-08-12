@@ -17,6 +17,8 @@ router.post('/', async (req, res) => {
           id: profile.id,
           login: profile.login,
           isAdmin: profile.isAdmin,
+          avatar: profile.avatar,
+          avatarSmall: profile.avatarSmall,
         }, tokenKey);
         res.send({ ...profile, token });
       } else {

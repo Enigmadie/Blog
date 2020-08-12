@@ -29,10 +29,19 @@ export interface Authentication {
   password: string;
 }
 
+export interface Registration {
+  login: string;
+  password: string;
+  avatar: string;
+  avatarSmall: string;
+}
+
 export interface Profile {
   id: string;
   login: string;
   isAdmin: boolean;
+  avatar: string;
+  avatarSmall: string;
 }
 
 export interface Comment {

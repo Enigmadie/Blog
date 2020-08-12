@@ -68,6 +68,7 @@ const addComment = (
   postId: string,
   profileId: string,
   content: string,
+  sort: string,
 ): AppThunk => async (dispatch): Promise<void> => {
   try {
     await axios.post(routes.commentPath(), {
@@ -78,6 +79,7 @@ const addComment = (
 
     const fetchUrl = routes.commentsApiPath({
       postId,
+      order: sort,
     });
 
     const { data: { comments } } = await axios.get(fetchUrl);

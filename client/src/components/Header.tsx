@@ -135,7 +135,7 @@ const Header: React.FC = () => {
                 className={profileCn}
               >
                 <a className="login-header">
-                  {isLarge && <img alt="login-img" src="https://img.icons8.com/ultraviolet/28/000000/user.png" />}
+                  {isLarge && <img alt="login-img" src={profile.avatarSmall} />}
                   <p>{profile.login}</p>
                 </a>
               </li>

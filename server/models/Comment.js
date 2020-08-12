@@ -39,7 +39,7 @@ module.exports = (db, DataTypes) => {
     finderOptions.include = [{
       model: models.Profile,
       as: 'profile',
-      attributes: ['id', 'login', 'isAdmin'],
+      attributes: ['id', 'login', 'avatarSmall', 'avatar', 'isAdmin'],
     }];
 
     const comments = await models.Comment.findAll(finderOptions);

@@ -2,7 +2,7 @@
 
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import axios from 'axios';
-import { Authentication } from 'interfaces';
+import { Authentication, Registration } from 'interfaces';
 import { selectErrorMessage } from 'utils';
 import jwtDecode from 'jwt-decode';
 
@@ -13,6 +13,8 @@ interface ProfileInterface {
   id: string;
   login: string;
   isAdmin: boolean;
+  avatar: string;
+  avatarSmall: string;
   validationState?: 'valid' | 'invalid';
 }
 
@@ -26,6 +28,8 @@ axios.defaults.headers.common.authorization = isAuth
 const initialState = {
   id: '',
   login: '',
+  avatar: '',
+  avatarSmall: '',
   isAdmin: false,
   validationState: 'valid',
 };
@@ -35,8 +39,17 @@ const slice = createSlice({
   initialState,
   reducers: {
     authenticationProfileSuccess(state, action: PayloadAction<ProfileInterface>): void {
-      const { login, isAdmin, id } = action.payload;
+      const {
+        login,
+        isAdmin,
+        id,
+        avatar,
+        avatarSmall,
+      } = action.payload;
+
       state.id = id;
+      state.avatar = avatar;
+      state.avatarSmall = avatarSmall;
       state.login = login;
       state.isAdmin = isAdmin;
       state.validationState = 'valid';
@@ -65,11 +78,23 @@ const {
 } = slice.actions;
 
 const registrationProfile = (
-  authenticationData: Authentication,
+  registrationData: Registration,
 ): AppThunk => async (dispatch) => {
-  const { login, password } = authenticationData;
+  const {
+    login,
+    password,
+    avatar,
+    avatarSmall,
+  } = registrationData;
   try {
-    await axios.post(routes.registryPath(), { data: { login, password } });
+    await axios.post(routes.registryPath(), {
+      data: {
+        login,
+        password,
+        avatar,
+        avatarSmall,
+      },
+    });
   } catch (e) {
     dispatch(registrationProfileFailure());
     selectErrorMessage(e);
@@ -87,6 +112,8 @@ const authenticationProfile = (
       id: response.data.id,
       login: response.data.login,
       isAdmin: response.data.isAdmin,
+      avatar: response.data.avatar,
+      avatarSmall: response.data.avatarSmall,
     }));
     localStorage.setItem('authorization', response.data.token);
     axios.defaults.headers.common.authorization = localStorage.getItem('authorization');
@@ -100,12 +127,20 @@ const authenticationProfile = (
 const checkAuthToken = () => (dispatch) => {
   if (isAuth) {
     const decodedData = jwtDecode(isAuth);
-    const { id, login, isAdmin } = decodedData;
+    const {
+      id,
+      login,
+      isAdmin,
+      avatar,
+      avatarSmall,
+    } = decodedData;
 
     dispatch(authenticationProfileSuccess({
       id,
       login,
       isAdmin,
+      avatar,
+      avatarSmall,
     }));
   }
 };

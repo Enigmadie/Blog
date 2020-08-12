@@ -22,6 +22,20 @@ module.exports = (db, DataTypes) => {
       defaultValue: false,
       allowNull: false,
     },
+    avatar: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        len: [1, 250],
+      },
+    },
+    avatarSmall: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        len: [1, 250],
+      },
+    },
   }, {
     tableName: 'profile',
     timestamps: true,

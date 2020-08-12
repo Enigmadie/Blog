@@ -2,7 +2,7 @@ import ReactMde from 'react-mde';
 import Showdown from 'showdown';
 import React, { ReactElement, useState } from 'react';
 import { FormikProps } from 'formik';
-import { CommentFormik } from 'interfaces';
+import { PostFormik, CommentFormik } from 'interfaces';
 
 const converter = new Showdown.Converter({
   tables: true,
@@ -13,7 +13,7 @@ const converter = new Showdown.Converter({
 
 interface Props {
   cn: string;
-  prop: FormikProps<CommentFormik>;
+  prop: FormikProps<PostFormik> | FormikProps<CommentFormik>;
 }
 
 export default ({ cn, prop }: Props): ReactElement => {
@@ -33,14 +33,16 @@ export default ({ cn, prop }: Props): ReactElement => {
   };
 
   return (
-    <ReactMde
-      textAreaProps={{ name: 'content' }}
-      className={cn}
-      value={value}
-      onChange={(el): void => setValues(el)}
-      selectedTab={selectedTab}
-      onTabChange={setSelectedTab}
-      generateMarkdownPreview={(md) => Promise.resolve(converter.makeHtml(md))}
-    />
+    <div className="container">
+      <ReactMde
+        textAreaProps={{ name: 'content' }}
+        className={cn}
+        value={value}
+        onChange={(el): void => setValues(el)}
+        selectedTab={selectedTab}
+        onTabChange={setSelectedTab}
+        generateMarkdownPreview={(md): Promise<string> => Promise.resolve(converter.makeHtml(md))}
+      />
+    </div>
   );
 };

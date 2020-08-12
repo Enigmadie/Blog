@@ -1,6 +1,6 @@
 .post-comments-wrapper
   background-color: white
-  padding-top: 25px
+  padding: 25px 15px 0 10px
 
 .post-comments-form
   background-color: white
@@ -12,32 +12,30 @@
 .post-comments-markdown
   +flexbox()
   +flex-direction(column)
+  animation-name: topToBottom;
+  animation-duration: 400ms;
+  animation-timing-function: ease-in-out;
+  animation-fill-mode: forwards;
   .blog-submit
     +align-self(center)
     width: 100%
     margin-top: 10px
 
-.post-comment
-  +flexbox()
-  p
-    font-size: 22px
-    font-weight: 600
-  button
-    margin-left: 15px
-
 .post-comments-menu
   +flexbox()
   +justify-content(space-between)
   +align-items(center)
-  margin: 0 6px
+  margin: 10px
   height: 54px
   .blog-submit
+    width: 130px
     margin-top: 0
 
 .post-comments-sort
   +flexbox()
   p
-    font-size: 16px
+    font-size: 17px
+    font-weight: 600
     &:nth-child(2)
       padding-right: 3px
       padding-left: 6px
@@ -45,7 +43,9 @@
       padding-left: 3px
     &:nth-child(2), &:nth-child(3)
       cursor: pointer
-      text-decoration: underline
+
+.comments-sort-underline
+  text-decoration: underline
 
 .post-comments-counter
   height: 40px
@@ -62,3 +62,53 @@
     background-color: black
     padding: 1px
     border-radius: 5px
+
+.post-comment
+  +flexbox()
+  margin-bottom: 22px
+  img
+    min-width: 80px
+    min-height: 80px
+    max-width: 80px
+    max-height: 80px
+  p
+    font-size: 22px
+    font-weight: 600
+  button
+    margin-top: 8px
+    border: none
+    background-color: inherit
+    font-size: 13.5px
+    font-weight: 700
+    padding-left: 0
+    cursor: pointer
+
+.post-comment-content
+  padding-left: 12px
+  div
+    +flexbox()
+    +align-items(baseline)
+    padding-bottom: 12px
+    .admin-comment
+      color: $color1
+    p
+      font-weight: 600
+      &:first-child
+        text-transform: capitalize 
+        font-size: 18px
+        padding-right: 8px
+      &:last-child
+        color: #C0C0C0
+        font-size: 13px
+  p
+    font-size: 16px
+    font-weight: 500
+
+
+@keyframes topToBottom
+  0%
+    opacity: 0
+    transform: rotateX(30deg)
+  100%
+    opacity: 1
+    transform: rotateX(0deg)

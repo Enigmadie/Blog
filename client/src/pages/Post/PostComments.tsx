@@ -5,22 +5,24 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { CommentFormik, Comment } from 'interfaces';
 import cn from 'classnames';
-
+import MarkDown from 'components/MarkDown';
 import { actions, asyncActions, RootState } from 'slices';
-import MarkDown from './MarkDown';
+
+import CommentEl from './Comment';
+
 
 type TParams = { id: string };
 
 const PostComments = ({ id }: TParams): ReactElement => {
   const dispatch = useDispatch();
   const [inputShowing, setInputShowing] = useState(false);
-  const { activePost: { comments }, profile } = useSelector((state: RootState) => state);
+  const { activePost: { comments }, profile, ui } = useSelector((state: RootState) => state);
 
   const initialValues: CommentFormik = {
     content: '',
   };
 
-  const { removeComment, addComment } = asyncActions;
+  const { addComment } = asyncActions;
   const { switchCommentsSort } = actions;
 
   const formik = useFormik({
@@ -33,7 +35,7 @@ const PostComments = ({ id }: TParams): ReactElement => {
     onSubmit: ({
       content,
     }, { resetForm }) => {
-      dispatch(addComment(id, profile.id, content));
+      dispatch(addComment(id, profile.id, content, ui.commentsSort));
       resetForm();
     },
   });
@@ -52,9 +54,6 @@ const PostComments = ({ id }: TParams): ReactElement => {
     error: hasContentErrors,
   });
 
-  const removeHandler = (commentId: string): void => {
-    dispatch(removeComment(commentId));
-  };
 
   const sortHandler = (sort: string): void => {
     dispatch(switchCommentsSort({ commentsSort: sort }));
@@ -63,6 +62,11 @@ const PostComments = ({ id }: TParams): ReactElement => {
   const inputShowingHandler = (): void => {
     setInputShowing(!inputShowing);
   };
+
+  const isNewSort = ui.commentsSort === 'created_at';
+
+  const cnNew = cn({ 'comments-sort-underline': isNewSort });
+  const cnOld = cn({ 'comments-sort-underline': !isNewSort });
 
   return (
     <>
@@ -75,9 +79,9 @@ const PostComments = ({ id }: TParams): ReactElement => {
             </div>
             <div className="post-comments-sort">
               <p>Sort by </p>
-              <p onClick={(): void => sortHandler('created_at')}>New</p>
+              <p onClick={(): void => sortHandler('created_at')} className={cnNew}>New</p>
               /
-              <p onClick={(): void => sortHandler('!created_at')}>Old</p>
+              <p onClick={(): void => sortHandler('!created_at')} className={cnOld}>Old</p>
             </div>
             <button type="button" className="blog-submit" onClick={inputShowingHandler}>
               {!inputShowing ? 'Post a comment' : 'Hide'}
@@ -87,7 +91,7 @@ const PostComments = ({ id }: TParams): ReactElement => {
           <div className="post-comments-markdown">
             <MarkDown cn={contentCn} prop={formik} />
             <button type="submit" className="blog-submit" disabled={isSubmitting}>
-              Add
+              Add comment
             </button>
           </div>
           )}
@@ -95,11 +99,7 @@ const PostComments = ({ id }: TParams): ReactElement => {
       </div>
       <div className="post-comments-wrapper">
         {comments.map((comment: Comment) => (
-          <div className="post-comment" key={comment.id}>
-            <div>{comment.profile.login}</div>
-            <p dangerouslySetInnerHTML={{ __html: comment.content }} />
-            <button type="button" onClick={(): void => removeHandler(comment.id)}>Delete</button>
-          </div>
+          <CommentEl comment={comment} />
         ))}
       </div>
     </>

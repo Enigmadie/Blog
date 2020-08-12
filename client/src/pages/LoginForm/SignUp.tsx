@@ -3,12 +3,17 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { asyncActions, RootState } from 'slices';
 import { RouteComponentProps } from 'react-router-dom';
+import _ from 'lodash';
 
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import cn from 'classnames';
 
+
 const SignUp = ({ history }: RouteComponentProps): ReactElement => {
+  const getSmallAvatar = (num: number): string => `https://randomuser.me/api/portraits/thumb/lego/${num}.jpg`;
+  const getAvatar = (num: number): string => `https://randomuser.me/api/portraits/lego/${num}.jpg`;
+
   const dispatch = useDispatch();
   const { profile } = useSelector((state: RootState) => state);
   const { t } = useTranslation();
@@ -24,7 +29,15 @@ const SignUp = ({ history }: RouteComponentProps): ReactElement => {
       password: Yup.string().required(blankMsg),
     }),
     onSubmit: ({ login, password }, { resetForm }): void => {
-      dispatch(asyncActions.registrationProfile({ login, password }));
+      const randomNum = _.random(1, 9);
+      const avatarPath = getAvatar(randomNum);
+      const avatarSmallPath = getSmallAvatar(randomNum);
+      dispatch(asyncActions.registrationProfile({
+        login,
+        password,
+        avatar: avatarPath,
+        avatarSmall: avatarSmallPath,
+      }));
       history.push('/login');
       resetForm();
     },

@@ -2,7 +2,12 @@ const router = require('express').Router();
 const models = require('../../models');
 
 router.post('/', async (req, res) => {
-  const { login, password } = req.body.data;
+  const {
+    login,
+    password,
+    avatar,
+    avatarSmall,
+  } = req.body.data;
   await models.Profile.findAll({
     where: {
       login,
@@ -12,6 +17,8 @@ router.post('/', async (req, res) => {
       const profile = await models.Profile.create({
         login,
         password,
+        avatar,
+        avatarSmall,
       });
       res.send(profile);
     } else {

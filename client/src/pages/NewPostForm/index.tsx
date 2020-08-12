@@ -10,9 +10,9 @@ import * as Yup from 'yup';
 import { find } from 'lodash';
 import { PostFormik, Categories } from 'interfaces';
 import options from 'components/CategoriesSelect';
+import MarkDown from 'components/MarkDown';
 
 import FileUpload from './FileUpload';
-import MarkDown from './MarkDown';
 
 type TParams = {
   history: any;
@@ -162,7 +162,10 @@ const PostForm = ({ history, match }: RouteComponentProps<TParams>): ReactElemen
           {hasPreviewErrors && <div className="error-message">{errors.preview}</div>}
         </label>
 
-        <MarkDown cn={contentCn} prop={formik} />
+        <label htmlFor="content">
+        Content:
+          <MarkDown cn={contentCn} prop={formik} />
+        </label>
         {hasContentErrors && <div className="error-message">{errors.content}</div>}
         <button type="submit" className="blog-submit" disabled={isSubmitting}>
           {
