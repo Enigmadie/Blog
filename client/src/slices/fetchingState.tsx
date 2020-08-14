@@ -102,7 +102,6 @@ const fetchActivePostData = (id: string): AppThunk => async (dispatch): Promise<
   }
 };
 
-
 const fetchActivePostComments = (
   id: string,
   sort: string,

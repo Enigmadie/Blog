@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import cn from 'classnames';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import { Categories } from 'interfaces';
-import { RootState, actions } from 'slices';
+import { RootState } from 'slices';
 import CategoriesColl from './CategoriesSelect';
 
 const Header: React.FC = () => {
@@ -17,9 +17,6 @@ const Header: React.FC = () => {
 
   const { profile } = useSelector((state: RootState) => state);
   const hasLogin = profile.login.length > 0;
-
-  const { logoutProfile } = actions;
-  const dispatch = useDispatch();
 
   const smallMenuCn = cn({
     'menu-btn': true,
@@ -58,12 +55,6 @@ const Header: React.FC = () => {
     'sub-menu': !isLargeSize && subMenu && isCloseMenu,
   });
 
-  const profileDropCn = cn({
-    'profile-drop-menu': isLargeSize && subMenu,
-    'drop-menu': !isLargeSize && !subMenu && !isCloseMenu,
-    'sub-menu': !isLargeSize && subMenu && isCloseMenu,
-  });
-
   const dropLiCn = cn({
     'on-menu': !isLargeSize && subMenu,
   });
@@ -89,11 +80,6 @@ const Header: React.FC = () => {
   const menuHandler = (): void => {
     setCloseMenu(!isCloseMenu);
     setSubMenuState(false);
-  };
-
-  const logoutHandler = (): void => {
-    localStorage.setItem('authorization', '');
-    dispatch(logoutProfile());
   };
 
   return (
@@ -125,19 +111,18 @@ const Header: React.FC = () => {
           <li className={liCn}>
             <Link to="/contact">Contact</Link>
           </li>
+          {profile.isAdmin === true && (
+            <li className={liCn}>
+              <Link to="/posts/new" className="new-post-header">New post</Link>
+            </li>
+          )}
           {hasLogin ? (
             <>
-              <li
-                onFocus={(): void => subHandler(true, 'profile')}
-                onClick={(): void => setSubMenuState(true)}
-                onMouseOver={(): void => subHandler(true, 'profile')}
-                onMouseOut={(): void => subHandler(false, 'profile')}
-                className={profileCn}
-              >
-                <a className="login-header">
+              <li className={profileCn}>
+                <Link to={`/profile/${profile.login}`} className="login-header">
                   {isLarge && <img alt="login-img" src={profile.avatarSmall} />}
                   <p>{profile.login}</p>
-                </a>
+                </Link>
               </li>
               <li className={liCn} />
             </>
@@ -168,28 +153,6 @@ const Header: React.FC = () => {
                   </li>
                 );
               })}
-            </ol>
-          </div>
-        )}
-        {subMenuEl === 'profile' && (
-          <div className={profileDropCn}>
-            <ol
-              onFocus={(): void => subHandler(true, 'profile')}
-              onMouseOver={(): void => subHandler(true, 'profile')}
-              onMouseOut={(): void => subHandler(false, 'profile')}
-              onClick={(): void => subHandler(false, 'profile')}
-            >
-              {profile.isAdmin === true && (
-                <li className={dropLiCn}>
-                  <Link to="/posts/new" className="new-post-header">New post</Link>
-                </li>
-              )}
-              <li className={dropLiCn}>
-                <Link to={`profile/${profile.login}`}>Profile</Link>
-              </li>
-              <li className={dropLiCn}>
-                <button type="button" onClick={logoutHandler}>Log Out</button>
-              </li>
             </ol>
           </div>
         )}

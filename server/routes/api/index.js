@@ -26,4 +26,32 @@ router.get('/comments', async (req, res) => {
   });
 });
 
+router.get('/profile', async (req, res) => {
+  const profiles = await models.Profile.getProfiles(req.query, models);
+  if (!profiles) {
+    res.status(422);
+    return;
+  }
+
+  if (profiles.length > 0) {
+    const {
+      id,
+      login,
+      avatar,
+      avatarSmall,
+    } = profiles[0];
+
+    res.send({
+      id,
+      login,
+      avatar,
+      avatarSmall,
+    });
+  } else {
+    res.send({
+      login: 'not exist',
+    }).status(422);
+  }
+});
+
 module.exports = router;

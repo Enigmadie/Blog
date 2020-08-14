@@ -48,6 +48,8 @@ module.exports = (db, DataTypes) => {
 
     models.Post.hasMany(models.Comment, {
       as: 'comments',
+      onDelete: 'CASCADE',
+      hooks: true,
     });
   };
 

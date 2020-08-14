@@ -26,13 +26,16 @@
   +justify-content(space-between)
   +align-items(center)
   margin: 10px
-  height: 54px
+  @media (max-width: 567px)
+    +flex-direction(column)
   .blog-submit
     width: 130px
     margin-top: 0
 
 .post-comments-sort
   +flexbox()
+  @media (max-width: 567px)
+    margin: 12px 0 20px 0
   p
     font-size: 17px
     font-weight: 600
@@ -85,22 +88,25 @@
 
 .post-comment-content
   padding-left: 12px
+  width: 100%
   div
+    width: 100%
     +flexbox()
     +align-items(baseline)
     padding-bottom: 12px
     .admin-comment
       color: $color1
+    a
+      text-transform: capitalize
+      font-weight: 600
+      font-size: 18px
+      padding-right: 8px
     p
       font-weight: 600
-      &:first-child
-        text-transform: capitalize 
-        font-size: 18px
-        padding-right: 8px
-      &:last-child
-        color: #C0C0C0
-        font-size: 13px
+      color: #C0C0C0
+      font-size: 13px
   p
+    word-break: break-all
     font-size: 16px
     font-weight: 500
 

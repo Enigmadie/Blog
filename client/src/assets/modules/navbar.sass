@@ -13,6 +13,8 @@
   +flexbox()
   padding-left: 39px
   padding-top: 35px
+  .new-post-header
+    color: $color1
   li
     &:last-child
       position: absolute
@@ -97,52 +99,6 @@ ol
     +flex-direction(column)
     &:first-child
       border-top: 3px solid white
-
-nav > .profile-drop-menu
-  position: absolute
-  top: 120px
-  right: 75px
-  +flexbox()
-  ol
-    +flexbox()
-    +flex-direction(column)
-    width: 165px
-    height: 140px
-    z-index: 5
-    border: 1px solid $color3
-    background-color: rgba(255, 255, 255, 0.9)
-    li
-      opacity: 0;
-      transform-origin: top center;
-      @for $i from 1 through 3
-        &:nth-child(#{$i})
-          animation-name: topToBottom;
-          animation-duration: 400ms;
-          animation-delay: (150ms * $i) - 300;
-          animation-timing-function: ease-in-out;
-          animation-fill-mode: forwards;
-      padding-bottom: 15px
-      padding-left: 8px
-      font-size: 18px
-      font-weight: 600
-      .new-post-header
-        color: $color1
-      &:first-child
-        padding-top: 15px
-      &:last-child
-        padding-bottom: 25px
-      a, button
-        font-size: 18px
-        font-weight: 600
-        height: 100%
-        color: $color4
-        cursor: pointer
-        &:hover
-          color: $color5
-      button
-        padding: 0
-        font-weight: bold
-        font-family: 'Open Sans'
 
 nav > .categories-drop-menu
   position: absolute

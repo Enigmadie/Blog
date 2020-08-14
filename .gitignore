@@ -1,9 +1,11 @@
 /client/node_modules/
 /client/dist/
-/uploads/
 /client/package-lock.json
+
 /server/node_modules/
 /server/.env
 /server/package-lock.json
 /server/gstore.json
+/server/migrations
+/server/config
 *.log

@@ -16,6 +16,7 @@ import SignUp from 'pages/LoginForm/SignUp';
 import LogIn from 'pages/LoginForm/LogIn';
 import NoMatch from 'pages/NoMatch';
 import Category from 'pages/Category';
+import Profile from 'pages/Profile';
 import Header from 'components/Header';
 
 toast.configure({
@@ -44,6 +45,7 @@ const App: React.FC = () => {
           <Route path="/posts/new" component={NewPostRoute} />
           <Route exact path="/post/:id" component={Post} />
           <Route path="/post/:id/edit" component={NewPostForm} />
+          <Route path="/profile/:login" component={Profile} />
           <Route exact path="/" component={Posts} />
           <Route component={NoMatch} />
         </Switch>

@@ -100,12 +100,20 @@ router.delete('/:id', async (req, res) => {
   const { id } = req.params;
   const { isAdmin } = req.profile;
   if (isAdmin) {
-    await models.Post.destroy({ where: { id } })
-      .then(() => res.send({ id }))
-      .catch((err) => {
-        console.log(err);
-        res.status(403);
-      });
+    // await models.Comment.destroy({ where: { postId: id } })
+    //   .then(async () => {
+        await models.Post.destroy({ where: { id } })
+          .then(() => {
+            res.send({ id });
+          })
+          .catch((err) => {
+            console.log(err);
+            res.status(403);
+          });
+      // }).catch((err) => {
+      //   console.log(err);
+      //   res.status(403);
+      // });
   } else {
     res.status(403);
   }

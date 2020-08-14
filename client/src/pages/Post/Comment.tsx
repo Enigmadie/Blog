@@ -1,5 +1,6 @@
 import React, { ReactElement } from 'react';
 import { Comment } from 'interfaces';
+import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { asyncActions, RootState } from 'slices';
 import { getDistanceDate } from 'utils';
@@ -13,8 +14,7 @@ const CommentEl = ({ comment }: Props): ReactElement => {
   const dispatch = useDispatch();
   const { removeComment } = asyncActions;
 
-  const reduxState = useSelector((state: RootState) => state);
-  const currentProfile = reduxState.profile;
+  const { profile: currentProfile } = useSelector((state: RootState) => state);
 
   const removeHandler = (commentId: string): void => {
     dispatch(removeComment(commentId));
@@ -38,10 +38,12 @@ const CommentEl = ({ comment }: Props): ReactElement => {
 
   return (
     <div className="post-comment" key={id}>
-      <img alt="avatar" src={profile.avatarSmall} />
+      <Link to={`/profile/${profile.login}`}>
+        <img alt="avatar" src={profile.avatarSmall} />
+      </Link>
       <div className="post-comment-content">
         <div>
-          <p className={profileNameCn}>{profile.login}</p>
+          <Link to={`/profile/${profile.login}`} className={profileNameCn}>{profile.login}</Link>
           <p>{date}</p>
         </div>
         <p dangerouslySetInnerHTML={{ __html: content }} />

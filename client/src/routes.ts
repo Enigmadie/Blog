@@ -19,6 +19,7 @@ export default {
   adminApiPath: (): string => [host, prefix, 'admin'].join('/'),
   postsApiPath: (query: Query): string => [host, prefix, 'posts', `?${querystring.stringify(query)}`].join('/'),
   commentsApiPath: (query: Query): string => [host, prefix, 'comments', `?${querystring.stringify(query)}`].join('/'),
+  profileApiPath: (query: Query): string => [host, prefix, 'profile', `?${querystring.stringify(query)}`].join('/'),
 
   registryPath: (): string => [host, 'registry'].join('/'),
   authPath: (): string => [host, 'auth'].join('/'),

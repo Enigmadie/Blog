@@ -22,8 +22,8 @@ module.exports = (db, DataTypes) => {
 
   Comment.associate = (models) => {
     models.Comment.belongsTo(models.Post, {
-      foreignKey: 'postId',
       as: 'post',
+      foreignKey: 'postId',
     });
 
     models.Comment.belongsTo(models.Profile, {

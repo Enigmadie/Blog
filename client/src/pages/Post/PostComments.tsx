@@ -1,6 +1,5 @@
 import React, { ReactElement, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Link } from 'react-router-dom';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { CommentFormik, Comment } from 'interfaces';
