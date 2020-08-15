@@ -14,15 +14,19 @@ type TParams = { id: string };
 
 const PostComments = ({ id }: TParams): ReactElement => {
   const dispatch = useDispatch();
-  const [inputShowing, setInputShowing] = useState(false);
-  const { activePost: { comments }, profile, ui } = useSelector((state: RootState) => state);
+  /* const [inputShowing, setInputShowing] = useState(false); */
+  const {
+    activePost: { comments },
+    profile,
+    ui: { inputShowing, commentsSort },
+  } = useSelector((state: RootState) => state);
 
   const initialValues: CommentFormik = {
     content: '',
   };
 
   const { addComment } = asyncActions;
-  const { switchCommentsSort } = actions;
+  const { switchCommentsSort, setInputShowing } = actions;
 
   const formik = useFormik({
     initialValues,
@@ -34,7 +38,7 @@ const PostComments = ({ id }: TParams): ReactElement => {
     onSubmit: ({
       content,
     }, { resetForm }) => {
-      dispatch(addComment(id, profile.id, content, ui.commentsSort));
+      dispatch(addComment(id, profile.id, content, commentsSort));
       resetForm();
     },
   });
@@ -55,14 +59,14 @@ const PostComments = ({ id }: TParams): ReactElement => {
 
 
   const sortHandler = (sort: string): void => {
-    dispatch(switchCommentsSort({ commentsSort: sort }));
+    dispatch(switchCommentsSort(sort));
   };
 
   const inputShowingHandler = (): void => {
-    setInputShowing(!inputShowing);
+    dispatch(setInputShowing(!inputShowing));
   };
 
-  const isNewSort = ui.commentsSort === 'created_at';
+  const isNewSort = commentsSort === 'created_at';
 
   const cnNew = cn({ 'comments-sort-underline': isNewSort });
   const cnOld = cn({ 'comments-sort-underline': !isNewSort });
