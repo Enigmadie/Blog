@@ -12,20 +12,6 @@ router.post('/', async (req, res) => {
   res.send({}).status(200);
 });
 
-router.patch('/:id', async (req, res) => {
-  const { id } = req.params;
-  await models.Comment.update(
-    req.body,
-    { where: { id } },
-  )
-    .catch((err) => {
-      console.log(err);
-      res.status(403);
-    });
-
-  res.send(id);
-});
-
 router.delete('/:id', async (req, res) => {
   const { id } = req.params;
   const { id: profileId, isAdmin } = req.profile;

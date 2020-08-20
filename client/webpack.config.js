@@ -4,10 +4,13 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const Webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
-const isProduction = process.env.NODE_ENV === 'production';
+
+const isProduction = process.env.FRONT_ENV === 'production';
 const isDevelopment = !isProduction;
 
 const path = require('path');
+
+console.log(isProduction)
 
 module.exports = {
   mode: process.env.FRONT_ENV || 'development',

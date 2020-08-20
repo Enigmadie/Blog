@@ -5,7 +5,9 @@
   "main": "server.js",
   "scripts": {
     "test": "jest --detectOpenHandles",
-    "start": "nodemon server.js"
+    "start": "nodemon server.js",
+    "docker-build": "docker build -t enigmadie/server:v1 .",
+    "docker-push": "docker push enigmadie/server:v1"
   },
   "jest": {
     "testEnvironment": "node",
@@ -18,6 +20,7 @@
   "dependencies": {
     "@google-cloud/storage": "^5.1.1",
     "cors": "^2.8.5",
+    "crypto-js": "^4.0.0",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "express-fileupload": "^1.1.6",

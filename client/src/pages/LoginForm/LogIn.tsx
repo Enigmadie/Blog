@@ -25,7 +25,7 @@ const LogIn = ({ history }: RouteComponentProps): ReactElement => {
     }),
     onSubmit: ({ login, password }, { resetForm }): void => {
       dispatch(asyncActions.authenticationProfile({ login, password }));
-      /* history.push('/'); */
+      history.push('/');
       resetForm();
     },
   });

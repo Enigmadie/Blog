@@ -12,7 +12,8 @@ router.post('/', async (req, res) => {
   }).then(async (el) => {
     if (el.length > 0) {
       const profile = el[0].dataValues;
-      if (profile.password === password) {
+      const decryptedPassword = models.Profile.decryptedPassword(profile.password);
+      if (decryptedPassword === password) {
         const token = jwt.sign({
           id: profile.id,
           login: profile.login,

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactElement } from 'react';
 import { useSelector } from 'react-redux';
 import _ from 'lodash';
 import cn from 'classnames';
@@ -6,12 +6,13 @@ import cn from 'classnames';
 import { getPage } from 'utils';
 import { RootState } from 'slices';
 
-const Pagination: React.FC = () => {
-  const { posts } = useSelector((state: RootState) => state);
+const Pagination = (): ReactElement => {
+  const { posts, fetchingState } = useSelector((state: RootState) => state);
 
   const page = getPage(window.location.href);
 
   const postsPerPage = 12;
+  const hasPaginate = posts.allPostsCount > postsPerPage || !fetchingState;
 
   const getPageHref = (pageNumber: number): string => (pageNumber === 1 ? '/' : `/?page=${pageNumber}`);
   const pages = Math.ceil(posts.allPostsCount / postsPerPage);
@@ -25,23 +26,27 @@ const Pagination: React.FC = () => {
 
   return (
     <div className="paginate">
-      {!isFirstPage && (
-      <>
-        <a href={getPageHref(1)}>«</a>
-        <a href={getPageHref(page - 1)}>‹</a>
-      </>
-      )}
-      {pagesColl.map((el: number) => {
-        const pageCn = cn({
-          active: el === page,
-        });
-        return <a key={el} href={getPageHref(el)} className={pageCn}>{el}</a>;
-      })}
-      {!isLastPage && (
+      {hasPaginate && (
         <>
-          <p>...</p>
-          <a href={getPageHref(page + 1)}>›</a>
-          <a href={getPageHref(pages)}>»</a>
+          {!isFirstPage && (
+          <>
+            <a href={getPageHref(1)}>«</a>
+            <a href={getPageHref(page - 1)}>‹</a>
+          </>
+          )}
+          {pagesColl.map((el: number) => {
+            const pageCn = cn({
+              active: el === page,
+            });
+            return <a key={el} href={getPageHref(el)} className={pageCn}>{el}</a>;
+          })}
+          {!isLastPage && (
+            <>
+              <p>...</p>
+              <a href={getPageHref(page + 1)}>›</a>
+              <a href={getPageHref(pages)}>»</a>
+            </>
+          )}
         </>
       )}
     </div>

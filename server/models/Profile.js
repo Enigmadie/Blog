@@ -1,3 +1,4 @@
+const CryptoJs = require('crypto-js');
 const getFinderOptions = require('../utils');
 
 module.exports = (db, DataTypes) => {
@@ -52,6 +53,24 @@ module.exports = (db, DataTypes) => {
     const finderOptions = getFinderOptions(query);
     const profiles = await models.Profile.findAll(finderOptions);
     return profiles;
+  };
+
+  Profile.encryptPassword = (password) => {
+    if (process.env.SECRET) {
+      const encrypted = CryptoJs.AES.encrypt(password, process.env.SECRET);
+      return encrypted.toString();
+    }
+    console.log('Secret was not found');
+    return '';
+  };
+
+  Profile.decryptedPassword = (password) => {
+    if (process.env.SECRET) {
+      const decrypted = CryptoJs.AES.decrypt(password, process.env.SECRET);
+      return decrypted.toString(CryptoJs.enc.Utf8);
+    }
+    console.log('Secret was not found');
+    return '';
   };
 
   return Profile;

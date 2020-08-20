@@ -5,6 +5,7 @@ const models = require('../models');
 
 router.use((req, res, next) => {
   const isAuth = req.headers.authorization;
+  req.profile = { isAdmin: false };
   if (isAuth && isAuth.length > 0) {
     jwt.verify(req.headers.authorization, tokenKey, async (err, payload) => {
       if (err) {

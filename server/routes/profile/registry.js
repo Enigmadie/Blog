@@ -13,10 +13,11 @@ router.post('/', async (req, res) => {
       login,
     },
   }).then(async (el) => {
-    if (el.length === 0) {
+    const encryptedPassword = models.Profile.encryptPassword(password);
+    if (el.length === 0 && encryptedPassword.length > 0) {
       const profile = await models.Profile.create({
         login,
-        password,
+        password: encryptedPassword,
         avatar,
         avatarSmall,
       });
