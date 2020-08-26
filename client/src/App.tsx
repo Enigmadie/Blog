@@ -1,6 +1,7 @@
 import React from 'react';
 import {
   BrowserRouter,
+  HashRouter,
   Switch,
   Route,
 } from 'react-router-dom';
@@ -34,7 +35,7 @@ const App: React.FC = () => {
   const NewPostRoute = profile.isAdmin ? NewPostForm : NoMatch;
 
   return (
-    <BrowserRouter>
+    <HashRouter>
       <Header />
       {isFetching && (<div className="loader" />)}
       <main>
@@ -50,7 +51,7 @@ const App: React.FC = () => {
           <Route component={NoMatch} />
         </Switch>
       </main>
-    </BrowserRouter>
+    </HashRouter>
   );
 };
 

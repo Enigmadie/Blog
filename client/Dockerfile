@@ -12,4 +12,4 @@ EXPOSE 8080
 
 CMD npm install \
   && npm rebuild node-sass \
-  && npm start
+  && node --max-old-space-size=4196 `which npm` start

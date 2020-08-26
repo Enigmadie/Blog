@@ -5,9 +5,10 @@ declare const FRONT_ENV: string;
 const isProduction = FRONT_ENV === 'production';
 const isDevelopment = !isProduction;
 
-const host = isDevelopment
-  ? 'http://localhost:5000'
-  : 'https://blog-al-server.azurewebsites.net';
+const host = 'https://godo-back.herokuapp.com';
+
+  // isDevelopment
+  // ? 'http://localhost:5000'
 
 const prefix = 'api';
 
