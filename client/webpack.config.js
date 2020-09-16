@@ -4,6 +4,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const Webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
+const fs = require('fs');
 
 const isProduction = process.env.FRONT_ENV === 'production';
 const isDevelopment = !isProduction;
@@ -13,8 +14,8 @@ const path = require('path');
 console.log(isProduction)
 
 module.exports = {
-  mode: process.env.FRONT_ENV || 'development',
-  // mode: 'production',
+  // mode: process.env.FRONT_ENV || 'development',
+  mode: 'production',
   entry: [
     `${__dirname}/src/init.tsx`,
   ],
@@ -24,6 +25,9 @@ module.exports = {
   },
   devServer: {
     historyApiFallback: true,
+    https: true,
+    key: fs.readFileSync('/etc/letsencrypt/live/godos.ru/privkey.pem'),
+    cert: fs.readFileSync('/etc/letsencrypt/live/godos.ru/cert.pem'),
   },
   resolve: {
     extensions: ['.js', '.jsx', '.ts', '.tsx'],

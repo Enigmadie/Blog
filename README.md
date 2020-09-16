@@ -1,3 +1,3 @@
 My Blog project
 
-Deploy: https://enigmadie.github.io
+https://blog.godos.ru
