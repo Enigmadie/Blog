@@ -1,3 +1,3 @@
 My Blog project
 
-Deploy: https://blog.godos.ru
+https://blog.godos.ru
