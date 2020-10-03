@@ -64,7 +64,7 @@ module.exports = (db, DataTypes) => {
     return '';
   };
 
-  Profile.decryptedPassword = (password) => {
+  Profile.decryptPassword = (password) => {
     if (process.env.SECRET) {
       const decrypted = CryptoJs.AES.decrypt(password, process.env.SECRET);
       return decrypted.toString(CryptoJs.enc.Utf8);

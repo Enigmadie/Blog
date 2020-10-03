@@ -26,6 +26,7 @@ router.use((req, res, next) => {
 router.use('/api', require('./api'));
 router.use('/registry', require('./profile/registry'));
 router.use('/auth', require('./profile/auth'));
+router.use('/changepassword', require('./profile/changepassword'));
 router.use('/post', require('./post'));
 router.use('/comment', require('./comment'));
 

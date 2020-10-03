@@ -19,6 +19,7 @@ import profile, {
   profileActions,
   authenticationProfile,
   registrationProfile,
+  changePassword,
   checkAuthToken,
 } from './profile';
 
@@ -40,6 +41,7 @@ const asyncActions = {
   removeComment,
   authenticationProfile,
   registrationProfile,
+  changePassword,
   checkAuthToken,
   fetchPostsData,
   fetchActivePostData,

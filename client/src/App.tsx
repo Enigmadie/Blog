@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  BrowserRouter,
+  /* BrowserRouter, */
   HashRouter,
   Switch,
   Route,
@@ -19,6 +19,7 @@ import NoMatch from 'pages/NoMatch';
 import Category from 'pages/Category';
 import Profile from 'pages/Profile';
 import Header from 'components/Header';
+import ChangePassword from 'pages/LoginForm/ChangePassword';
 
 toast.configure({
   position: 'top-right',
@@ -40,6 +41,7 @@ const App: React.FC = () => {
       {isFetching && (<div className="loader" />)}
       <main>
         <Switch>
+          <Route path="/changepassword" component={ChangePassword} />
           <Route path="/signup" component={SignUp} />
           <Route path="/login" component={LogIn} />
           <Route path="/category/:name" component={Category} />

@@ -10,6 +10,8 @@ const resources = {
       network: 'You\'r device lost it\'s internet connection. \n You can try reloading the page',
       server: 'Server error at the moment',
       emptyCategory: 'There are no posts in this category yet',
+      successChangePassword: 'Password changed',
+      warningChangePassword: 'Password is not equal',
     },
   },
 };

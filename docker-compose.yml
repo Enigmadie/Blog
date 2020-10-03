@@ -4,7 +4,7 @@ services:
     build: client
     image: enigmadie/client:v1
     container_name: blog-client
-    restart: on-failure
+    restart: always
     environment:
       - FRONT_ENV=production
     ports:
@@ -13,6 +13,7 @@ services:
     build: server
     image: enigmadie/server:v1
     container_name: blog-server
+    restart: always
     environment:
       - NODE_ENV=production
     ports:

@@ -2,8 +2,8 @@
 
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import axios from 'axios';
-import { Authentication, Registration } from 'interfaces';
-import { selectErrorMessage } from 'utils';
+import { Authentication, Registration, NewPassword } from 'interfaces';
+import { selectErrorMessage, successMessage, warningMessage } from 'utils';
 import jwtDecode from 'jwt-decode';
 
 import { AppThunk } from '../init';
@@ -75,11 +75,12 @@ const {
   authenticationProfileFailure,
   /* registrationProfileSuccess, */
   registrationProfileFailure,
+  logoutProfile,
 } = slice.actions;
 
 const registrationProfile = (
   registrationData: Registration,
-): AppThunk => async (dispatch) => {
+): AppThunk => async (dispatch): Promise<void> => {
   const {
     login,
     password,
@@ -104,7 +105,7 @@ const registrationProfile = (
 
 const authenticationProfile = (
   authenticationData: Authentication,
-): AppThunk => async (dispatch) => {
+): AppThunk => async (dispatch): Promise<void> => {
   const { login, password } = authenticationData;
   try {
     const response = await axios.post(routes.authPath(), { data: { login, password } });
@@ -124,7 +125,7 @@ const authenticationProfile = (
   }
 };
 
-const checkAuthToken = () => (dispatch) => {
+const checkAuthToken = () => (dispatch): void => {
   if (isAuth) {
     const decodedData = jwtDecode(isAuth);
     const {
@@ -145,6 +146,31 @@ const checkAuthToken = () => (dispatch) => {
   }
 };
 
+const changePassword = (passwordData: NewPassword) => async (dispatch): Promise<void> => {
+  if (isAuth) {
+    const { oldPassword, newPassword } = passwordData;
+    const { login } = jwtDecode(isAuth);
+    try {
+      const response = await axios.patch(routes.changePasswordPath(), {
+        data: { login, oldPassword, newPassword },
+      });
+      if (response.status === 200) {
+        localStorage.setItem('authorization', '');
+        dispatch(logoutProfile());
+        successMessage('successChangePassword');
+      }
+    } catch (e) {
+      if (e.response.data === 'Password is not equal') {
+        warningMessage('warningChangePassword');
+      } else {
+        dispatch(authenticationProfileFailure());
+        selectErrorMessage(e);
+      }
+      throw e;
+    }
+  }
+};
+
 const { actions } = slice;
 
 export {
@@ -152,6 +178,7 @@ export {
   checkAuthToken,
   authenticationProfile,
   registrationProfile,
+  changePassword,
 };
 
 export default slice.reducer;

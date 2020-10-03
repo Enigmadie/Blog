@@ -52,6 +52,11 @@ export interface Comment {
   updatedAt: string;
 }
 
+export interface NewPassword {
+  oldPassword: string;
+  newPassword: string;
+}
+
 export interface CommentFormik {
   content: string;
 }

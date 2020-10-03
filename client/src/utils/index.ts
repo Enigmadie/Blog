@@ -11,6 +11,14 @@ export const selectErrorMessage = (e: any): void => {
   toast.error(i18n.t(key));
 };
 
+export const successMessage = (message: string): void => {
+  toast.success(i18n.t(message));
+};
+
+export const warningMessage = (message: string): void => {
+  toast.warn(i18n.t(message));
+};
+
 export const getPage = (href: string): number => {
   const { query } = url.parse(href, true);
   return query.page ? Number(query.page) : 1;

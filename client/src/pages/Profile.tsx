@@ -1,7 +1,7 @@
 import React, { ReactElement, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { actions, RootState } from 'slices';
-import { RouteComponentProps } from 'react-router-dom';
+import { RouteComponentProps, Link } from 'react-router-dom';
 import axios from 'axios';
 
 import routes from '../routes';
@@ -43,7 +43,7 @@ const Profile = ({ match }: RouteComponentProps<TParams>): ReactElement => {
           <h1>{profile.login}</h1>
           { authProfile.login === profile.login && (
             <>
-              <button type="button" onClick={logoutHandler}>Change Password</button>
+              <Link to="/changepassword">Change Password</Link>
               <button type="button" onClick={logoutHandler}>Logout</button>
             </>
           )}
