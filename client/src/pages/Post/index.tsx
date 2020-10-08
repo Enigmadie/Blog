@@ -31,6 +31,7 @@ const Post = ({ match }: RouteComponentProps<TParams>): ReactElement => {
     posts,
     activePost: { post },
     ui: { commentsSort },
+    fetchingState,
   } = useSelector((state: RootState) => state);
 
   const activePostId = match.params.id;
@@ -70,45 +71,47 @@ const Post = ({ match }: RouteComponentProps<TParams>): ReactElement => {
   };
 
   return (
-    <section className="post-wrapper">
-      <BackOnTop limit={450} />
-      <div className="post">
-        <div className="post-actions">
-          {profile.isAdmin && <Link to={editPostPath}><img alt="edit" src="https://img.icons8.com/windows/60/000000/edit.png" /></Link>}
-          {profile.isAdmin && <button type="button" onClick={removeHandler}><img alt="remove" src="https://img.icons8.com/windows/64/000000/delete.png" /></button>}
-          <img onClick={handleScroll} alt="comment" src="https://img.icons8.com/windows/60/000000/topic.png" />
-        </div>
-        <div className="post-data-wrapper">
-          <div className="post-data">
-            <h1>{post.title}</h1>
-            <span>
-              <p>{`${date} in`}</p>
-              <div>
-                {post.categories && post.categories.map((el: Categories) => (
-                  <Link key={el.value} to={`/category/${el.value}`}>
-                    {el.value}
-                  </Link>
-                ))}
+    fetchingState.processing !== true ? (
+      <section className="post-wrapper">
+        <BackOnTop limit={450} />
+        <div className="post">
+          <div className="post-actions">
+            {profile.isAdmin && <Link to={editPostPath}><img alt="edit" src="https://img.icons8.com/windows/60/000000/edit.png" /></Link>}
+            {profile.isAdmin && <button type="button" onClick={removeHandler}><img alt="remove" src="https://img.icons8.com/windows/64/000000/delete.png" /></button>}
+            <img onClick={handleScroll} alt="comment" src="https://img.icons8.com/windows/60/000000/topic.png" />
+          </div>
+          <div className="post-data-wrapper">
+            <div className="post-data">
+              <h1>{post.title}</h1>
+              <span>
+                <p>{`${date} in`}</p>
+                <div>
+                  {post.categories && post.categories.map((el: Categories) => (
+                    <Link key={el.value} to={`/category/${el.value}`}>
+                      {el.value}
+                    </Link>
+                  ))}
+                </div>
+              </span>
+              <div className="poster-post-wrapper">
+                <div className="poster-post" style={imgStyle} />
               </div>
-            </span>
-            <div className="poster-post-wrapper">
-              <div className="poster-post" style={imgStyle} />
+              <div dangerouslySetInnerHTML={{ __html: post.content }} />
             </div>
-            <div dangerouslySetInnerHTML={{ __html: post.content }} />
-          </div>
-          <div ref={postRef}>
-            <Comments id={activePostId} />
+            <div ref={postRef}>
+              <Comments id={activePostId} />
+            </div>
           </div>
         </div>
-      </div>
-      <div className="right-block-post">
-        <div className="border-posts" />
-        <h2 className="new-posts-topic">New Posts</h2>
-        <div className="recent-posts">
-          {posts.data.map(({ title, id }) => <div key={id}><Link to={`/post/${id}`}><h3>{title}</h3></Link></div>)}
+        <div className="right-block-post">
+          <div className="border-posts" />
+          <h2 className="new-posts-topic">New Posts</h2>
+          <div className="recent-posts">
+            {posts.data.map(({ title, id }) => <div key={id}><Link to={`/post/${id}`}><h3>{title}</h3></Link></div>)}
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
+    ) : (<div className="loader" />)
   );
 };
 

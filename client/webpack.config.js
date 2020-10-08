@@ -15,7 +15,7 @@ console.log(isProduction)
 
 module.exports = {
   // mode: process.env.FRONT_ENV || 'development',
-  mode: 'production',
+  mode: 'development',
   entry: [
     `${__dirname}/src/init.tsx`,
   ],
@@ -25,9 +25,9 @@ module.exports = {
   },
   devServer: {
     historyApiFallback: true,
-    https: true,
-    key: fs.readFileSync('/etc/letsencrypt/live/godos.ru/privkey.pem'),
-    cert: fs.readFileSync('/etc/letsencrypt/live/godos.ru/cert.pem'),
+    // https: true,
+    // key: fs.readFileSync('/etc/letsencrypt/live/godos.ru/privkey.pem'),
+    // cert: fs.readFileSync('/etc/letsencrypt/live/godos.ru/cert.pem'),
   },
   resolve: {
     extensions: ['.js', '.jsx', '.ts', '.tsx'],
@@ -51,6 +51,7 @@ module.exports = {
     new CopyPlugin({
       patterns: [
         { from: './src/assets/images', to: './images' },
+        { from: './src/assets/favicon.ico', to: './favicon.ico' },
       ]},
     ),
   ],

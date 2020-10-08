@@ -10,7 +10,7 @@ import Pagination from 'components/Pagination';
 const Posts: React.FC = () => {
   const dispatch = useDispatch();
   const { fetchPostsData, removePost } = asyncActions;
-  const { profile, posts } = useSelector((state: RootState) => state);
+  const { profile, posts, fetchingState } = useSelector((state: RootState) => state);
 
   useEffect((): void => {
     const currentPage = getPage(window.location.href);
@@ -18,52 +18,54 @@ const Posts: React.FC = () => {
   }, []);
 
   return (
-    <section className="posts-wrapper">
-      <div className="posts">
-        {posts.data.map((post: Post) => {
-          const postDate = new Date(post.createdAt);
-          const date = getDistanceDate(postDate);
-          const imgSrc = getImageUrl(String(post.image));
-          const postPath = `/post/${post.id}`;
-          const editPostPath = `/post/${post.id}/edit`;
+    fetchingState.processing !== true ? (
+      <section className="posts-wrapper">
+        <div className="posts">
+          {posts.data.map((post: Post) => {
+            const postDate = new Date(post.createdAt);
+            const date = getDistanceDate(postDate);
+            const imgSrc = getImageUrl(String(post.image));
+            const postPath = `/post/${post.id}`;
+            const editPostPath = `/post/${post.id}/edit`;
 
-          const imgStyle: Style = {
-            backgroundImage: `url(${imgSrc})`,
-          };
+            const imgStyle: Style = {
+              backgroundImage: `url(${imgSrc})`,
+            };
 
-          const removeHandler = (): void => {
-            dispatch(removePost(post.id));
-          };
+            const removeHandler = (): void => {
+              dispatch(removePost(post.id));
+            };
 
-          return (
-            <div className="post-container" key={post.id}>
-              <Link className="poster-main-wrapper" to={postPath}>
-                <div className="poster-main" style={imgStyle} />
-              </Link>
-              <div className="categories">
-                {post.categories && post.categories.map((el: Categories) => (
-                  <div key={el.value}>
-                    <Link to={`/category/${el.value}`}>
-                      {el.value}
-                    </Link>
+            return (
+              <div className="post-container" key={post.id}>
+                <Link className="poster-main-wrapper" to={postPath}>
+                  <div className="poster-main" style={imgStyle} />
+                </Link>
+                <div className="categories">
+                  {post.categories && post.categories.map((el: Categories) => (
+                    <div key={el.value}>
+                      <Link to={`/category/${el.value}`}>
+                        {el.value}
+                      </Link>
+                    </div>
+                  ))}
+                </div>
+                <Link to={postPath}><h2>{post.title}</h2></Link>
+                <p className="posts-preview">{post.preview}</p>
+                <div className="posts-bottom-panel">
+                  <p>{date}</p>
+                  <div className="admin-post-panel">
+                    {profile.isAdmin && <Link to={editPostPath}><img alt="edit" src="https://img.icons8.com/windows/60/000000/edit.png" /></Link>}
+                    {profile.isAdmin && <button type="button" onClick={removeHandler}><img alt="remove" src="https://img.icons8.com/windows/64/000000/delete-sign.png" /></button>}
                   </div>
-                ))}
-              </div>
-              <Link to={postPath}><h2>{post.title}</h2></Link>
-              <p className="posts-preview">{post.preview}</p>
-              <div className="posts-bottom-panel">
-                <p>{date}</p>
-                <div className="admin-post-panel">
-                  {profile.isAdmin && <Link to={editPostPath}><img alt="edit" src="https://img.icons8.com/windows/60/000000/edit.png" /></Link>}
-                  {profile.isAdmin && <button type="button" onClick={removeHandler}><img alt="remove" src="https://img.icons8.com/windows/64/000000/delete-sign.png" /></button>}
                 </div>
               </div>
-            </div>
-          );
-        })}
-      </div>
-      <Pagination />
-    </section>
+            );
+          })}
+        </div>
+        <Pagination />
+      </section>
+    ) : (<div className="loader" />)
   );
 };
 

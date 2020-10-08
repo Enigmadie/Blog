@@ -1,7 +1,6 @@
 import React from 'react';
 import {
-  /* BrowserRouter, */
-  HashRouter,
+  BrowserRouter,
   Switch,
   Route,
 } from 'react-router-dom';
@@ -31,14 +30,12 @@ toast.configure({
 });
 
 const App: React.FC = () => {
-  const { fetchingState, profile } = useSelector((state: RootState) => state);
-  const isFetching = fetchingState.processing === true;
+  const { profile } = useSelector((state: RootState) => state);
   const NewPostRoute = profile.isAdmin ? NewPostForm : NoMatch;
 
   return (
-    <HashRouter>
+    <BrowserRouter>
       <Header />
-      {isFetching && (<div className="loader" />)}
       <main>
         <Switch>
           <Route path="/changepassword" component={ChangePassword} />
@@ -53,7 +50,7 @@ const App: React.FC = () => {
           <Route component={NoMatch} />
         </Switch>
       </main>
-    </HashRouter>
+    </BrowserRouter>
   );
 };
 
